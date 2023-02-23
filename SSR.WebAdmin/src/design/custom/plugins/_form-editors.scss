@@ -1,7 +1,12 @@
 //
 // Form editors.scss
 //
-
+.ck-editor .ck-editor__top .ck-sticky-panel .ck-sticky-panel__content .ck-toolbar .ck-button__label {
+    color: #000000 !important;
+}
+.ck-editor .ck.ck-icon :not([fill]) {
+    fill: #0a0a0a;
+}
 // ck-editor
 .ck.ck-toolbar {
     background-color: $gray-200 !important;
