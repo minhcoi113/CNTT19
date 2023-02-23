@@ -6,6 +6,7 @@
         color:item.color,
         parentId: item.parentId,
         knowledge: item.knowledge,
+        isglobal: item.isglobal,
     }
 }
 const fromJson = (item) => {
@@ -16,6 +17,7 @@ const fromJson = (item) => {
         color:item.color,
         parentId: item.parentId,
         knowledge: item.knowledge,
+        isglobal: true,
     }
 }
 
@@ -26,6 +28,7 @@ const baseJson = () => {
         color: null,
         parentId: null,
         knowledge: null,
+        isglobal: true,
     }
 }
 

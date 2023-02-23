@@ -35,7 +35,8 @@ const baseJson = () => {
         parentId: null,
         action: null,
         level: 0,
-        sort: 0
+        sort: 0,
+        isglobal: true,
     }
 }
 

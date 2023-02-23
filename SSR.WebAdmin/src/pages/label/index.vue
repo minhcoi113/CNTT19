@@ -58,6 +58,7 @@ export default {
       name: { required },
       color: { required },
       knowledge: { required },
+      isglobal: { required },
     },
   },
   created() {
@@ -280,21 +281,6 @@ export default {
                   </div>
 
                   <div class="mb-3">
-                    <label class="text-left">Chọn màu phân loại nhãn</label>
-                    <span style="color: red">&nbsp;*</span>
-                    <br>
-                    <input type="hidden" v-model="model.color" />
-                    <input id="color" v-model="model.color" type="color" min="0" oninput="validity.valid||(value='');"
-                      class="choosecolor" :class="{
-                        'is-invalid':
-                          submitted && $v.model.color.$error,
-                      }" />
-                    <div v-if="submitted && !$v.model.color.required" class="invalid-feedback">
-                      Màu không được để trống.
-                    </div>
-                  </div>
-
-                  <div class="mb-3">
                     <label class="text-left">Lỗi cha</label>
                     <treeselect v-on:select="addDonViToModel" :normalizer="normalizer" :options="treeView"
                       :value="model.parentId" :searchable="true" :show-count="true" :default-expand-level="1"
@@ -308,13 +294,35 @@ export default {
                     </treeselect>
                   </div>
 
-                  <div class="mb-3">
-                    <label class="text-left">Dùng chung</label>
-                    <br />
-                    <switches class="mt-2 mb-0" v-model="model.isglobal" type-bold="true" color="success" value="true">
-                    </switches>
-                    <v-switch label="on disabled" :value="true" disabled></v-switch>
+                  
+                  <div class="row">
+                    <div class="col-6">
+                      <label class="text-left">Chọn màu nhãn</label>
+                      <span style="color: red">&nbsp;*</span>
+                      <br>
+                      <input type="hidden" v-model="model.color" />
+                      <input id="color" v-model="model.color" type="color" min="0" oninput="validity.valid||(value='');"
+                        class="choosecolor" :class="{
+                          'is-invalid':
+                            submitted && $v.model.color.$error,
+                        }" />
+                      <div v-if="submitted && !$v.model.color.required" class="invalid-feedback">
+                        Màu không được để trống.
+                      </div>
+                    </div>
+
+                    <div class="col-6">
+                      <label class="text-left">Dùng chung</label>
+                      <br />
+                      <switches class="mt-2 mb-0" v-model="model.isglobal" type-bold="true" color="success" value="true"
+                        disabled="true" initialValue="true">
+                      </switches>
+                      <v-switch label="on disabled" :value="true" disabled></v-switch>
+                    </div>
                   </div>
+                  
+
+
                 </div>
               </div>
               <div class="text-end pt-2 mt-3">
