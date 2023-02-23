@@ -4,6 +4,9 @@ export const actions = {
     async get({commit}) {
         return apiClient.get(controller +"/get");
     },
+    async getfind({commit}, key) {
+        return apiClient.get(controller +"/get-find", key);
+    },
     async getDonViCha({commit}) {
         return apiClient.get(controller +"/getTree");
     },

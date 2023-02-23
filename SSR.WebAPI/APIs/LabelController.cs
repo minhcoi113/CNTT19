@@ -208,5 +208,29 @@ namespace SSR.WebAPI.APIs
                 );
             }
         }
+
+        [HttpGet]
+        [Route("get-find")]
+        public async Task<IActionResult> GetFind(string key)
+        {
+            try
+            {
+                var response = await _labelService.GetFind(key);
+
+                return Ok(
+                    new ResultResponse<dynamic>()
+                        .WithData(response)
+                        .WithCode(Exceptions.EResultResponse.SUCCESS.ToString())
+                        .WithMessage(DefaultMessage.GET_DATA_SUCCESS)
+                );
+            }
+            catch (ResponseMessageException ex)
+            {
+                return Ok(
+                    new ResultMessageResponse().IsError().WithCode(ex.ResultCode)
+                          .WithMessage(ex.ResultString)
+                );
+            }
+        }
     }
 }

@@ -12,6 +12,7 @@ namespace SSR.WebAPI.Interfaces
         Task<Label> GetById(string id); 
         Task<PagingModel<Label>> GetPaging(PagingParam param);
         Task<List<LabelTreeVM>> GetTree();
+        Task<List<LabelTreeVM>> GetFind(string key);
     }
 
 }

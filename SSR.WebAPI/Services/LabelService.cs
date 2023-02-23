@@ -134,6 +134,14 @@ namespace SSR.WebAPI.Services
             return await _context.Nhan.Find(x => x.IsDeleted != true).ToListAsync();
         }
 
+        public async Task<List<LabelTreeVM>> GetFind(string key)
+        {
+            var nhans = await _context.Nhan.Find(x => x.IsDeleted != true && (x.Name == key)).SortBy(donVi => donVi.ParentId).ToListAsync();
+            var data = MethodExtensions.GetTree<LabelTreeVM, Label>(nhans ?? new List<Label>());
+
+            return data;            
+        }
+
         public async Task<Label> GetById(string id)
         {
             return await _context.Nhan.Find(x => x.Id == id && x.IsDeleted != true)

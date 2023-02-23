@@ -153,7 +153,7 @@ export default [{
         component: () => import("../pages/chucVu"),
     },
     {
-        path: "/nhan",
+        path: "/Label",
         name: "Nhãn",
         // meta: {},
         component: () => import("../pages/label"),
@@ -163,6 +163,12 @@ export default [{
         name: "Hướng dẫn xử lý",
         // meta: {},
         component: () => import("../pages/danhMuc"),
+    },
+    {
+        path: "/danh-sach-yeu-cau-loi",
+        name: "Yêu cầu lỗi",
+        // meta: {},
+        component: () => import("../pages/yeucauloi"),
     },
     {
         path: "/trang-thai",
