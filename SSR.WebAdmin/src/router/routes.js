@@ -243,4 +243,16 @@ export default [{
         // meta: {},
         component: () => import("../pages/peopleAsk"),
     },
+    {
+        path: "/du-an",
+        name: "du-an",
+        // meta: {},
+        component: () => import("../pages/DuAn/postEvents.vue"),
+    },
+    {
+        path: "/them-du-an",
+        name: "danh-sach-yeu-cau-loi",
+        // meta: {},
+        component: () => import("../pages/DuAn/create.vue"),
+    },
 ]

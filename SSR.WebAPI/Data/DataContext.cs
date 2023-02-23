@@ -50,6 +50,7 @@ public class DataContext
     private readonly IDbSettings _settings;
 
     private readonly IMongoCollection<Label> _nhan;
+    private readonly IMongoCollection<Project> _project;
 
     public DataContext(IDbSettings settings)
     {
@@ -99,6 +100,8 @@ public class DataContext
         _knowledge = _context.GetCollection<Knowledge>("Knowledge");
         _group = _context.GetCollection<Group>(_settings.GroupCollectionName);
         _nhan = _context.GetCollection<Label>("Label");
+        _project = _context.GetCollection<Project>("Project");
+
     }
 
     public IMongoDatabase Database
@@ -151,4 +154,5 @@ public class DataContext
     public IMongoCollection<Knowledge> Knowledge { get => _knowledge; }
     public IMongoCollection<Group> Group { get => _group; }
     public IMongoCollection<Label> Nhan { get => _nhan; }
+    public IMongoCollection<Project> Project { get => _project; }
 }
