@@ -66,6 +66,15 @@ export default {
     this.getListKnowledge();
   },
   methods: {
+    async handleSearch() {
+      await this.$store.dispatch("labelStore/get-find").then((res) => {
+        this.treeView = res.data;
+        console.log("log tree", this.treeView)
+      })
+    },
+    fnGetList() {
+      this.$refs.tblList?.refresh()
+    },
     clearSearch() {
       this.itemFilter.code = null;
       this.itemFilter.name = null;
@@ -172,6 +181,7 @@ export default {
     },
     model() {
       return this.model;
+      
     },
     showDeleteModal(val) {
       if (val == false) {
@@ -191,7 +201,7 @@ export default {
           <div class="card-body">
             <div class="row">
               <div class="col-md-4 col-12 d-flex align-items-center">
-                <h4 class="font-size-18 fw-bold text-dark">Quản lý đơn vị</h4>
+                <h4 class="font-size-18 fw-bold text-dark">Quản lý nhãn</h4>
               </div>
               <div class="col-md-8 col-12 text-end">
                 <b-button v-b-toggle.collapseSearch variant="light" class="btn w-md btn-primary-outline me-2" size="sm">
@@ -204,17 +214,10 @@ export default {
               <div class="row">
                 <div class="col-12">
                   <div class="d-flex justify-content-between align-items-end flex-wrap mb-2">
-                    <!-- Nội dung -->
                     <div class="flex-grow-1 me-2">
-                      <label>Tên</label>
-                      <input size="sm" type="text" name="untyped-input" class="form-control" v-model="itemFilter.code"
-                        placeholder="Nhập mã đơn vị.." />
-                    </div>
-                    <!-- Nội dung -->
-                    <div class="flex-grow-1 me-2">
-                      <label>Tên đơn vị</label>
+                      <label>Tên nhãn</label>
                       <input size="sm" type="text" name="untyped-input" class="form-control" v-model="itemFilter.name"
-                        placeholder="Nhập tên đơn vị..." />
+                        placeholder="Nhập tên nhãn..." />
                     </div>
                     <!--  Xử lý -->
                     <div class="flex-grow-0 ms-2">
@@ -294,7 +297,7 @@ export default {
                     </treeselect>
                   </div>
 
-                  
+
                   <div class="row">
                     <div class="col-6">
                       <label class="text-left">Chọn màu nhãn</label>
