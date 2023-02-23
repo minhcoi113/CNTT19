@@ -51,9 +51,9 @@ export default {
   },
   validations: {
     model: {
-      maDonVi: {required},
+      id: {required},
       name: {required},
-      capDV: {required}
+    
     },
   },
   created() {
@@ -261,23 +261,23 @@ export default {
             >
               <div class="row">
                 <div class="col-12">
-                  <input type="hidden" v-model="model.maDonVi"/>
+                  <input type="hidden" v-model="model.id"/>
                   <div class="mb-3">
                     <label class="text-left">Mã đơn vị</label>
                     <span style="color: red">&nbsp;*</span>
                     <input
                         id="id"
-                        v-model="model.maDonVi"
+                        v-model="model.id"
                         type="text"
                         class="form-control"
                         placeholder="Nhập mã đơn vị"
                         :class="{
                                                       'is-invalid':
-                                                        submitted && $v.model.maDonVi.$error,
+                                                        submitted && $v.model.id.$error,
                                                     }"
                     />
                     <div
-                        v-if="submitted && !$v.model.maDonVi.required"
+                        v-if="submitted && !$v.model.id.required"
                         class="invalid-feedback"
                     >
                       Mã đơn vị không được trống.
