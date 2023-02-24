@@ -11,7 +11,7 @@ import {notifyModel} from "@/models/notifyModel";
 
 export default {
   page: {
-    title: "Soạn bài viết",
+    title: "Yêu cầu lỗi",
     meta: [{name: "description", content: appConfig.description}]
   },
   components: {
@@ -22,7 +22,7 @@ export default {
   },
   data() {
     return {
-      title: "Soạn bài viết",
+      title: "Yêu cầu lỗi",
       model: postModel.baseJson(),
       submitted: false,
       editorConfig: {

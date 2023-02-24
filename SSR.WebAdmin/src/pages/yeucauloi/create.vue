@@ -2,33 +2,40 @@
 import Layout from "../../layouts/main";
 import appConfig from "@/app.config";
 import Multiselect from "vue-multiselect";
-import {postModel} from "@/models/postModel";
+import {yeucauloiModel} from "@/models/yeucauloiModel";
+import {groupModel} from "@/models/groupModel";
 import VueUploadMultipleImage from 'vue-upload-multiple-image'
 import {required} from "vuelidate/lib/validators";
 import urlSlug from 'url-slug'
 import {notifyModel} from "@/models/notifyModel";
-
+import Treeselect from "@riophae/vue-treeselect";
+import {donViModel} from "@/models/donViModel";
+import {labelModel} from "@/models/labelModel";
 
 export default {
   page: {
-    title: "Soạn bài viết",
+    title: "Yêu cầu lỗi",
     meta: [{name: "description", content: appConfig.description}]
   },
   components: {
     Layout,
     Multiselect,
-    VueUploadMultipleImage,
-    'ckeditor-nuxt': () => { return import('@blowstack/ckeditor-nuxt')  },
+    Treeselect,
+    'ckeditor-nuxt': () => { return import('@blowstack/ckeditor-nuxt') 
+  },
   },
   data() {
     return {
-      title: "Soạn bài viết",
-      model: postModel.baseJson(),
+      title: "Yêu cầu lỗi",
+      model: yeucauloiModel.baseJson(),
+      modeldonvi: donViModel.baseJson(),
+      modelgroup: groupModel.baseJson(),
+      modellabel: labelModel.baseJson(),
+
       submitted: false,
       editorConfig: {
         toolbar: {
           items: [
-            'heading', '|',
             'fontfamily', 'fontsize', '|',
             'uploadImage',
             'code', 'codeBlock', '|',
@@ -36,9 +43,7 @@ export default {
             'fontColor', 'fontBackgroundColor', '|',
             'bold', 'italic', 'strikethrough', 'underline', 'subscript', 'superscript', '|',
             'link', '|',
-            'outdent', 'indent', '|',
             'bulletedList', 'numberedList', 'todoList', '|',
-            'insertTable', '|',
             'undo', 'redo'
           ],
           shouldNotGroupWhenFull: false
@@ -66,8 +71,8 @@ export default {
         dropzoneClassName: "dropzonevue-box"
       },
       optionsStatus: [],
-      optionsTags: [],
-      optionsCategories: [],
+      optionsLabel: [],
+      optionsGroup: [],
       simpleUpload: {
         uploadUrl: process.env.VUE_APP_API_URL + "files/upload-ckeditor",
         headers: {
@@ -84,22 +89,26 @@ export default {
   },
   validations: {
     model: {
-      title: {required},
-      summary: {required},
-      content: {required},
-      category: {required},
-      status: {required},
-      slug: {required}
+      Title: {required},
+      StepId: {required},
+      ProjectId: {required},
+      Labels: {required},
+      Descrption: {required},
+      DueDate: {required},
+      Donvi: {required},
+      Assignee: {required},
     },
   },
   async created() {
+    this.GetTreeList();
+    this.GetNhan();
     this.getStatus();
-    this.getCategories();
-    this.getTags();
+    this.getGroup();
+    this.getLabel();
     if(this.$route.params.id){
       this.getPostById(this.$route.params.id);
     }else{
-      this.model = postModel.baseJson();
+      this.model = yeucauloiModel.baseJson();
     }
   },
   watch:{
@@ -137,13 +146,25 @@ export default {
   mounted() {
   },
   methods: {
+    async GetTreeList() {
+      await this.$store.dispatch("donViStore/getTree").then((res) => {
+        this.treeView = res.data;
+        console.log("log tree", this.treeView)
+      })
+    },
+    async GetNhan() {
+      await this.$store.dispatch("labelStore/getTree").then((res) => {
+        this.treeView2 = res.data;
+        console.log("log tree", this.treeView2)
+      })
+    },
     handleShowNotify(res){
       this.isShow = true;
       this.responseData.resultCode = res.resultCode;
       this.responseData.resultString = res.resultString;
     },
     async getPostById(id) {
-      await this.$store.dispatch("postStore/getById", id).then((res) => {
+      await this.$store.dispatch("yeucauloiStore/getById", id).then((res) => {
         if (res.resultCode === 'SUCCESS') {
           this.model = res.data
         }
@@ -165,7 +186,7 @@ export default {
             this.model.id
         ) {
           // Update model
-          await this.$store.dispatch("postStore/update", this.model).then((res) => {
+          await this.$store.dispatch("yeucauloiStore/update", this.model).then((res) => {
             if (res.resultCode === 'SUCCESS') {
               this.handleShowNotify(res);
             }
@@ -173,7 +194,7 @@ export default {
           });
         } else {
           // Create model
-          await this.$store.dispatch("postStore/create", this.model).then((res) => {
+          await this.$store.dispatch("yeucauloiStore/create", this.model).then((res) => {
             if (res.resultCode === 'SUCCESS') {
               this.handleShowNotify(res);
             }
@@ -226,22 +247,22 @@ export default {
         this.optionsStatus = [];
       });
     },
-    async getTags(){
-      await this.$store.dispatch("tagStore/get").then((res) => {
+    async getLabel(){
+      await this.$store.dispatch("labelStore/get").then((res) => {
         if (res.resultCode === 'SUCCESS') {
-          this.optionsTags = res.data;
+          this.optionsLabel = res.data;
           return;
         }
-        this.optionsTags = [];
+        this.optionsLabel = [];
       });
     },
-    async getCategories(){
-      await this.$store.dispatch("categoryStore/get").then((res) => {
+    async getGroup(){
+      await this.$store.dispatch("groupStore/get").then((res) => {
         if (res.resultCode === 'SUCCESS') {
-          this.optionsCategories = res.data;
+          this.optionsGroup = res.data;
           return;
         }
-        this.optionsCategories = [];
+        this.optionsGroup = [];
       });
     },
     handleShowDeleteModal() {
@@ -249,7 +270,7 @@ export default {
     },
     async handleDelete() {
       if (this.model.id != 0 && this.model.id != null && this.model.id) {
-        await this.$store.dispatch("postStore/delete", this.model.id).then((res) => {
+        await this.$store.dispatch("yeucauloiStore/delete", this.model.id).then((res) => {
           if (res.resultCode === 'SUCCESS') {
             this.$router.go(-1)
           }
@@ -270,7 +291,7 @@ export default {
           <div class="card-body">
             <div class="row">
               <div class="col-md-4 col-12 d-flex align-items-center">
-                <h4 class="font-size-18 fw-bold cs-title-page">Soạn bài viết</h4>
+                <h4 class="font-size-18 fw-bold cs-title-page">Yêu cầu lỗi</h4>
               </div>
               <div class="col-md-8 col-12 text-end">
                 <b-button
@@ -296,7 +317,7 @@ export default {
             <form @submit.prevent="handleSubmit"
                   ref="formContainer">
               <div class="row">
-                <div class="col-md-9">
+                <div class="col-md-7">
                   <div class="row">
                     <div class="col-lg-12 col-md-12 col-12">
                       <div class="mb-2">
@@ -305,7 +326,7 @@ export default {
                                                           class="text-danger">*</span>
                         <input
                             id="validationCustom01"
-                            v-model="model.title"
+                            v-model="model.Title"
                             type="text"
                             class="form-control"
                             placeholder=""
@@ -319,7 +340,7 @@ export default {
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-12">
+                    <!-- <div class="col-md-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01">Mô tả</label>
                         <span class="text-danger">*</span>
@@ -331,12 +352,12 @@ export default {
                           Trích yếu không được để trống.
                         </div>
                       </div>
-                    </div>
+                    </div> -->
                     <div class="col-md-12">
                       <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Nội dung</label>
+                        <label class="form-label cs-title-form" for="validationCustom01"> Mô tả</label>
                         <span class="text-danger">*</span>
-                        <ckeditor-nuxt v-model="model.content" :config="editorConfig"  />
+                        <ckeditor-nuxt v-model="model.Descrption" :config="editorConfig"  />
 <!--                                                <ckeditor-->
 <!--                                                    v-model="model.content"-->
 <!--                                                    :editor="editor"-->
@@ -347,11 +368,11 @@ export default {
                             v-if="submitted && !$v.model.content.required"
                             class="invalid-feedback"
                         >
-                         Nội dung không được để trống.
+                         Mô tả không được để trống.
                         </div>
                       </div>
                     </div>
-                    <div class="col-lg-12 col-md-12 col-12">
+                    <!-- <div class="col-lg-12 col-md-12 col-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Slug</label>
                         <span
@@ -371,13 +392,13 @@ export default {
                           Slug không được để trống.
                         </div>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-5">
                   <div class="row">
-                    <div class="col-md-12 mb-2">
+                    <!-- <div class="col-md-12 mb-2">
                       <label class="form-label cs-title-form" for="validationCustom01"> Hình ảnh</label>
                       <div class="col-md-12 d-flex justify-content-center" id="my-strictly-unique-vue-upload-multiple-image">
                         <vue-upload-multiple-image
@@ -390,40 +411,40 @@ export default {
                             class="cs-upload-image"
                         ></vue-upload-multiple-image>
                       </div>
-                    </div>
+                    </div> -->
                     <div class="col-md-12">
                       <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Trạng thái</label>
-                        <multiselect
-                            v-model="model.status"
-                            :options="optionsStatus"
-                            track-by="id"
-                            label="name"
-                            placeholder="Chọn trạng thái"
-                            deselect-label="Nhấn để xoá"
-                            selectLabel="Nhấn enter để chọn"
-                            selectedLabel="Đã chọn"
-                            :class="{'is-invalid': submitted && $v.model.status.$error,}"
-                        ></multiselect>
-                        <div
-                            v-if="submitted && !$v.model.status.required"
-                            class="invalid-feedback"
-                        >
-                          Trạng thái không được để trống.
-                        </div>
+                        <label class="text-left">Đơn vị</label>
+                    <treeselect
+                        :normalizer="normalizer"
+                        :options="treeView"
+                        :value="modeldonvi.ParentId"
+                        :searchable="true"
+                        :show-count="true"
+                        :default-expand-level="1"
+                        placeholder="Chọn đơn vị"
+                    >
+                      <label slot="option-label"
+                             slot-scope="{ node, shouldShowCount, count, labelClassName, countClassName }"
+                             :class="labelClassName">
+                        {{ node.label }}
+                        <span v-if="shouldShowCount" :class="countClassName">({{ count }})</span>
+                      </label>
+                    </treeselect>
                       </div>
                     </div>
                     <div class="col-md-12">
                       <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Thể loại</label>
+                        <label class="form-label cs-title-form" for="validationCustom01"> Phân công theo nhóm </label>
                         <multiselect
-                            v-model="model.category"
-                            :options="optionsCategories"
+                            v-model="modelgroup.name"
+                            :options="optionsGroup"
                             track-by="id"
                             label="name"
                             placeholder="Chọn thể loại"
                             deselect-label="Nhấn để xoá"
                             selectLabel="Nhấn enter để chọn"
+                            :multiple="true"
                             selectedLabel="Đã chọn"
                             :class="{'is-invalid': submitted && $v.model.category.$error,}"
                         ></multiselect>
@@ -431,25 +452,46 @@ export default {
                             v-if="submitted && !$v.model.category.required"
                             class="invalid-feedback"
                         >
-                          Thể loại không được để trống.
+                          Phân công không được để trống.
                         </div>
 
                       </div>
                     </div>
                     <div class="col-md-12">
                       <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Gắn thẻ</label>
+                        <label class="form-label cs-title-form" for="validationCustom01"> Dự án </label>
                         <multiselect
-                            v-model="model.tags"
-                            :options="optionsTags"
-                            track-by="id"
-                            label="name"
-                            placeholder="Chọn thẻ"
-                            deselect-label="Nhấn để xoá"
-                            selectLabel="Nhấn enter để chọn"
-                            selectedLabel="Đã chọn"
-                            :multiple="true"
+                          
                         ></multiselect>
+                        <div
+                            v-if="submitted && !$v.model.category.required"
+                            class="invalid-feedback"
+                        >
+                          Dự án không được để trống.
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="mb-2">
+                        <label class="form-label cs-title-form" for="validationCustom01"> Nhãn yêu cầu lỗi </label>
+                        <treeselect
+                        :flat="true"
+                        :options="treeView2"
+                        :value="modellabel.ParentId"
+                        :searchable="true"
+                        :show-count="true"
+                        :default-expand-level="1"
+                        :multiple="true"
+                        placeholder="Chọn nhãn"
+                    >
+                      <label slot="option-label"
+                             slot-scope="{ node, shouldShowCount, count, labelClassName, countClassName }"
+                             :class="labelClassName">
+                        {{ node.label }}
+                        <span v-if="shouldShowCount" :class="countClassName">({{ count }})</span>
+                      </label>
+                    </treeselect>
                       </div>
                     </div>
                     <div class="col-md-12">

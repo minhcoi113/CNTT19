@@ -99,10 +99,10 @@ export default {
       this.filter = null;
     },
     handleNewPost(){
-      this.$router.push("/danh-sach-yeu-cau-loi")
+      this.$router.push("/yeu-cau-loi")
     },
     handleRedirectToDetail(id){
-      this.$router.push("/danh-sach-yeu-cau-loi/" + id)
+      this.$router.push("/yeu-cau-loi/" + id)
     }
   }
 }

@@ -76,13 +76,6 @@ export default {
           sortable: true,
         },
         {
-          key: "content",
-          label: "Content",
-          class: 'td-xuly',
-          sortable: true,
-          thStyle: { width: '700px', minWidth: '700px' },
-        },
-        {
           key: 'process',
           label: 'Xử lý',
           class: 'td-xuly btn-process',

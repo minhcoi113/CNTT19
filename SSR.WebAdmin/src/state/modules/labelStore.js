@@ -2,7 +2,7 @@
 const  controller = "Label";
 export const actions = {
     async get({commit}) {
-        return apiClient.get(controller +"/get");
+        return apiClient.get(controller +"/get-all-data");
     },
     async getfind({commit}, key) {
         return apiClient.get(controller +"/get-find", key);

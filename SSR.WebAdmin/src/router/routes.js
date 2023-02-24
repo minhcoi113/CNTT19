@@ -213,10 +213,10 @@ export default [{
         component: () => import("../pages/trangThai"),
     },
     {
-        path: "/soan-bai-viet/:id?",
-        name: " Soạn bài viết",
+        path: "/yeu-cau-loi/:id?",
+        name: "Yêu cầu lỗi",
         // meta: {},
-        component: () => import("../pages/post/create"),
+        component: () => import("../pages/yeucauloi/create"),
     },
 
     {

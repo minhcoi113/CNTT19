@@ -53,6 +53,7 @@ export default {
       }
     };
   },
+
   validations: {
     model: {
       name: { required },
@@ -64,6 +65,7 @@ export default {
   created() {
     this.GetTreeList();
     this.getListKnowledge();
+    this.getdata();
   },
   methods: {
     async handleSearch() {
@@ -72,17 +74,17 @@ export default {
         console.log("log tree", this.treeView)
       })
     },
+    async getdata() {
+      await this.$store.dispatch("labelStore/get").then((res) => {
+        this.listdata = res.data || [];
+      })
+    },
     fnGetList() {
       this.$refs.tblList?.refresh()
     },
     clearSearch() {
       this.itemFilter.code = null;
       this.itemFilter.name = null;
-    },
-    addDonViToModel(node, instanceId) {
-      if (node.id) {
-        this.model.parentId = node.id;
-      }
     },
     normalizer(node) {
       if (node.children == null || node.children == 'null') {
@@ -170,6 +172,7 @@ export default {
       this.model.id = id;
       this.showDeleteModal = true;
     },
+
     handleResetForm() {
       this.model = menuModel.baseJson()
     },
@@ -181,7 +184,6 @@ export default {
     },
     model() {
       return this.model;
-      
     },
     showDeleteModal(val) {
       if (val == false) {
@@ -194,7 +196,6 @@ export default {
 
 <template>
   <Layout>
-    <!--    <PageHeader :title="title" :items="items"/>-->
     <div class="row">
       <div class="col-12">
         <div class="card mb-2">
@@ -248,8 +249,8 @@ export default {
       <div class="col-md-6 col-12">
         <div class="card">
           <div class="card-body">
-            <v-jstree :data="treeView" text-field-name="label" @item-click="itemClick"
-              :item-events="itemEvents"></v-jstree>
+            <v-jstree :data="treeView" text-field-name="label" @item-click="itemClick" :item-events="itemEvents" :style="{ background: color }"
+            ></v-jstree>
           </div>
         </div>
       </div>
@@ -323,7 +324,7 @@ export default {
                       <v-switch label="on disabled" :value="true" disabled></v-switch>
                     </div>
                   </div>
-                  
+
 
 
                 </div>
@@ -358,3 +359,12 @@ export default {
     </div>
   </Layout>
 </template>
+<style>
+.tree-anchor span {
+  padding: 2px;
+  border-radius: 5px;
+  color: white;
+  background-color: crimson
+}
+
+</style>
