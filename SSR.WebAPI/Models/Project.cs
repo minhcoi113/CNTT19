@@ -12,11 +12,11 @@ public class Project : Audit, TEntity<string>
     public string Id { get; set; }
     public string Description { get; set; }
     public string Name { get; set; }
-    public List<Phanloai> Label { get; set; }
+    public List<Label> Label { get; set; }
     public List<Group> Group { get; set; } 
     public List<User> Member { get; set; }
     public string Slug { get; set; }
-    public List<File> Files { get; set; }
+    public List<FileShort> Files { get; set; }
 
 
 }

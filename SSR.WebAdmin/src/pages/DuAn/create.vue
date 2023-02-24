@@ -17,8 +17,8 @@ export default {
   components: {
     Layout,
     Multiselect,
-    //VueUploadMultipleImage,
-    //'ckeditor-nuxt': () => { return import('@blowstack/ckeditor-nuxt')  },
+    VueUploadMultipleImage,
+    'ckeditor-nuxt': () => { return import('@blowstack/ckeditor-nuxt')  },
   },
   data() {
     return {
@@ -328,13 +328,10 @@ export default {
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01">Mô tả</label>
                         <span class="text-danger">*</span>
-                        <textarea class="form-control" v-model="model.description" rows="4"   :class="{'is-invalid': submitted && $v.model.summary.$error,}"></textarea>
-                        <div
-                            v-if="submitted && !$v.model.description.required"
-                            class="invalid-feedback"
-                        >
-                          Trích yếu không được để trống.
-                        </div>
+                        <ckeditor-nuxt v-model="model.description" :config="editorConfig" />
+                            <div v-if="submitted && !$v.model.description.required" class="invalid-feedback">
+                              Nội dung không được để trống.
+                            </div>
                       </div>
                     </div>
                     
@@ -364,7 +361,7 @@ export default {
 
                  <div class="col-md-3">
                   <div class="row">
-                    <!-- <div class="col-md-12 mb-2">
+                    <div class="col-md-12 mb-2">
                       <label class="form-label cs-title-form" for="validationCustom01"> Hình ảnh</label>
                       <div class="col-md-12 d-flex justify-content-center" id="my-strictly-unique-vue-upload-multiple-image">
                         <vue-upload-multiple-image
@@ -377,7 +374,7 @@ export default {
                             class="cs-upload-image"
                         ></vue-upload-multiple-image>
                       </div>
-                    </div> -->
+                    </div>
                     <div class="col-md-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Group</label>
@@ -407,7 +404,7 @@ export default {
                             deselect-label="Nhấn để xoá"
                             selectLabel="Nhấn enter để chọn"
                             selectedLabel="Đã chọn"
-                            :class="{'is-invalid': submitted && $v.model.User.$error,}"
+                            :class="{'is-invalid': submitted && $v.model.member.$error,}"
                         ></multiselect>
                       </div>
                     </div>
