@@ -55,12 +55,11 @@ public class ProjectService : BaseService, IProjectService
             
             Description = model.Description,
             Name = model.Name,
-            Thumbnail = model.Thumbnail,
             Group = model.Group,
             Label = model.Label,
             Member = model.Member,
             Slug = model.Slug,
-            Files = model.Files,
+            //Files = model.Files,
         };
 
         var result = await BaseMongoDb.CreateAsync(entity);
@@ -108,12 +107,11 @@ public class ProjectService : BaseService, IProjectService
 
         entity.Description = model.Description;
         entity.Name = model.Name;
-        entity.Thumbnail = model.Thumbnail;
         entity.Label = model.Label;
         entity.Group = model.Group;
         entity.Member = model.Member;
         entity.Slug = model.Slug;
-        entity.Files = model.Files;
+        //entity.Files = model.Files;
         entity.ModifiedAt = DateTime.Now;
         entity.ModifiedBy = CurrentUserName;
 

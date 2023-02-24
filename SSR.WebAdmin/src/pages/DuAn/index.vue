@@ -5,7 +5,7 @@ import appConfig from "@/app.config";
 import {notifyModel} from "@/models/notifyModel";
 import {pagingModel} from "@/models/pagingModel";
 import {CONSTANTS} from "@/helpers/constants";
-import {tagModel} from "@/models/tagModel";
+import {labelModel} from "@/models/labelModel";
 
 export default {
   page: {
@@ -42,24 +42,25 @@ export default {
           thStyle: {width: '30px', minWidth: '30px'}
         },
         {
-          key: "title",
+          key: "name",
           label: "Tên",
           sortable: true,
         },
         {
-          key: "category",
-          label: "Thể loại",
-          class: 'td-xuly',
-          sortable: true,
-          thStyle: {width: '120px', minWidth: '120px'},
-        },
-        {
-          key: "status",
-          label: "Trạng thái",
+          key: "description",
+          label: "Mô tả",
           class: 'td-xuly',
           sortable: true,
           thStyle: {width: '100px', minWidth: '100px'},
         },
+        {
+          key: "label",
+          label: "label",
+          class: 'td-xuly',
+          sortable: true,
+          thStyle: {width: '120px', minWidth: '120px'},
+        },
+       
         {
           key: 'process',
           label: 'Xử lý',
@@ -81,8 +82,8 @@ export default {
     this.fnGetList();
   },
   watch: {
-    showModal(status) {
-      if (status == false) this.model = tagModel.baseJson();
+    showModal(label) {
+      if (label == false) this.model = labelModel.baseJson();
     },
     showDeleteModal(val) {
       if (val == false) {
@@ -246,15 +247,11 @@ export default {
                     <template v-slot:cell(STT)="data">
                       {{ data.index + ((currentPage-1)*perPage) + 1  }}
                     </template>
-                    <template v-slot:cell(category)="data">
-                      <template v-if="data.item.category">
-                        {{data.item.category.name}}
-                      </template>
-                    </template>
-                    <template v-slot:cell(status)="data">
-                      <template v-if="data.item.status">
-                        {{data.item.status.name}}
-                      </template>
+                    
+                    <template v-slot:cell(label)="data">
+                      <div v-for="(value , index) in data.item.label" :key="index">
+                        <span  class="badge bg-success ms-1"> {{value.name}}</span>
+                      </div>
                     </template>
                     <template v-slot:cell(process)="data">
                       <button

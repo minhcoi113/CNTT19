@@ -4,25 +4,49 @@ const baseJson = () => {
         id: null,
         name: null,
         discription: null,
-        content: "<p> Nội dung </p>",
-        thumbnail: null,
-        published: false,
-        publishedAt: null,
         slug: null,
-        code: null,
         group: null,
         label: null,
         member: null,
-        status: null,
-        uploadFiles: null,
-        createdAt: null,
-        modifiedAt: null,
-        createdBy: null,
-        modifiedBy: null,
+        //uploadFiles: null,
         isDeleted: false
     }
 }
+const toJson = (item) => {
+  return {
+      id: item.id,
+      name: item.name,
+      description: item.description,
+      slug: item.slug,
+      member: item.member,
+      group: item.group,
+      label: item.length,
+      //uploadFiles: item.uploadFiles
+  }
+}
+const fromJson = (item) => {
+  return {
+      id: item.id,
+      name: item.name,
+      description: item.description,
+      slug: item.slug,
+      member: item.member,
+      group: item.group,
+      label: item.length,
+      //uploadFiles: item.uploadFiles     
+  }
+}
+const toListGroup = (items) =>{
+  if(items.length > 0){
+      let data = [];
+      items.map((value, index) =>{
+          data.push(fromJson(value));
+      })
+      return data??[];
+  }
+  return [];
+}
 
 export const projectModel = {
-  baseJson
+  baseJson, toListGroup, fromJson, toJson
 }

@@ -5,7 +5,7 @@ import appConfig from "@/app.config";
 import {notifyModel} from "@/models/notifyModel";
 import {pagingModel} from "@/models/pagingModel";
 import {CONSTANTS} from "@/helpers/constants";
-import {tagModel} from "@/models/tagModel";
+import {labelModel} from "@/models/labelModel";
 import {loaiDanhMucModel} from "@/models/loaiDanhMucModel";
 
 export default {
@@ -43,30 +43,25 @@ export default {
           thStyle: {width: '30px', minWidth: '30px'}
         },
         {
-          key: "title",
+          key: "name",
           label: "Tên",
           sortable: true,
+          thStyle: {width: '200px', minWidth: '200px'},
         },
         {
-          key: "member",
-          label: "Thành viên",
+          key: "description",
+          label: "Mô tả",
           class: 'td-xuly',
           sortable: true,
-          thStyle: {width: '120px', minWidth: '120px'},
+          
         },
-        {
-          key: "group",
-          label: "Nhóm",
-          class: 'td-xuly',
-          sortable: true,
-          thStyle: {width: '100px', minWidth: '100px'},
-        },
+
         {
           key: "label",
           label: "Nhãn",
           class: 'td-xuly',
           sortable: true,
-          thStyle: {width: '100px', minWidth: '100px'},
+          thStyle: {width: '200px', minWidth: '200px'},
         },
         {
           key: 'process',
@@ -89,8 +84,8 @@ export default {
     this.fnGetList();
   },
   watch: {
-    showModal(nhan) {
-      if (nhan == false) this.model = loaiDanhMucModel.baseJson();
+    showModal(label) {
+      if (label == false) this.model =labelModel.baseJson();
     },
     showDeleteModal(val) {
       if (val == false) {
@@ -255,16 +250,8 @@ export default {
                     <template v-slot:cell(STT)="data">
                       {{ data.index + ((currentPage-1)*perPage) + 1  }}
                     </template>
-                    <template v-slot:cell(member)="data">
-                      <template v-if="data.item.member">
-                        {{data.item.member.name}}
-                      </template>
-                    </template>
-                    <template v-slot:cell(group)="data">
-                      <template v-if="data.item.group">
-                        {{data.item.group.name}}
-                      </template>
-                    </template>
+                    
+                    
                     <template v-slot:cell(label)="data">
                       <template v-if="data.item.label">
                         {{data.item.label.name}}
