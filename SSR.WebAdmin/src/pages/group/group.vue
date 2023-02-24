@@ -339,31 +339,8 @@ export default {
         <div class="card">
           <div class="card-body">
             <div class="row mb-2">
-<!--              <div class="col-sm-4">-->
-<!--                <div class="search-box me-2 mb-2 d-inline-block">-->
-<!--                  <div class="position-relative">-->
-<!--                    <input-->
-<!--                        v-model="filter"-->
-<!--                        type="text"-->
-<!--                        class="form-control"-->
-<!--                        placeholder="Tìm kiếm ..."-->
-<!--                    />-->
-<!--                    <i class="bx bx-search-alt search-icon"></i>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
               <div class="col-sm-8">
                 <div class="text-sm-end">
-<!--                  <b-button-->
-<!--                      type="button"-->
-<!--                      variant="primary"-->
-<!--                      class="w-md"-->
-<!--                      size="sm"-->
-<!--                      @click="handleExport"-->
-<!--                  >-->
-<!--                    <i class="mdi mdi-plus me-1"></i> export-->
-<!--                  </b-button>-->
-
                   <b-modal
                       v-model="showModal"
                       title="Thông tin group"
