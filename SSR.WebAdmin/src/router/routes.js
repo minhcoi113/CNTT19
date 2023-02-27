@@ -256,7 +256,7 @@ export default [{
         component: () => import("../pages/DuAn/index1.vue"),
     },
     {
-        path: "/them-du-an",
+        path: "/tao-project",
         name: "danh-sach-yeu-cau-loi",
         // meta: {},
         component: () => import("../pages/DuAn/create.vue"),

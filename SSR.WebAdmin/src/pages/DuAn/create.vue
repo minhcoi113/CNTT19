@@ -18,7 +18,7 @@ export default {
     Layout,
     Multiselect,
     VueUploadMultipleImage,
-    'ckeditor-nuxt': () => { return import('@blowstack/ckeditor-nuxt')  },
+    // 'ckeditor-nuxt': () => { return import('@blowstack/ckeditor-nuxt')  },
   },
   data() {
     return {
@@ -84,12 +84,11 @@ export default {
   },
   validations: {
     model: {
-      id: {required},
       name: {required},
       description: {required},
       member: {required},
       group: {required},
-      labe: {required},
+      label: {required},
       slug: {required}
     },
   },
@@ -328,7 +327,14 @@ export default {
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01">Mô tả</label>
                         <span class="text-danger">*</span>
-                        <ckeditor-nuxt v-model="model.description" :config="editorConfig" />
+                        <textarea
+                            id="validationCustom01"
+                            v-model="model.description"
+                            type="text"
+                            class="form-control"
+                            placeholder=""
+                            :class="{'is-invalid': submitted && $v.model.description.$error,}">
+                          </textarea>
                             <div v-if="submitted && !$v.model.description.required" class="invalid-feedback">
                               Nội dung không được để trống.
                             </div>
@@ -356,12 +362,13 @@ export default {
                         </div>
                       </div>
                     </div>
+                    
                   </div>
                 </div>
 
-                 <div class="col-md-3">
+                <div class="col-md-3">
                   <div class="row">
-                    <div class="col-md-12 mb-2">
+                     <div class="col-md-12 mb-2">
                       <label class="form-label cs-title-form" for="validationCustom01"> Hình ảnh</label>
                       <div class="col-md-12 d-flex justify-content-center" id="my-strictly-unique-vue-upload-multiple-image">
                         <vue-upload-multiple-image
@@ -374,13 +381,14 @@ export default {
                             class="cs-upload-image"
                         ></vue-upload-multiple-image>
                       </div>
-                    </div>
+                    </div> 
                     <div class="col-md-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Group</label>
                         <multiselect
                             v-model="model.group"
                             :options="optionsGroup"
+                            :multiple="true"
                             track-by="id"
                             label="name"
                             placeholder="Chọn nhóm"
@@ -398,6 +406,7 @@ export default {
                         <multiselect
                             v-model="model.member"
                             :options="optionsUser"
+                            :multiple="true"
                             track-by="id"
                             label="fullName"
                             placeholder="Chọn thể loại"
@@ -421,13 +430,12 @@ export default {
                             selectLabel="Nhấn enter để chọn"
                             selectedLabel="Đã chọn"
                             :multiple="true"
+                            :class="{'is-invalid': submitted && $v.model.label.$error,}"
                         ></multiselect>
                       </div>
-                    </div>
-                    
-                    
+                    </div>    
                   </div>
-                </div>
+                </div>>
               </div>
               <div class="text-end pt-2">
                         <b-button variant="light" class="w-md" @click="showModal = false">

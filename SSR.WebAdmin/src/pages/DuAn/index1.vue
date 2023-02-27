@@ -3,7 +3,7 @@ import Layout from "../../layouts/main";
 import appConfig from "@/app.config";
 import Multiselect from "vue-multiselect";
 import {projectModel} from "@/models/projectModel";
-//import VueUploadMultipleImage from "vue-upload-multiple-image";
+import VueUploadMultipleImage from "vue-upload-multiple-image";
 import {required} from "vuelidate/lib/validators";
 import urlSlug from 'url-slug'
 import {notifyModel} from "@/models/notifyModel";
@@ -18,7 +18,7 @@ export default {
     title: "Quản lý dự án",
     meta: [{name: "description", content: appConfig.description}],
   },
-  components: {Layout, Multiselect},
+  components: {Layout, Multiselect,    VueUploadMultipleImage},
   data() {
     return {
       title: "Quản lý dự án",
@@ -93,7 +93,7 @@ export default {
           thStyle: {width: '130px', minWidth: '130px'},
         }
       ],
-      /* editorConfig: {
+       editorConfig: {
         toolbar: {
           items: [
             'heading', '|',
@@ -132,7 +132,7 @@ export default {
         addRemoveLinks: true,
         acceptedFiles: ".pdf",
         dropzoneClassName: "dropzonevue-box"
-      }, */
+      }, 
       optionsUser: [],
       optionsGroup: [],
       optionsLabel: [],
@@ -167,7 +167,7 @@ export default {
     }
   },
   computed:{
-    /* images() {
+     images() {
       if(this.model && this.model.files){
         let imgs = [];
         this.model.files.map((value, index) =>{
@@ -184,7 +184,7 @@ export default {
         return imgs;
       }
       return [];
-    } */
+    } 
   },
   mounted() {
   },
@@ -193,8 +193,8 @@ export default {
     
       name: {required},
       description: {required},
-      member: {required},
-      group: {required},
+      // member: {required},
+      // group: {required},
       label: {required},
       slug: {required},
     
@@ -209,7 +209,7 @@ export default {
     async fnGetList() {
          this.$refs.tblList?.refresh()
     },
-    /* async uploadImageSuccess(formData, index, fileList) {
+     async uploadImageSuccess(formData, index, fileList) {
       await this.$store.dispatch("fileStore/uploadFile", formData).then((res) => {
         console.log(res)
         if (res.resultCode === 'SUCCESS') {
@@ -220,8 +220,8 @@ export default {
           return;
         }
       });
-    }, */
-    /* beforeRemove (index, done, fileList) {
+    }, 
+    beforeRemove (index, done, fileList) {
       console.log(fileList);
       var fileId = fileList.find(x => x.id == index);
       var r = confirm("Xóa hình ảnh")
@@ -234,7 +234,7 @@ export default {
       } else {
         console.log(1)
       }
-    }, */
+    }, 
     async getUser(){
       await this.$store.dispatch("userStore/getAll").then((res) => {
         if (res.resultCode === 'SUCCESS') {
@@ -318,7 +318,7 @@ export default {
       this.submitted = false;
     },
     async handleUpdate(id) {
-      await this.$store.dispatch("projectStore/getbyid", id).then((res) => {
+      await this.$store.dispatch("projectStore/getById", id).then((res) => {
         if (res.resultCode==='SUCCESS') {
           this.model = projectModel.toJson(res.data);
           this.showModal = true;
@@ -361,6 +361,9 @@ export default {
       }
       return bytes;
     },
+    handleNewPost(){
+      this.$router.push("/tao-project")
+    },
   },
 };
 </script>
@@ -379,14 +382,14 @@ export default {
             <div class="col-md-8 col-12 text-end">
               
               <b-button
-                  type="button"
-                  variant="primary"
-                  class="w-md"
-                  size="sm"
-                  @click="showModal = true"
-              >
-                <i class="mdi mdi-plus me-1"></i> Tạo project
-              </b-button>
+                    variant="primary"
+                    type="button"
+                    class="btn w-md btn-primary"
+                    @click="handleNewPost"
+                    size="sm"
+                >
+                  <i class="mdi mdi-plus me-1"></i> Thêm dự án
+                </b-button>
             </div>
           </div>
         </div>
@@ -441,14 +444,14 @@ export default {
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01">Mô tả</label>
                         <span class="text-danger">*</span>
-                        <input
+                        <textarea
                             id="validationCustom01"
                             v-model="model.description"
                             type="text"
                             class="form-control"
                             placeholder=""
-                            :class="{'is-invalid': submitted && $v.model.description.$error,}"
-                        />
+                            :class="{'is-invalid': submitted && $v.model.description.$error,}">
+                          </textarea>
                             <div v-if="submitted && !$v.model.description.required" class="invalid-feedback">
                               Nội dung không được để trống.
                             </div>
@@ -481,7 +484,7 @@ export default {
 
                  <div class="col-md-3">
                   <div class="row">
-                    <!-- <div class="col-md-12 mb-2">
+                     <div class="col-md-12 mb-2">
                       <label class="form-label cs-title-form" for="validationCustom01"> Hình ảnh</label>
                       <div class="col-md-12 d-flex justify-content-center" id="my-strictly-unique-vue-upload-multiple-image">
                         <vue-upload-multiple-image
@@ -494,7 +497,7 @@ export default {
                             class="cs-upload-image"
                         ></vue-upload-multiple-image>
                       </div>
-                    </div> -->
+                    </div> 
                     <div class="col-md-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Group</label>
@@ -611,10 +614,11 @@ export default {
                           type="button"
                           size="sm"
                           class="btn btn-edit btn-sm"
-                          data-toggle="tooltip" data-placement="bottom" title="Xem chi tiết"
-                          v-on:click="handleRedirectToDetail(data.item.id)">
-                        <i class="fas fas fa-eye"></i>
+                          v-on:click="handleUpdate(data.item.id)">
+                        <i class="fas fa-pencil-alt"></i>
+                        
                       </button>
+                      
                     </template>
                   </b-table>
                   <template v-if="isBusy">
