@@ -261,4 +261,10 @@ export default [{
         // meta: {},
         component: () => import("../pages/DuAn/create.vue"),
     },
+    {
+        path: "/du-an/chi-tiet/:id?",
+        name: "Vai trò",
+        meta: {can: 'viewpage-roles' },
+        component: () => import("../pages/DuAn/detail"),
+    },
 ]
