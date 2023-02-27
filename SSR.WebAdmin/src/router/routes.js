@@ -250,10 +250,10 @@ export default [{
         component: () => import("../pages/peopleAsk"),
     },
     {
-        path: "/du-an",
-        name: "du-an",
+        path: "/project",
+        name: "project",
         // meta: {},
-        component: () => import("../pages/DuAn/postEvents.vue"),
+        component: () => import("../pages/DuAn/index1.vue"),
     },
     {
         path: "/them-du-an",

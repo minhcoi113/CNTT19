@@ -3,12 +3,12 @@ const baseJson = () => {
     return {
         id: null,
         name: null,
-        discription: null,
+        description: null,
         slug: null,
         group: null,
         label: null,
         member: null,
-        uploadFiles: null,
+        //uploadFiles: null,
         isDeleted: false
     }
 }
@@ -20,8 +20,8 @@ const toJson = (item) => {
       slug: item.slug,
       member: item.member,
       group: item.group,
-      label: item.length,
-      uploadFiles: item.uploadFiles
+      label: item.label,
+      //uploadFiles: item.uploadFiles
   }
 }
 const fromJson = (item) => {
@@ -32,8 +32,8 @@ const fromJson = (item) => {
       slug: item.slug,
       member: item.member,
       group: item.group,
-      label: item.length,
-      uploadFiles: item.uploadFiles     
+      label: item.label,
+      //uploadFiles: item.uploadFiles     
   }
 }
 const toListGroup = (items) =>{

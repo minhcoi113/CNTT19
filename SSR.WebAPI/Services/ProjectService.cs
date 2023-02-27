@@ -42,11 +42,11 @@ public class ProjectService : BaseService, IProjectService
                 .WithCode(EResultResponse.FAIL.ToString())
                 .WithMessage("Slug không được để trống!");
         }
-        var findSlug = _context.Posts.Find(x => x.Slug == slug && x.IsDeleted != true).FirstOrDefault();
+        var findSlug = _context.Project.Find(x => x.Slug == slug && x.IsDeleted != true).FirstOrDefault();
         if (findSlug != null)
         {
             throw new ResponseMessageException()
-                .WithCode(EResultResponse.FAIL.ToString())
+               .WithCode(EResultResponse.FAIL.ToString())
                 .WithMessage("Slug đã tồn tại");
         }
 
@@ -59,7 +59,7 @@ public class ProjectService : BaseService, IProjectService
             Label = model.Label,
             Member = model.Member,
             Slug = model.Slug,
-            Files = model.Files,
+            //Files = model.Files,
         };
 
         var result = await BaseMongoDb.CreateAsync(entity);
@@ -90,17 +90,17 @@ public class ProjectService : BaseService, IProjectService
                 .WithMessage(DefaultMessage.DATA_NOT_FOUND);
         }
 
-        var slug = CommonExtensions.ProgressSlug(model.Slug);
-        if (slug == default)
-        {
-            throw new ResponseMessageException()
-                .WithCode(EResultResponse.FAIL.ToString())
-                .WithMessage("Slug không được để trống!");
+     var slug = CommonExtensions.ProgressSlug(model.Slug);
+    if (slug == default)
+    {
+      throw new ResponseMessageException()
+            .WithCode(EResultResponse.FAIL.ToString())
+              .WithMessage("Slug không được để trống!");
         }
-        var findSlug = _context.Posts.Find(x => x.Id != model.Id && x.Slug == slug && x.IsDeleted != true).FirstOrDefault();
-        if (findSlug != null)
+       var findSlug = _context.Project.Find(x => x.Id != model.Id && x.Slug == slug && x.IsDeleted != true).FirstOrDefault();
+     if (findSlug != null)
         {
-            throw new ResponseMessageException()
+           throw new ResponseMessageException()
                 .WithCode(EResultResponse.FAIL.ToString())
                 .WithMessage("Slug đã tồn tại");
         }
@@ -111,7 +111,7 @@ public class ProjectService : BaseService, IProjectService
         entity.Group = model.Group;
         entity.Member = model.Member;
         entity.Slug = model.Slug;
-        entity.Files = model.Files;
+        //entity.Files = model.Files;
         entity.ModifiedAt = DateTime.Now;
         entity.ModifiedBy = CurrentUserName;
 
