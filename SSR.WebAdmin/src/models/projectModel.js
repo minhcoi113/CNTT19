@@ -8,8 +8,7 @@ const baseJson = () => {
         group: null,
         label: null,
         member: null,
-        //uploadFiles: null,
-        isDeleted: false
+        files: null,
     }
 }
 const toJson = (item) => {
@@ -21,7 +20,7 @@ const toJson = (item) => {
       member: item.member,
       group: item.group,
       label: item.label,
-      //uploadFiles: item.uploadFiles
+      files: item.files
   }
 }
 const fromJson = (item) => {
@@ -33,7 +32,7 @@ const fromJson = (item) => {
       member: item.member,
       group: item.group,
       label: item.label,
-      //uploadFiles: item.uploadFiles     
+      files: item.files     
   }
 }
 const toListGroup = (items) =>{

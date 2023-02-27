@@ -3,7 +3,7 @@ import Layout from "../../layouts/main";
 import appConfig from "@/app.config";
 import Multiselect from "vue-multiselect";
 import {projectModel} from "@/models/projectModel";
-//import VueUploadMultipleImage from "vue-upload-multiple-image";
+import VueUploadMultipleImage from "vue-upload-multiple-image";
 import {required} from "vuelidate/lib/validators";
 import urlSlug from 'url-slug'
 import {notifyModel} from "@/models/notifyModel";
@@ -12,13 +12,14 @@ import {CONSTANTS} from "@/helpers/constants";
 import {labelModel} from "@/models/labelModel";
 import {userModel} from "@/models/userModel";
 import {groupModel} from "@/models/groupModel";
+import vue2Dropzone from "vue2-dropzone";
 
 export default {
   page: {
     title: "Quản lý dự án",
     meta: [{name: "description", content: appConfig.description}],
   },
-  components: {Layout, Multiselect},
+  components: {Layout, Multiselect, VueUploadMultipleImage},
   data() {
     return {
       title: "Quản lý dự án",
@@ -122,17 +123,25 @@ export default {
       apiUrl: process.env.VUE_APP_API_URL,
       url: `${process.env.VUE_APP_API_URL}files/upload`,
       urlView: `${process.env.VUE_APP_API_URL}files/view/`,
-      dropzoneOptions: {
+       */
+       dropzoneOptions: {
         url: `${process.env.VUE_APP_API_URL}files/upload`,
         thumbnailWidth: 300,
-        thumbnailHeight: 160,
-        maxFiles: 1,
         maxFilesize: 30,
-        headers: {"My-Awesome-Header": "header value"},
+        maxFiles:1,
+        headers: { "My-Awesome-Header": "header value" },
         addRemoveLinks: true,
-        acceptedFiles: ".pdf",
-        dropzoneClassName: "dropzonevue-box"
-      }, */
+        acceptedFiles: ".jpeg,.jpg,.png,.gif,.pdf"
+      },
+      removeHinhAnh(file, error, xhr){
+      this.model.Files= null;
+    },
+    addHinhAnh(file, response){
+      if(this.model){
+        let fileSuccess = response.data;
+        this.model.Files = fileSuccess.id;
+      }
+    },
       optionsUser: [],
       optionsGroup: [],
       optionsLabel: [],
@@ -190,14 +199,11 @@ export default {
   },
   validations: {
     model: {
-    
       name: {required},
       description: {required},
-      member: {required},
-      group: {required},
+ 
       label: {required},
       slug: {required},
-    
     },
   },
   
@@ -209,7 +215,7 @@ export default {
     async fnGetList() {
          this.$refs.tblList?.refresh()
     },
-    /* async uploadImageSuccess(formData, index, fileList) {
+    async uploadImageSuccess(formData, index, fileList) {
       await this.$store.dispatch("fileStore/uploadFile", formData).then((res) => {
         console.log(res)
         if (res.resultCode === 'SUCCESS') {
@@ -220,8 +226,8 @@ export default {
           return;
         }
       });
-    }, */
-    /* beforeRemove (index, done, fileList) {
+    }, 
+    beforeRemove (index, done, fileList) {
       console.log(fileList);
       var fileId = fileList.find(x => x.id == index);
       var r = confirm("Xóa hình ảnh")
@@ -234,7 +240,7 @@ export default {
       } else {
         console.log(1)
       }
-    }, */
+    }, 
     async getUser(){
       await this.$store.dispatch("userStore/getAll").then((res) => {
         if (res.resultCode === 'SUCCESS') {
@@ -308,7 +314,7 @@ export default {
             if (res.resultCode === 'SUCCESS') {
               this.fnGetList(); 
               this.model= projectModel.baseJson();
-              this.showModal = true;
+              this.showModal = false;
             }
             this.$store.dispatch("snackBarStore/addNotify", notifyModel.addMessage(res))
           });
@@ -318,7 +324,7 @@ export default {
       this.submitted = false;
     },
     async handleUpdate(id) {
-      await this.$store.dispatch("projectStore/getbyid", id).then((res) => {
+      await this.$store.dispatch("projectStore/getById", id).then((res) => {
         if (res.resultCode==='SUCCESS') {
           this.model = projectModel.toJson(res.data);
           this.showModal = true;
@@ -327,7 +333,9 @@ export default {
         }
       });
     },
-
+    async handleRedirectToDetail(id){
+      this.$router.push("/du-an/" + id)
+    },
     myProvider (ctx) {
       const params = {
         start: ctx.currentPage,
@@ -361,6 +369,10 @@ export default {
       }
       return bytes;
     },
+
+    handleNewPost(){
+      this.$router.push("/them-du-an")
+    },
   },
 };
 </script>
@@ -379,14 +391,14 @@ export default {
             <div class="col-md-8 col-12 text-end">
               
               <b-button
-                  type="button"
-                  variant="primary"
-                  class="w-md"
-                  size="sm"
-                  @click="showModal = true"
-              >
-                <i class="mdi mdi-plus me-1"></i> Tạo project
-              </b-button>
+                    variant="primary"
+                    type="button"
+                    class="btn w-md btn-primary"
+                    @click="handleNewPost"
+                    size="sm"
+                >
+                  <i class="mdi mdi-plus me-1"></i> Thêm dự án
+                </b-button>
             </div>
           </div>
         </div>
@@ -475,6 +487,36 @@ export default {
                           Slug không được để trống.
                         </div>
                       </div>
+                    </div>
+                    <div class="col-md-12 mb-2">
+                      <div class="col-md-12 mb-2">
+                      <label class="form-label cs-title-form" for="validationCustom01"> Hình ảnh</label>
+                      <div class="col-md-12 d-flex justify-content-center" id="my-strictly-unique-vue-upload-multiple-image">
+                        <vue-upload-multiple-image
+                            @upload-success="uploadImageSuccess"
+                            @before-remove="beforeRemove"
+                            :data-images="images"
+                            idUpload="myIdUpload"
+                            editUpload="myIdEdit"
+                            :showEdit="false"
+                            class="cs-upload-image"
+                        ></vue-upload-multiple-image>
+                      </div>
+                    </div>
+                      <!-- <label class="text-left">Chọn ảnh/tệp </label>
+                          <vue-dropzone
+                              id="myVueDropzone"
+                              ref="myVueDropzone"
+                              :use-custom-slot="true"
+                              :options="dropzoneOptions"
+                              v-on:vdropzone-removed-file="removeHinhAnh"
+                              v-on:vdropzone-success="addHinhAnh"
+                          >
+                            <div class="dropzone-custom-content">
+                              <i class="display-1 text-muted bx bxs-cloud-upload " style="font-size: 70px"></i>
+                              <h4>Kéo thả hình ảnh hoặc bấm vào để tải hình ảnh</h4>
+                            </div>
+                          </vue-dropzone> -->
                     </div>
                   </div>
                 </div>
@@ -615,6 +657,22 @@ export default {
                           v-on:click="handleRedirectToDetail(data.item.id)">
                         <i class="fas fas fa-eye"></i>
                       </button>
+
+                      <button
+                          type="button"
+                          size="sm"
+                          class="btn btn-edit btn-sm"
+                          v-on:click="handleUpdate(data.item.id)">
+                        <i class="fas fa-pencil-alt"></i>
+                      </button>
+                      <button
+                          type="button"
+                          size="sm"
+                          class="btn btn-delete btn-sm"
+                          v-on:click="handleShowDeleteModal(data.item.id)">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+
                     </template>
                   </b-table>
                   <template v-if="isBusy">
