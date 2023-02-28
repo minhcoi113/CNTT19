@@ -7,8 +7,8 @@ const toJson = (item) => {
         fullName: item.fullName,
         phoneNumber: item.phoneNumber,
         email: item.email,
-        //note: item.note,
-        //avatar: item.avatar,
+        note: item.note,
+        avatar: item.avatar,
         role: item.role
         /* 
         donVi: item.donVi,permissions: item.permissions,
@@ -29,8 +29,8 @@ const fromJson = (item) => {
         fullName: item.fullName,
         phoneNumber: item.phoneNumber,
         email: item.email,
-        //note: item.note,
-        //avatar: item.avatar,  
+        note: item.note,
+        avatar: item.avatar,  
         role: item.role
         /* donVi: item.donVi,
         permissions: item.permissions,
@@ -52,8 +52,8 @@ const baseJson = () => {
         phoneNumber: null,
         email: null,
         role: null,
-        //note: null,
-        //avatar: null
+        note: null,
+        avatar: null
         
         /*donVi: {id: null, ten: null}, 
         chucVu: null,

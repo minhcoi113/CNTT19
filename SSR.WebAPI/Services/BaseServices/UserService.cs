@@ -108,8 +108,8 @@ namespace SSR.WebAPI.Services
                 PhoneNumber = model.PhoneNumber,
                 Email = model.Email,
                 Role = model.Role,
-                Note = model.Note
-
+                Note = model.Note,
+                Avatar = model.Avatar
             };
 
             byte[] passwordHash, passwordSalt;
@@ -157,7 +157,7 @@ namespace SSR.WebAPI.Services
             entity.FullName = model.LastName + " " + model.FirstName;
             entity.PhoneNumber = model.PhoneNumber;
             entity.Email = model.Email;
-
+            entity.Avatar = model.Avatar;
             entity.Note = model.Note;
             entity.Role = model.Role;
             entity.ModifiedAt = DateTime.Now;

@@ -319,6 +319,7 @@ export default {
     },
     async handleUpdate(id) {
       await this.$store.dispatch("projectStore/getById", id).then((res) => {
+        this.$router.push("")
         if (res.resultCode==='SUCCESS') {
           this.model = projectModel.toJson(res.data);
           this.showModal = true;
@@ -513,7 +514,12 @@ export default {
                             selectedLabel="Đã chọn"
                             :class="{'is-invalid': submitted && $v.model.group.$error,}"
                         ></multiselect>
-                        
+                        <div
+                            v-if="submitted && !$v.model.group.required"
+                            class="invalid-feedback"
+                        >
+                          Group không được để trống.
+                        </div>
                       </div>
                     </div>
                     <div class="col-md-12">
@@ -531,11 +537,17 @@ export default {
                             selectedLabel="Đã chọn"
                             :class="{'is-invalid': submitted && $v.model.member.$error,}"
                         ></multiselect>
+                        <div
+                            v-if="submitted && !$v.model.member.required"
+                            class="invalid-feedback"
+                        >
+                          Thành viên không được để trống.
+                        </div>
                       </div>
                     </div>
                     <div class="col-md-12">
                       <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Label</label>
+                        <label class="form-label cs-title-form" for="validationCustom01">Nhãn</label>
                         <multiselect
                             v-model="model.label"
                             :options="optionsLabel"
@@ -548,6 +560,12 @@ export default {
                             :multiple="true"
                             :class="{'is-invalid': submitted && $v.model.label.$error,}"
                         ></multiselect>
+                        <div
+                            v-if="submitted && !$v.model.label.required"
+                            class="invalid-feedback"
+                        >
+                          Nhãn không được để trống.
+                        </div>
                       </div>
                     </div>    
                   </div>
@@ -609,14 +627,17 @@ export default {
                         <span  class="badge bg-success ms-1"> {{value.name}}</span>
                       </div>
                     </template>
+                    
                     <template v-slot:cell(process)="data">
+                       <router-link :to='`/du-an/chi-tiet/${data.item.id}`'>
                       <button
                           type="button"
                           size="sm"
                           class="btn btn-edit btn-sm"
-                          v-on:click="handleUpdate(data.item.id)">
+                          >
                         <i class="fas fa-pencil-alt"></i>
                       </button>
+<<<<<<< HEAD
                       <button
                           type="button"
                           size="sm"
@@ -624,6 +645,18 @@ export default {
                           v-on:click="handleShowDeleteModal(data.item.id)">
                         <i class="fas fa-trash-alt"></i>
                       </button>
+=======
+                    </router-link>
+                      <button
+                      
+                          type="button"
+                          size="sm"
+                          class="btn btn-delete btn-sm"
+                          v-on:click="handleShowDeleteModal(data.item.id);">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                      
+>>>>>>> ce8456fe79c0631ac1287caec342757e6b21954e
                     </template>
                   </b-table>
                   <template v-if="isBusy">

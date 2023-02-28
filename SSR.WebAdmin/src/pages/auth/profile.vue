@@ -310,7 +310,7 @@ export default {
                 <tr>
                   <th scope="row">Quyền :</th>
                   <td>
-                    <div v-for="item in model.roles" v-bind:key="item.id">- {{item.ten}}</div></td>
+                    <div v-for="item in model.role" v-bind:key="item.id">- {{item.name}}</div></td>
                 </tr>
                 </tbody>
               </table>

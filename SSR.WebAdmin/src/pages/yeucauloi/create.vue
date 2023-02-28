@@ -9,10 +9,16 @@ import { required } from "vuelidate/lib/validators";
 import urlSlug from 'url-slug'
 import { notifyModel } from "@/models/notifyModel";
 import Treeselect from "@riophae/vue-treeselect";
+<<<<<<< HEAD
 import { donViModel } from "@/models/donViModel";
 import { labelModel } from "@/models/labelModel";
 import { projectModel } from "@/models/projectModel";
 import { stepModel } from "@/models/stepModel";
+=======
+import {donViModel} from "@/models/donViModel";
+import {labelModel} from "@/models/labelModel";
+import {projectModel} from "@/models/projectModel";
+>>>>>>> ce8456fe79c0631ac1287caec342757e6b21954e
 
 export default {
   page: {
@@ -35,8 +41,11 @@ export default {
       modelgroup: groupModel.baseJson(),
       modellabel: labelModel.baseJson(),
       modelproject: projectModel.baseJson(),
+<<<<<<< HEAD
       modelstep: stepModel.baseJson(),
 
+=======
+>>>>>>> ce8456fe79c0631ac1287caec342757e6b21954e
       submitted: false,
       editorConfig: {
         toolbar: {
@@ -112,9 +121,13 @@ export default {
     this.getGroup();
     this.getLabel();
     this.getProject();
+<<<<<<< HEAD
     this.getStep();
 
     if (this.$route.params.id) {
+=======
+    if(this.$route.params.id){
+>>>>>>> ce8456fe79c0631ac1287caec342757e6b21954e
       this.getPostById(this.$route.params.id);
     } else {
       this.model = yeucauloiModel.baseJson();
@@ -274,7 +287,11 @@ export default {
         this.optionsGroup = [];
       });
     },
+<<<<<<< HEAD
     async getProject() {
+=======
+    async getProject(){
+>>>>>>> ce8456fe79c0631ac1287caec342757e6b21954e
       await this.$store.dispatch("projectStore/get").then((res) => {
         if (res.resultCode === 'SUCCESS') {
           this.optionsProject = res.data;
@@ -283,6 +300,7 @@ export default {
         this.optionsProject = [];
       });
     },
+<<<<<<< HEAD
     async getStep() {
       await this.$store.dispatch("stepStore/get").then((res) => {
         if (res.resultCode === 'SUCCESS') {
@@ -292,6 +310,8 @@ export default {
         this.optionsStep = [];
       });
     },
+=======
+>>>>>>> ce8456fe79c0631ac1287caec342757e6b21954e
     handleShowDeleteModal() {
       this.showDeleteModal = true;
     },
@@ -449,12 +469,32 @@ export default {
                     <div class="col-md-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Dự án </label>
+<<<<<<< HEAD
                         <span class="text-danger">*</span>
                         <multiselect v-model="modelproject.name" :options="optionsProject" track-by="id" label="name"
                           placeholder="Chọn dự án" deselect-label="Nhấn để xoá" selectLabel="Nhấn enter để chọn"
                           selectedLabel="Đã chọn" :class="{ 'is-invalid': submitted && $v.model.ProjectId.$error, }">
                         </multiselect>
                         <div v-if="submitted && !$v.model.category.required" class="invalid-feedback">
+=======
+                        <multiselect
+                        v-model="modelproject.name"
+                            :options="optionsProject"
+                            track-by="id"
+                            label="name"
+                            placeholder="Chọn thể loại"
+                            deselect-label="Nhấn để xoá"
+                            selectLabel="Nhấn enter để chọn"
+                            :multiple="true"
+                            selectedLabel="Đã chọn"
+                            :class="{'is-invalid': submitted && $v.model.ProjectId.$error,}"
+                        ></multiselect>
+                        
+                        <div
+                            v-if="submitted && !$v.model.ProjectId.required"
+                            class="invalid-feedback"
+                        >
+>>>>>>> ce8456fe79c0631ac1287caec342757e6b21954e
                           Dự án không được để trống.
                         </div>
 
