@@ -41,11 +41,13 @@ export default {
       treeView: [],
       itemEvents: {
         mouseover: function () {
-
+          console.log("mouseover");
         },
         contextmenu: function () {
-          arguments[2].preventDefault()
-        }
+          console.log(arguments[2]);
+          arguments[2].preventDefault();
+          console.log("contextmenu");
+        },
       },
       itemFilter: {
         code: null,
@@ -105,6 +107,7 @@ export default {
     async itemClick(node) {
       this.handleDetail(node.model.id)
     },
+
     async handleDetail(id) {
       await this.$store.dispatch("labelStore/getById", id).then((res) => {
         if (res.resultCode === 'SUCCESS') {
@@ -249,8 +252,17 @@ export default {
       <div class="col-md-6 col-12">
         <div class="card">
           <div class="card-body">
-            <v-jstree :data="treeView" text-field-name="label" @item-click="itemClick" :item-events="itemEvents" :style="{ background: color }"
-            ></v-jstree>
+            <v-jstree :data="treeView" text-field-name="label" @item-click="itemClick" :item-events="itemEvents">
+              <template slot-scope="_">
+                <div style="display: inherit; width: 200px" @click.ctrl="customItemClickWithCtrl"
+                  @click.exact="customItemClick(_.vm, _.model, $event)">
+                  <i :class="_.vm.themeIconClasses" role="presentation" v-if="!_.model.loading"></i>
+                  <span> {{model.name }}</span>
+                </div>
+              </template>
+            </v-jstree>
+
+            <!-- <v-jstree :data="treeView" text-field-name="label" @item-click="itemClick" :item-events="itemEvents"></v-jstree> -->
           </div>
         </div>
       </div>
@@ -363,8 +375,6 @@ export default {
 .tree-anchor span {
   padding: 2px;
   border-radius: 5px;
-  color: white;
-  background-color: crimson
+  color: black;
 }
-
 </style>

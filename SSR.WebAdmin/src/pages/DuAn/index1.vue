@@ -323,8 +323,16 @@ export default {
                           class="btn btn-edit btn-sm"
                           >
                         <i class="fas fa-pencil-alt"></i>
-                        
                       </button>
+<<<<<<< HEAD
+                      <button
+                          type="button"
+                          size="sm"
+                          class="btn btn-delete btn-sm"
+                          v-on:click="handleShowDeleteModal(data.item.id)">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+=======
                     </router-link>
                       <button
                       
@@ -335,6 +343,7 @@ export default {
                         <i class="fas fa-trash-alt"></i>
                       </button>
                       
+>>>>>>> ce8456fe79c0631ac1287caec342757e6b21954e
                     </template>
                   </b-table>
                   <template v-if="isBusy">

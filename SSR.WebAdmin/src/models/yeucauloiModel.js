@@ -29,7 +29,7 @@ const baseJson = () => {
     return {
         id : null,
         Title : null ,
-        StepId: null,
+        StepId: false,
         ProjectId: null,
         Labels: null,
         DueDate: null,

@@ -256,10 +256,23 @@ export default [{
         component: () => import("../pages/DuAn/index1.vue"),
     },
     {
+        path: "/du-an/:id?",
+        name: "project",
+        // meta: {},
+        component: () => import("../pages/DuAn/create"),
+    },
+    {
         path: "/tao-project",
         name: "danh-sach-yeu-cau-loi",
         // meta: {},
         component: () => import("../pages/DuAn/create.vue"),
+    },
+    {
+
+        path: "/buoc-thuc-hien",
+        name: "buoc-thuc-hien",
+        // meta: {},
+        component: () => import("../pages/step"),
     },
     {
         path: "/du-an/chi-tiet/:id?",
@@ -267,10 +280,4 @@ export default [{
         meta: {can: 'viewpage-roles' },
         component: () => import("../pages/DuAn/detail"),
     },
-    /* {
-        path: "/buoc-thuc-hien",
-        name: "project",
-        // meta: {},
-        component: () => import("../pages/QuanTriDoanhMuc/index1.vue"),
-    }, */
 ]
