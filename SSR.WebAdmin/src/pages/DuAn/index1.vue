@@ -616,9 +616,14 @@ export default {
                           class="btn btn-edit btn-sm"
                           v-on:click="handleUpdate(data.item.id)">
                         <i class="fas fa-pencil-alt"></i>
-                        
                       </button>
-                      
+                      <button
+                          type="button"
+                          size="sm"
+                          class="btn btn-delete btn-sm"
+                          v-on:click="handleShowDeleteModal(data.item.id)">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
                     </template>
                   </b-table>
                   <template v-if="isBusy">

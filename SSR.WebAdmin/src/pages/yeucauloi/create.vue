@@ -2,27 +2,30 @@
 import Layout from "../../layouts/main";
 import appConfig from "@/app.config";
 import Multiselect from "vue-multiselect";
-import {yeucauloiModel} from "@/models/yeucauloiModel";
-import {groupModel} from "@/models/groupModel";
+import { yeucauloiModel } from "@/models/yeucauloiModel";
+import { groupModel } from "@/models/groupModel";
 import VueUploadMultipleImage from 'vue-upload-multiple-image'
-import {required} from "vuelidate/lib/validators";
+import { required } from "vuelidate/lib/validators";
 import urlSlug from 'url-slug'
-import {notifyModel} from "@/models/notifyModel";
+import { notifyModel } from "@/models/notifyModel";
 import Treeselect from "@riophae/vue-treeselect";
-import {donViModel} from "@/models/donViModel";
-import {labelModel} from "@/models/labelModel";
+import { donViModel } from "@/models/donViModel";
+import { labelModel } from "@/models/labelModel";
+import { projectModel } from "@/models/projectModel";
+import { stepModel } from "@/models/stepModel";
 
 export default {
   page: {
     title: "Yêu cầu lỗi",
-    meta: [{name: "description", content: appConfig.description}]
+    meta: [{ name: "description", content: appConfig.description }]
   },
   components: {
     Layout,
     Multiselect,
     Treeselect,
-    'ckeditor-nuxt': () => { return import('@blowstack/ckeditor-nuxt') 
-  },
+    'ckeditor-nuxt': () => {
+      return import('@blowstack/ckeditor-nuxt')
+    },
   },
   data() {
     return {
@@ -31,6 +34,8 @@ export default {
       modeldonvi: donViModel.baseJson(),
       modelgroup: groupModel.baseJson(),
       modellabel: labelModel.baseJson(),
+      modelproject: projectModel.baseJson(),
+      modelstep: stepModel.baseJson(),
 
       submitted: false,
       editorConfig: {
@@ -65,7 +70,7 @@ export default {
         thumbnailHeight: 160,
         maxFiles: 1,
         maxFilesize: 30,
-        headers: {"My-Awesome-Header": "header value"},
+        headers: { "My-Awesome-Header": "header value" },
         addRemoveLinks: true,
         acceptedFiles: ".pdf",
         dropzoneClassName: "dropzonevue-box"
@@ -73,6 +78,7 @@ export default {
       optionsStatus: [],
       optionsLabel: [],
       optionsGroup: [],
+      optionsProject: [],
       simpleUpload: {
         uploadUrl: process.env.VUE_APP_API_URL + "files/upload-ckeditor",
         headers: {
@@ -80,7 +86,7 @@ export default {
         }
       },
       isShow: false,
-      responseData:{
+      responseData: {
         resultString: null,
         resultCode: null
       },
@@ -89,14 +95,14 @@ export default {
   },
   validations: {
     model: {
-      Title: {required},
-      StepId: {required},
-      ProjectId: {required},
-      Labels: {required},
-      Descrption: {required},
-      DueDate: {required},
-      Donvi: {required},
-      Assignee: {required},
+      Title: { required },
+      StepId: { required },
+      ProjectId: { required },
+      Labels: { required },
+      Descrption: { required },
+      DueDate: { required },
+      Donvi: { required },
+      Assignee: { required },
     },
   },
   async created() {
@@ -105,16 +111,19 @@ export default {
     this.getStatus();
     this.getGroup();
     this.getLabel();
-    if(this.$route.params.id){
+    this.getProject();
+    this.getStep();
+
+    if (this.$route.params.id) {
       this.getPostById(this.$route.params.id);
-    }else{
+    } else {
       this.model = yeucauloiModel.baseJson();
     }
   },
-  watch:{
+  watch: {
     model: {
       handler: function (val, oldVal) {
-        if(val.title == null){
+        if (val.title == null) {
           this.model.slug = "";
         }
         else
@@ -123,11 +132,11 @@ export default {
       deep: true
     }
   },
-  computed:{
+  computed: {
     images() {
-      if(this.model && this.model.files){
+      if (this.model && this.model.files) {
         let imgs = [];
-        this.model.files.map((value, index) =>{
+        this.model.files.map((value, index) => {
           imgs.push({
             id: index,
             fileId: value.fileId,
@@ -158,7 +167,7 @@ export default {
         console.log("log tree", this.treeView2)
       })
     },
-    handleShowNotify(res){
+    handleShowNotify(res) {
       this.isShow = true;
       this.responseData.resultCode = res.resultCode;
       this.responseData.resultString = res.resultString;
@@ -181,9 +190,9 @@ export default {
           container: this.$refs.formContainer,
         });
         if (
-            this.model.id != 0 &&
-            this.model.id != null &&
-            this.model.id
+          this.model.id != 0 &&
+          this.model.id != null &&
+          this.model.id
         ) {
           // Update model
           await this.$store.dispatch("yeucauloiStore/update", this.model).then((res) => {
@@ -205,8 +214,8 @@ export default {
       }
       this.submitted = false;
     },
-    handleHideModal(){
-      this.isShow  = false;
+    handleHideModal() {
+      this.isShow = false;
       this.responseData = {
         resultString: null,
         resultCode: null
@@ -217,19 +226,19 @@ export default {
         console.log(res)
         if (res.resultCode === 'SUCCESS') {
           var data = res.data;
-          if(this.model.files == null)
+          if (this.model.files == null)
             this.model.files = [];
-          this.model.files = [...this.model.files,  {fileId: data.id, fileName: data.fileName}]
+          this.model.files = [...this.model.files, { fileId: data.id, fileName: data.fileName }]
           return;
         }
       });
     },
-    beforeRemove (index, done, fileList) {
+    beforeRemove(index, done, fileList) {
       console.log(fileList);
       var fileId = fileList.find(x => x.id == index);
       var r = confirm("Xóa hình ảnh")
       if (r == true) {
-        if(this.model && this.model.files && this.model.files.length > 0 && fileId){
+        if (this.model && this.model.files && this.model.files.length > 0 && fileId) {
           this.model.files = this.model.files.filter(x => x.fileId != fileId.fileId);
           console.log(this.model.files)
         }
@@ -238,7 +247,7 @@ export default {
         console.log(1)
       }
     },
-    async getStatus(){
+    async getStatus() {
       await this.$store.dispatch("statusStore/get").then((res) => {
         if (res.resultCode === 'SUCCESS') {
           this.optionsStatus = res.data;
@@ -247,7 +256,7 @@ export default {
         this.optionsStatus = [];
       });
     },
-    async getLabel(){
+    async getLabel() {
       await this.$store.dispatch("labelStore/get").then((res) => {
         if (res.resultCode === 'SUCCESS') {
           this.optionsLabel = res.data;
@@ -256,13 +265,31 @@ export default {
         this.optionsLabel = [];
       });
     },
-    async getGroup(){
+    async getGroup() {
       await this.$store.dispatch("groupStore/get").then((res) => {
         if (res.resultCode === 'SUCCESS') {
           this.optionsGroup = res.data;
           return;
         }
         this.optionsGroup = [];
+      });
+    },
+    async getProject() {
+      await this.$store.dispatch("projectStore/get").then((res) => {
+        if (res.resultCode === 'SUCCESS') {
+          this.optionsProject = res.data;
+          return;
+        }
+        this.optionsProject = [];
+      });
+    },
+    async getStep() {
+      await this.$store.dispatch("stepStore/get").then((res) => {
+        if (res.resultCode === 'SUCCESS') {
+          this.optionsStep = res.data;
+          return;
+        }
+        this.optionsStep = [];
       });
     },
     handleShowDeleteModal() {
@@ -294,13 +321,7 @@ export default {
                 <h4 class="font-size-18 fw-bold cs-title-page">Yêu cầu lỗi</h4>
               </div>
               <div class="col-md-8 col-12 text-end">
-                <b-button
-                    variant="primary"
-                    type="button"
-                    class="btn w-md btn-primary"
-                    @click="$router.go(-1)"
-                    size="sm"
-                >
+                <b-button variant="primary" type="button" class="btn w-md btn-primary" @click="$router.go(-1)" size="sm">
                   <i class="mdi mdi-keyboard-backspace me-1"></i> Trở về
                 </b-button>
               </div>
@@ -314,144 +335,112 @@ export default {
         <div class="card">
           <div class="card-body">
 
-            <form @submit.prevent="handleSubmit"
-                  ref="formContainer">
+            <form @submit.prevent="handleSubmit" ref="formContainer">
               <div class="row">
                 <div class="col-md-7">
                   <div class="row">
                     <div class="col-lg-12 col-md-12 col-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Tiêu đề</label>
-                                                        <span
-                                                          class="text-danger">*</span>
-                        <input
-                            id="validationCustom01"
-                            v-model="model.Title"
-                            type="text"
-                            class="form-control"
-                            placeholder=""
-                            :class="{'is-invalid': submitted && $v.model.title.$error,}"
-                        />
-                        <div
-                            v-if="submitted && !$v.model.title.required"
-                            class="invalid-feedback"
-                        >
+                        <span class="text-danger">*</span>
+                        <input id="validationCustom01" v-model="model.Title" type="text" class="form-control"
+                          placeholder="" :class="{ 'is-invalid': submitted && $v.model.title.$error, }" />
+                        <div v-if="submitted && !$v.model.title.required" class="invalid-feedback">
                           Tiêu đề không được để trống.
                         </div>
                       </div>
                     </div>
                     <!-- <div class="col-md-12">
-                      <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01">Mô tả</label>
-                        <span class="text-danger">*</span>
-                        <textarea class="form-control" v-model="model.summary" rows="4"   :class="{'is-invalid': submitted && $v.model.summary.$error,}"></textarea>
-                        <div
-                            v-if="submitted && !$v.model.summary.required"
-                            class="invalid-feedback"
-                        >
-                          Trích yếu không được để trống.
-                        </div>
-                      </div>
-                    </div> -->
+                          <div class="mb-2">
+                            <label class="form-label cs-title-form" for="validationCustom01">Mô tả</label>
+                            <span class="text-danger">*</span>
+                            <textarea class="form-control" v-model="model.summary" rows="4"   :class="{'is-invalid': submitted && $v.model.summary.$error,}"></textarea>
+                            <div
+                                v-if="submitted && !$v.model.summary.required"
+                                class="invalid-feedback"
+                            >
+                              Trích yếu không được để trống.
+                            </div>
+                          </div>
+                        </div> -->
                     <div class="col-md-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Mô tả</label>
                         <span class="text-danger">*</span>
-                        <ckeditor-nuxt v-model="model.Descrption" :config="editorConfig"  />
-<!--                                                <ckeditor-->
-<!--                                                    v-model="model.content"-->
-<!--                                                    :editor="editor"-->
-<!--                                                    :config="editorConfig"-->
-<!--                                                    :class="{'is-invalid': submitted && $v.model.content.$error,}"-->
-<!--                                                ></ckeditor>-->
-                        <div
-                            v-if="submitted && !$v.model.content.required"
-                            class="invalid-feedback"
-                        >
-                         Mô tả không được để trống.
+                        <ckeditor-nuxt v-model="model.Descrption" :config="editorConfig" />
+                        <!--                                                <ckeditor-->
+                        <!--                                                    v-model="model.content"-->
+                        <!--                                                    :editor="editor"-->
+                        <!--                                                    :config="editorConfig"-->
+                        <!--                                                    :class="{'is-invalid': submitted && $v.model.content.$error,}"-->
+                        <!--                                                ></ckeditor>-->
+                        <div v-if="submitted && !$v.model.content.required" class="invalid-feedback">
+                          Mô tả không được để trống.
                         </div>
                       </div>
                     </div>
                     <!-- <div class="col-lg-12 col-md-12 col-12">
-                      <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Slug</label>
-                        <span
-                            class="text-danger">*</span>
-                        <input
-                            id="validationCustom01"
-                            v-model="model.slug"
-                            type="text"
-                            class="form-control"
-                            placeholder=""
-                            :class="{'is-invalid': submitted && $v.model.slug.$error,}"
-                        />
-                        <div
-                            v-if="submitted && !$v.model.slug.required"
-                            class="invalid-feedback"
-                        >
-                          Slug không được để trống.
-                        </div>
-                      </div>
-                    </div> -->
+                          <div class="mb-2">
+                            <label class="form-label cs-title-form" for="validationCustom01"> Slug</label>
+                            <span
+                                class="text-danger">*</span>
+                            <input
+                                id="validationCustom01"
+                                v-model="model.slug"
+                                type="text"
+                                class="form-control"
+                                placeholder=""
+                                :class="{'is-invalid': submitted && $v.model.slug.$error,}"
+                            />
+                            <div
+                                v-if="submitted && !$v.model.slug.required"
+                                class="invalid-feedback"
+                            >
+                              Slug không được để trống.
+                            </div>
+                          </div>
+                        </div> -->
                   </div>
                 </div>
 
                 <div class="col-md-5">
                   <div class="row">
                     <!-- <div class="col-md-12 mb-2">
-                      <label class="form-label cs-title-form" for="validationCustom01"> Hình ảnh</label>
-                      <div class="col-md-12 d-flex justify-content-center" id="my-strictly-unique-vue-upload-multiple-image">
-                        <vue-upload-multiple-image
-                            @upload-success="uploadImageSuccess"
-                            @before-remove="beforeRemove"
-                            :data-images="images"
-                            idUpload="myIdUpload"
-                            editUpload="myIdEdit"
-                            :showEdit="false"
-                            class="cs-upload-image"
-                        ></vue-upload-multiple-image>
-                      </div>
-                    </div> -->
+                          <label class="form-label cs-title-form" for="validationCustom01"> Hình ảnh</label>
+                          <div class="col-md-12 d-flex justify-content-center" id="my-strictly-unique-vue-upload-multiple-image">
+                            <vue-upload-multiple-image
+                                @upload-success="uploadImageSuccess"
+                                @before-remove="beforeRemove"
+                                :data-images="images"
+                                idUpload="myIdUpload"
+                                editUpload="myIdEdit"
+                                :showEdit="false"
+                                class="cs-upload-image"
+                            ></vue-upload-multiple-image>
+                          </div>
+                        </div> -->
                     <div class="col-md-12">
                       <div class="mb-2">
                         <label class="text-left">Đơn vị</label>
-                    <treeselect
-                        :normalizer="normalizer"
-                        :options="treeView"
-                        :value="modeldonvi.ParentId"
-                        :searchable="true"
-                        :show-count="true"
-                        :default-expand-level="1"
-                        placeholder="Chọn đơn vị"
-                    >
-                      <label slot="option-label"
-                             slot-scope="{ node, shouldShowCount, count, labelClassName, countClassName }"
-                             :class="labelClassName">
-                        {{ node.label }}
-                        <span v-if="shouldShowCount" :class="countClassName">({{ count }})</span>
-                      </label>
-                    </treeselect>
+                        <treeselect :normalizer="normalizer" :options="treeView" :value="modeldonvi.ParentId"
+                          :searchable="true" :show-count="true" :default-expand-level="1" placeholder="Chọn đơn vị">
+                          <label slot="option-label"
+                            slot-scope="{ node, shouldShowCount, count, labelClassName, countClassName }"
+                            :class="labelClassName">
+                            {{ node.label }}
+                            <span v-if="shouldShowCount" :class="countClassName">({{ count }})</span>
+                          </label>
+                        </treeselect>
                       </div>
                     </div>
                     <div class="col-md-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Phân công theo nhóm </label>
-                        <multiselect
-                            v-model="modelgroup.name"
-                            :options="optionsGroup"
-                            track-by="id"
-                            label="name"
-                            placeholder="Chọn thể loại"
-                            deselect-label="Nhấn để xoá"
-                            selectLabel="Nhấn enter để chọn"
-                            :multiple="true"
-                            selectedLabel="Đã chọn"
-                            :class="{'is-invalid': submitted && $v.model.category.$error,}"
-                        ></multiselect>
-                        <div
-                            v-if="submitted && !$v.model.category.required"
-                            class="invalid-feedback"
-                        >
+                        <multiselect v-model="modelgroup.name" :options="optionsGroup" track-by="id" label="name"
+                          placeholder="Chọn phân công" deselect-label="Nhấn để xoá" selectLabel="Nhấn enter để chọn"
+                          :multiple="true" selectedLabel="Đã chọn"
+                          :class="{ 'is-invalid': submitted && $v.model.Assignee.$error, }"></multiselect>
+                        <div v-if="submitted && !$v.model.Assignee.required" class="invalid-feedback">
                           Phân công không được để trống.
                         </div>
 
@@ -460,13 +449,12 @@ export default {
                     <div class="col-md-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Dự án </label>
-                        <multiselect
-                          
-                        ></multiselect>
-                        <div
-                            v-if="submitted && !$v.model.category.required"
-                            class="invalid-feedback"
-                        >
+                        <span class="text-danger">*</span>
+                        <multiselect v-model="modelproject.name" :options="optionsProject" track-by="id" label="name"
+                          placeholder="Chọn dự án" deselect-label="Nhấn để xoá" selectLabel="Nhấn enter để chọn"
+                          selectedLabel="Đã chọn" :class="{ 'is-invalid': submitted && $v.model.ProjectId.$error, }">
+                        </multiselect>
+                        <div v-if="submitted && !$v.model.category.required" class="invalid-feedback">
                           Dự án không được để trống.
                         </div>
 
@@ -475,32 +463,49 @@ export default {
                     <div class="col-md-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Nhãn yêu cầu lỗi </label>
-                        <treeselect
-                        :flat="true"
-                        :options="treeView2"
-                        :value="modellabel.ParentId"
-                        :searchable="true"
-                        :show-count="true"
-                        :default-expand-level="1"
-                        :multiple="true"
-                        placeholder="Chọn nhãn"
-                    >
-                      <label slot="option-label"
-                             slot-scope="{ node, shouldShowCount, count, labelClassName, countClassName }"
-                             :class="labelClassName">
-                        {{ node.label }}
-                        <span v-if="shouldShowCount" :class="countClassName">({{ count }})</span>
-                      </label>
-                    </treeselect>
+                        <span class="text-danger">*</span>
+                        <treeselect :flat="true" :options="treeView2" :value="modellabel.ParentId" :searchable="true"
+                          :show-count="true" :default-expand-level="1" :multiple="true" placeholder="Chọn nhãn">
+                          <label slot="option-label"
+                            slot-scope="{ node, shouldShowCount, count, labelClassName, countClassName }"
+                            :class="labelClassName">
+                            {{ node.label }}
+                            <span v-if="shouldShowCount" :class="countClassName">({{ count }})</span>
+                          </label>
+                        </treeselect>
                       </div>
                     </div>
+
+                    <div class="col-md-12">
+                      <div class="mb-2">
+                        <label class="form-label cs-title-form" for="validationCustom01"> Ngày hoàn thành </label>
+                        <span class="text-danger">*</span>
+                        <input id="validationCustom01" v-model="model.DueDate" type="date" class="form-control"
+                          placeholder="" :class="{ 'is-invalid': submitted && $v.model.DueDate.$error, }" />
+                        <div v-if="submitted && !$v.model.title.required" class="invalid-feedback">
+                          Ngày hoàn thành không được để trống.
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="mb-2">
+                        <label class="form-label cs-title-form" for="validationCustom01"> Trạng thái </label>
+                        <span class="text-danger">*</span>
+                        <multiselect v-model="model.StepId" :options="optionsStep" track-by="id" label="name"
+                          placeholder="Chọn trạng thái" deselect-label="Nhấn để xoá" selectLabel="Nhấn enter để chọn"
+                         selectedLabel="Đã chọn"
+                          :class="{ 'is-invalid': submitted && $v.model.StepId.$error, }"></multiselect>
+
+                      </div>
+                    </div>
+
+
                     <div class="col-md-12">
                       <div class="mb-2">
                         <div class="text-end">
-                          <b-button type="submit" variant="primary" class="ms-1" style="width: 100%"
-                                    size="md"
-                                    @click="handleSubmit"
-                          >
+                          <b-button type="submit" variant="primary" class="ms-1" style="width: 100%" size="md"
+                            @click="handleSubmit">
                             Lưu bài viết
                           </b-button>
                         </div>
@@ -509,10 +514,8 @@ export default {
                     <div class="col-md-12" v-if="model.id">
                       <div class="mb-2">
                         <div class="text-end">
-                          <b-button type="button" variant="danger" class="ms-1" style="width: 100%"
-                                    size="md"
-                                    @click="handleShowDeleteModal"
-                          >
+                          <b-button type="button" variant="danger" class="ms-1" style="width: 100%" size="md"
+                            @click="handleShowDeleteModal">
                             Xóa bài viết
                           </b-button>
                         </div>
@@ -522,22 +525,12 @@ export default {
                 </div>
               </div>
             </form>
-            <b-modal
-                v-model="isShow"
-                title="Thông tin lĩnh vực"
-                title-class="text-black font-18"
-                body-class="p-3"
-                hide-footer
-                hide-header
-                centered
-                no-close-on-backdrop
-                size="md"
-                style="padding: 0px"
-            >
+            <b-modal v-model="isShow" title="Thông tin lĩnh vực" title-class="text-black font-18" body-class="p-3"
+              hide-footer hide-header centered no-close-on-backdrop size="md" style="padding: 0px">
               <Transition name="fade" mode="out-in">
                 <div class="row justify-content-center">
                   <div class="col-md-12"
-                       style="display: flex; justify-content: center; align-items: center; padding: 40px 40px; flex-direction: column;">
+                    style="display: flex; justify-content: center; align-items: center; padding: 40px 40px; flex-direction: column;">
                     <!--                <i class='bx bx-check-circle h1 text-success' style="font-size: 100px; margin-bottom: 40px"></i>-->
                     <div class="success-checkmark">
                       <div class="check-icon">
@@ -547,38 +540,27 @@ export default {
                         <div class="icon-fix"></div>
                       </div>
                     </div>
-                    <h1 v-if="responseData" class="fw-bold fs-3 text-dark text-uppercase">{{ responseData.resultString }}</h1>
+                    <h1 v-if="responseData" class="fw-bold fs-3 text-dark text-uppercase">{{ responseData.resultString }}
+                    </h1>
                     <button type="button" v-on:click="handleHideModal" class="btn btn-modal text-uppercase"
-                            style="width: 200px; margin-top: 20px; border-radius: 30px">Đồng ý
+                      style="width: 200px; margin-top: 20px; border-radius: 30px">Đồng ý
                     </button>
                   </div>
                 </div>
               </Transition>
             </b-modal>
 
-            <b-modal
-                v-model="showDeleteModal"
-                centered
-                title="Xóa dữ liệu"
-                title-class="font-18"
-                no-close-on-backdrop
-            >
+            <b-modal v-model="showDeleteModal" centered title="Xóa dữ liệu" title-class="font-18" no-close-on-backdrop>
               <p>
                 Dữ liệu xóa sẽ không được phục hồi!
               </p>
               <template #modal-footer>
-                <b-button v-b-modal.modal-close_visit
-                          size="sm"
-                          class="btn btn-outline-info w-md"
-                          v-on:click="showDeleteModal = false">
+                <b-button v-b-modal.modal-close_visit size="sm" class="btn btn-outline-info w-md"
+                  v-on:click="showDeleteModal = false">
                   Đóng
                 </b-button>
-                <b-button v-b-modal.modal-close_visit
-                          size="sm"
-                          variant="danger"
-                          type="button"
-                          class="w-md"
-                          v-on:click="handleDelete">
+                <b-button v-b-modal.modal-close_visit size="sm" variant="danger" type="button" class="w-md"
+                  v-on:click="handleDelete">
                   Xóa
                 </b-button>
               </template>
@@ -607,7 +589,8 @@ export default {
   padding: 0px;
 }
 
-.hidden-sortable:after, .hidden-sortable:before {
+.hidden-sortable:after,
+.hidden-sortable:before {
   display: none !important;
 }
 </style>
@@ -642,7 +625,8 @@ export default {
       animation: rotate-circle 4.25s ease-in;
     }
 
-    &::before, &::after {
+    &::before,
+    &::after {
       content: '';
       height: 100px;
       position: absolute;
@@ -704,12 +688,15 @@ export default {
   0% {
     transform: rotate(-45deg);
   }
+
   5% {
     transform: rotate(-45deg);
   }
+
   12% {
     transform: rotate(-405deg);
   }
+
   100% {
     transform: rotate(-405deg);
   }
@@ -721,21 +708,25 @@ export default {
     left: 1px;
     top: 19px;
   }
+
   54% {
     width: 0;
     left: 1px;
     top: 19px;
   }
+
   70% {
     width: 50px;
     left: -8px;
     top: 37px;
   }
+
   84% {
     width: 17px;
     left: 21px;
     top: 48px;
   }
+
   100% {
     width: 25px;
     left: 14px;
@@ -749,16 +740,19 @@ export default {
     right: 46px;
     top: 54px;
   }
+
   65% {
     width: 0;
     right: 46px;
     top: 54px;
   }
+
   84% {
     width: 55px;
     right: 0px;
     top: 35px;
   }
+
   100% {
     width: 47px;
     right: 8px;
@@ -778,6 +772,7 @@ export default {
   color: #fff;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
+
 #my-strictly-unique-vue-upload-multiple-image {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

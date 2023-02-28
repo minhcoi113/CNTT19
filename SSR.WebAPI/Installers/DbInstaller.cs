@@ -48,5 +48,6 @@ public class DbInstaller : IInstaller
         services.AddScoped<IKnowledgeService, KnowledgeService>();
         services.AddScoped<ILabelService, LabelService>();
         services.AddScoped<IProjectService, ProjectService>();
+        services.AddScoped<IStepService, StepService>();
     }
 }

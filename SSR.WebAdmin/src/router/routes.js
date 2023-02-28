@@ -250,15 +250,27 @@ export default [{
         component: () => import("../pages/peopleAsk"),
     },
     {
-        path: "/project",
+        path: "/du-an",
         name: "project",
         // meta: {},
         component: () => import("../pages/DuAn/index1.vue"),
+    },
+    {
+        path: "/du-an/:id?",
+        name: "project",
+        // meta: {},
+        component: () => import("../pages/DuAn/create"),
     },
     {
         path: "/tao-project",
         name: "danh-sach-yeu-cau-loi",
         // meta: {},
         component: () => import("../pages/DuAn/create.vue"),
+    },
+    {
+        path: "/buoc-thuc-hien",
+        name: "buoc-thuc-hien",
+        // meta: {},
+        component: () => import("../pages/step"),
     },
 ]
