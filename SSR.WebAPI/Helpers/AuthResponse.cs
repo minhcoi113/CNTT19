@@ -61,7 +61,7 @@ public class UserLogin
     public string Email { get; set; }
     public IEnumerable<Role> Roles { get; set; }
     public IEnumerable<string> Permissions { get; set; }
-    public List<Avatar> Avatar { get; set; }
+    public List<FileShort> Avatar { get; set; }
     public bool IsRequireVerify { get; set; }
     public bool IsRequireChangePassword { get; set; }
     public List<NavMenuVM> Menu { get; set; }
