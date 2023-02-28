@@ -11,6 +11,7 @@ import {notifyModel} from "@/models/notifyModel";
 import Treeselect from "@riophae/vue-treeselect";
 import {donViModel} from "@/models/donViModel";
 import {labelModel} from "@/models/labelModel";
+import {projectModel} from "@/models/projectModel";
 
 export default {
   page: {
@@ -31,7 +32,7 @@ export default {
       modeldonvi: donViModel.baseJson(),
       modelgroup: groupModel.baseJson(),
       modellabel: labelModel.baseJson(),
-
+      modelproject: projectModel.baseJson(),
       submitted: false,
       editorConfig: {
         toolbar: {
@@ -73,6 +74,7 @@ export default {
       optionsStatus: [],
       optionsLabel: [],
       optionsGroup: [],
+      optionsProject: [],
       simpleUpload: {
         uploadUrl: process.env.VUE_APP_API_URL + "files/upload-ckeditor",
         headers: {
@@ -105,6 +107,7 @@ export default {
     this.getStatus();
     this.getGroup();
     this.getLabel();
+    this.getProject();
     if(this.$route.params.id){
       this.getPostById(this.$route.params.id);
     }else{
@@ -263,6 +266,15 @@ export default {
           return;
         }
         this.optionsGroup = [];
+      });
+    },
+    async getProject(){
+      await this.$store.dispatch("projectStore/get").then((res) => {
+        if (res.resultCode === 'SUCCESS') {
+          this.optionsProject = res.data;
+          return;
+        }
+        this.optionsProject = [];
       });
     },
     handleShowDeleteModal() {
@@ -461,10 +473,20 @@ export default {
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Dự án </label>
                         <multiselect
-                          
+                        v-model="modelproject.name"
+                            :options="optionsProject"
+                            track-by="id"
+                            label="name"
+                            placeholder="Chọn thể loại"
+                            deselect-label="Nhấn để xoá"
+                            selectLabel="Nhấn enter để chọn"
+                            :multiple="true"
+                            selectedLabel="Đã chọn"
+                            :class="{'is-invalid': submitted && $v.model.ProjectId.$error,}"
                         ></multiselect>
+                        
                         <div
-                            v-if="submitted && !$v.model.category.required"
+                            v-if="submitted && !$v.model.ProjectId.required"
                             class="invalid-feedback"
                         >
                           Dự án không được để trống.

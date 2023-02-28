@@ -514,7 +514,12 @@ export default {
                             selectedLabel="Đã chọn"
                             :class="{'is-invalid': submitted && $v.model.group.$error,}"
                         ></multiselect>
-                        
+                        <div
+                            v-if="submitted && !$v.model.group.required"
+                            class="invalid-feedback"
+                        >
+                          Group không được để trống.
+                        </div>
                       </div>
                     </div>
                     <div class="col-md-12">
@@ -532,11 +537,17 @@ export default {
                             selectedLabel="Đã chọn"
                             :class="{'is-invalid': submitted && $v.model.member.$error,}"
                         ></multiselect>
+                        <div
+                            v-if="submitted && !$v.model.member.required"
+                            class="invalid-feedback"
+                        >
+                          Thành viên không được để trống.
+                        </div>
                       </div>
                     </div>
                     <div class="col-md-12">
                       <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Label</label>
+                        <label class="form-label cs-title-form" for="validationCustom01">Nhãn</label>
                         <multiselect
                             v-model="model.label"
                             :options="optionsLabel"
@@ -549,6 +560,12 @@ export default {
                             :multiple="true"
                             :class="{'is-invalid': submitted && $v.model.label.$error,}"
                         ></multiselect>
+                        <div
+                            v-if="submitted && !$v.model.label.required"
+                            class="invalid-feedback"
+                        >
+                          Nhãn không được để trống.
+                        </div>
                       </div>
                     </div>    
                   </div>
@@ -621,6 +638,7 @@ export default {
                         <i class="fas fa-pencil-alt"></i>
                         
                       </button>
+                    </router-link>
                       <button
                       
                           type="button"
@@ -629,7 +647,7 @@ export default {
                           v-on:click="handleShowDeleteModal(data.item.id);">
                         <i class="fas fa-trash-alt"></i>
                       </button>
-                      </router-link>
+                      
                     </template>
                   </b-table>
                   <template v-if="isBusy">

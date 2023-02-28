@@ -267,4 +267,10 @@ export default [{
         meta: {can: 'viewpage-roles' },
         component: () => import("../pages/DuAn/detail"),
     },
+    {
+        path: "/buoc-thuc-hien",
+        name: "project",
+        // meta: {},
+        component: () => import("../pages/QuanTriDoanhMuc/index1.vue"),
+    },
 ]
