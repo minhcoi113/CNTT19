@@ -269,7 +269,19 @@ export default {
       <div class="col-12">
         <div class="card">
           <div class="card-body">
-            
+            <div class="col-sm-4">
+                <div class="search-box me-2 mb-2 d-inline-block">
+                  <div class="position-relative">
+                    <input
+                        v-model = "filter"
+                        type="text"
+                        class="form-control"
+                        placeholder="Tìm kiếm ..."
+                    />
+                    <i class="bx bx-search-alt search-icon"></i>
+                  </div>
+                </div>
+              </div>
             <div class="row">
               <div class="col-12">
                 <div class="row mb-3">
@@ -324,7 +336,6 @@ export default {
                           >
                         <i class="fas fa-pencil-alt"></i>
                       </button>
-<<<<<<< HEAD
                       <button
                           type="button"
                           size="sm"
@@ -332,18 +343,10 @@ export default {
                           v-on:click="handleShowDeleteModal(data.item.id)">
                         <i class="fas fa-trash-alt"></i>
                       </button>
-=======
                     </router-link>
-                      <button
+
                       
-                          type="button"
-                          size="sm"
-                          class="btn btn-delete btn-sm"
-                          v-on:click="handleShowDeleteModal(data.item.id);">
-                        <i class="fas fa-trash-alt"></i>
-                      </button>
-                      
->>>>>>> ce8456fe79c0631ac1287caec342757e6b21954e
+
                     </template>
                   </b-table>
                   <template v-if="isBusy">
