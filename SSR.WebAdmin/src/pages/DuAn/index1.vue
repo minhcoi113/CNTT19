@@ -10,7 +10,6 @@ import {CONSTANTS} from "@/helpers/constants";
 import {labelModel} from "@/models/labelModel";
 import {userModel} from "@/models/userModel";
 import {groupModel} from "@/models/groupModel";
-import * as XLSX from 'xlsx-js-style';
 export default {
   page: {
     title: "Quản lý dự án",
@@ -238,25 +237,6 @@ export default {
     },
     handleNewPost(){
       this.$router.push("/tao-project")
-    },
-    Export(){
-      import("../../state/modules/Export2Excel").then(excel=>{
-        this.$store.dispatch("projectStore/get").then(res=>{
-          console.log(res.data)
-          const OBJ=res.data;
-          const Header=["Tên","Mô tả","label"];
-          const Field=["name","description"];
-          const Data=this.FormatJSon(Field,OBJ);
-          excel.export_json_to_excel({
-            header:Header,
-            data:Data,
-            sheetName:"Báo cáo",
-            filename:"Bao Cao",
-            autoWidth:true,
-            bookType:"xlsx",
-          })
-        })
-      })
     },
     FormatJSon(FilterData, JsonData){
       return JsonData.map((v)=>FilterData.map((j=>{
