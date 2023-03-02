@@ -213,10 +213,16 @@ export default [{
         component: () => import("../pages/trangThai"),
     },
     {
-        path: "/yeu-cau-loi/:id?",
+        path: "/yeu-cau-loi",
         name: "Yêu cầu lỗi",
         // meta: {},
-        component: () => import("../pages/yeucauloi/create"),
+        component: () => import("../pages/yeucauloi/create.vue"),
+    },
+    {
+        path: "/them-yeu-cau-loi",
+        name: "Yêu cầu lỗi",
+        // meta: {},
+        component: () => import("../pages/yeucauloi/create.vue"),
     },
 
     {
@@ -256,7 +262,7 @@ export default [{
         component: () => import("../pages/DuAn/index1.vue"),
     },
     {
-        path: "/du-an/:id?",
+        path: "/du-an/:?",
         name: "project",
         // meta: {},
         component: () => import("../pages/DuAn/create"),
@@ -275,7 +281,7 @@ export default [{
         component: () => import("../pages/step"),
     },
     {
-        path: "/du-an/chi-tiet/:id?",
+        path: "/du-an/chi-tiet/:id",
         name: "Vai trò",
         meta: {can: 'viewpage-roles' },
         component: () => import("../pages/DuAn/detail"),

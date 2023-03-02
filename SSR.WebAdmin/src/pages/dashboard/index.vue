@@ -5,7 +5,8 @@ import Stat from "@/components/widgets/widget-stat";
 import {sparklineChartData, salesDonutChart, radialBarChart} from "./data";
 import {CONSTANTS} from "@/helpers/constants";
 import {dashboardModel} from "@/models/dashboardModel";
-
+import {pagingModel} from "@/models/pagingModel";
+import {projectModel} from "@/models/projectModel";
 export default {
   page: {
     title: "Bảng điều khiển",
@@ -20,6 +21,65 @@ export default {
       sparklineChartData: sparklineChartData,
       salesDonutChart: salesDonutChart,
       radialBarChart: radialBarChart,
+      data: [],
+      showModal: false,
+      showDetail: false,
+      showDeleteModal: false,
+      submitted: false,
+      pagination: pagingModel.baseJson(),
+      totalRows: 1,
+      todoTotalRows: 1,
+      currentPage: 1,
+      numberOfElement: 1,
+      perPage: 10,
+      pageOptions: [5,10, 25, 50, 100],
+      filter: null,
+      filterOn: [],
+      isBusy: false,
+      sortBy: "age",
+      sortDesc: false,
+      model: projectModel.baseJson(),
+      itemFilter:{
+        code: null,
+        name: null,
+      },
+      fields: [
+      { key: 'STT',
+          label: 'STT',
+          class: 'cs-text-center',
+          sortable: false,
+          thClass: 'hidden-sortable',
+          thStyle: {width: '30px', minWidth: '30px'}
+        },
+        {
+          key: "name",
+          label: "Tên",
+          sortable: true,
+        },
+        {
+          key: "description",
+          label: "Mô tả",
+          class: 'td-xuly',
+          sortable: true,
+          // thStyle: {width: '100px', Width: '100px'},
+        },
+        {
+          key: "label",
+          label: "label",
+          class: 'td-xuly',
+          sortable: true,
+          thStyle: {width: '120px', minWidth: '120px'},
+        },
+       
+        // {
+        //   key: 'process',
+        //   label: 'Xử lý',
+        //   class: 'td-xuly btn-process',
+        //   thClass: 'hidden-sortable',
+        //   sortable: false,
+        //   thStyle: {width: '130px', minWidth: '130px'},
+        // }
+      ],
       statData: [
         {
           title: "Quản lý dự án",
@@ -30,37 +90,57 @@ export default {
           path: "/project",
           className: "card-vanbanden",
           icon: "mdi-file text-primary"
+        },
+        {
+          title: "Số dự án đã tham gia",
+          image: require("@/assets/images/services-icon/02.png"),
+          value: "0",
+          subText: "VBD",
+          color: "white",
+          path: "/tuyen-dung",
+          className: "card-vanbandi",
+          icon: "mdi-book-arrow-left text-success"
+        },
+        {
+          title: "Lỗi cần giải quyết",
+          image: require("@/assets/images/services-icon/03.png"),
+          value: "0",
+          subText: "VBDXL",
+          color: "white",
+          path: "/phong-may",
+          className: "card-hopthu",
+          icon: "mdi-email text-danger"
+        },
+        {
+          title: "Lỗi trong ngày",
+          image: require("@/assets/images/services-icon/04.png"),
+          value: "0",
+          subText: "HT",
+          color: "white",
+          path: "/nhan-vien",
+          className: "card-thongbao",
+          icon: "mdi-bell text-warning"
+        },
+        {
+          title: "Thống kê trong ngày",
+          image: require("@/assets/images/services-icon/04.png"),
+          value: "0",
+          subText: "HT",
+          color: "white",
+          path: "/nhan-vien",
+          className: "card-thongbao",
+          icon: "mdi-bell text-warning"
+        },
+        {
+          title: "Nhân viên",
+          image: require("@/assets/images/services-icon/04.png"),
+          value: "0",
+          subText: "HT",
+          color: "white",
+          path: "/nhan-vien",
+          className: "card-thongbao",
+          icon: "mdi-bell text-warning"
         }
-        // {
-        //   title: "Tuyển dụng",
-        //   image: require("@/assets/images/services-icon/02.png"),
-        //   value: "0",
-        //   subText: "VBD",
-        //   color: "white",
-        //   path: "/tuyen-dung",
-        //   className: "card-vanbandi",
-        //   icon: "mdi-book-arrow-left text-success"
-        // },
-        // {
-        //   title: "Phòng máy",
-        //   image: require("@/assets/images/services-icon/03.png"),
-        //   value: "0",
-        //   subText: "VBDXL",
-        //   color: "white",
-        //   path: "/phong-may",
-        //   className: "card-hopthu",
-        //   icon: "mdi-email text-danger"
-        // },
-        // {
-        //   title: "Nhân viên",
-        //   image: require("@/assets/images/services-icon/04.png"),
-        //   value: "0",
-        //   subText: "HT",
-        //   color: "white",
-        //   path: "/nhan-vien",
-        //   className: "card-thongbao",
-        //   icon: "mdi-bell text-warning"
-        // }
       ],
       modelSoLieu: dashboardModel.baseJson(),
       activityUserData: [],
@@ -122,7 +202,7 @@ export default {
     </div>
     <!-- end page title -->
     <div class="row mb-3">
-      <div class="col-md-3 col-sm-12 mb-2" v-for="stat of statData" :key="stat.icon">
+      <div class="col-md-2 col-sm-12 mb-2" v-for="stat of statData" :key="stat.icon">
         <Stat
             :title="stat.title"
             :image="stat.image"
@@ -133,6 +213,148 @@ export default {
             :icon="stat.icon"
             :className="stat.className"
         />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="col-sm-4">
+                <div class="search-box me-2 mb-2 d-inline-block">
+                  <div class="position-relative">
+                    <input
+                        v-model = "filter"
+                        type="text"
+                        class="form-control"
+                        placeholder="Tìm kiếm ..."
+                    />
+                    <i class="bx bx-search-alt search-icon"></i>
+                  </div>
+                </div>
+              </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="row mb-3">
+                  <div class="col-sm-12 col-md-6">
+                    <div id="tickets-table_length" class="dataTables_length">
+                      <!-- <label class="d-inline-flex align-items-center">
+                        Hiện
+                        <b-form-select
+                            class="form-select form-select-sm"
+                            v-model="perPage"
+                            size="sm"
+                            :options="pageOptions"
+                        ></b-form-select
+                        >&nbsp;dòng
+                      </label> -->
+                    </div>
+                  </div>
+                </div>
+                <div class="table-responsive mb-0">
+                    <b-table
+                      class="datatables custom-table"
+                      :items="myProvider"
+                      :fields="fields"
+                      responsive="sm"
+                      :per-page="perPage"
+                      :current-page="currentPage"
+                      :sort-by.sync="sortBy"
+                      :sort-desc.sync="sortDesc"
+                      :filter="filter"
+                      :filter-included-fields="filterOn"
+                      ref="tblList"
+                      primary-key="id"
+                      :busy.sync="isBusy"
+                      tbody-tr-class="b-table-chucvu"
+                  >
+                    <template v-slot:cell(STT)="data">
+                      {{ data.index + ((currentPage-1)*perPage) + 1  }}
+                    </template>
+                    
+                    <template v-slot:cell(label)="data">
+                      <div v-for="(value , index) in data.item.label" :key="index">
+                        <span  class="badge bg-success ms-1"> {{value.name}}</span>
+                      </div>
+                    </template>
+                    
+                    <template v-slot:cell(process)="data">
+                       <!-- <router-link :to='`/du-an/chi-tiet/${data.item.slug}`'> -->
+                      <button
+                          type="button"
+                          size="sm"
+                          class="btn btn-edit btn-sm"
+                          v-on:click="handleDetail(data.item.slug)"
+                          >
+                        <i class="fas fa-pencil-alt"></i>
+                      </button>
+                    <!-- </router-link> -->
+                      <button
+                          type="button"
+                          size="sm"
+                          class="btn btn-delete btn-sm"
+                          v-on:click="handleShowDeleteModal(data.item.id)">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                   
+
+
+                    </template>
+                  </b-table>
+                  <template v-if="isBusy">
+                    <div align="center">Đang tải dữ liệu</div>
+                  </template>
+                  <template v-if="totalRows <= 0 && !isBusy">
+                    <div align="center">Không có dữ liệu</div>
+                  </template>
+                </div>
+                <div class="row">
+                  <b-col>
+                    <div>Hiển thị {{numberOfElement}} trên tổng số {{totalRows}} dòng</div>
+                  </b-col>
+                  <div class="col">
+                    <div
+                        class="dataTables_paginate paging_simple_numbers float-end">
+                      <ul class="pagination pagination-rounded mb-0">
+                        <!-- pagination -->
+                        <b-pagination
+                            class="pagination-rounded"
+                            v-model="currentPage"
+                            :total-rows="totalRows"
+                            :per-page="perPage"
+                            size="sm"
+                        ></b-pagination>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <b-modal
+                v-model="showDeleteModal"
+                centered
+                title="Xóa dữ liệu"
+                title-class="font-18"
+                no-close-on-backdrop
+            >
+              <p>
+                Dữ liệu xóa sẽ không được phục hồi!
+              </p>
+              <template #modal-footer>
+                <button v-b-modal.modal-close_visit
+                        class="btn btn-outline-info m-1"
+                        v-on:click="showDeleteModal = false">
+                  Đóng
+                </button>
+                <button v-b-modal.modal-close_visit
+                        class="btn btn-danger btn m-1"
+                        v-on:click="handleDelete">
+                  Xóa
+                </button>
+              </template>
+            </b-modal>
+          </div>
+        </div>
       </div>
     </div>
 <!--    <div class="row">-->

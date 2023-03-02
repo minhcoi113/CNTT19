@@ -465,8 +465,9 @@ export default {
                     </div>
                   </div>
                 </div>
+              </form>
               </div>
-            </form>
+            
             <b-modal v-model="isShow" title="Thông tin lĩnh vực" title-class="text-black font-18" body-class="p-3"
               hide-footer hide-header centered no-close-on-backdrop size="md" style="padding: 0px">
               <Transition name="fade" mode="out-in">
@@ -509,7 +510,8 @@ export default {
           </div>
         </div>
       </div>
-    </div>
+   
+  
   </Layout>
 </template>
 <style scoped>
