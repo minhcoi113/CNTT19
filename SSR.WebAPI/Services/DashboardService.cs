@@ -26,8 +26,8 @@ namespace SSR.WebAPI.Services
             var soPhongMay = _context.Room.Find(x => x.IsDeleted != true).CountDocumentsAsync();
             var soNhanVien = _context.Posts.Find(x => x.IsDeleted != true).CountDocumentsAsync();
             var soProject = _context.Project.Find(x => x.IsDeleted != true).CountDocumentsAsync();
-            await Task.WhenAll(soTinTucSuKien, soTuyenDung, soPhongMay, soNhanVien);
-
+            var soYeuCauLoi = _context.Project.Find(x => x.IsDeleted != true).CountDocumentsAsync();            
+            await Task.WhenAll(soTinTucSuKien, soTuyenDung, soPhongMay, soNhanVien, soProject);
             vm.SoTinTucSuKien = soTinTucSuKien.Result;
             vm.SoTuyenDung = soTuyenDung.Result;
             vm.SoPhongMay = soPhongMay.Result;

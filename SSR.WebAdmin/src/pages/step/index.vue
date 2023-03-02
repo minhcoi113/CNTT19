@@ -70,11 +70,11 @@ export default {
     };
   },
   validations: {
-    model: {
+      model: {
       name: { required },
       description: { required },
       color: { required },
-
+      
     },
   },
   methods: {
@@ -315,7 +315,7 @@ export default {
                             <span style="color: red">&nbsp;*</span>
                             <input type="hidden" v-model="model.description" />
                             <textarea class="form-control" v-model="model.description" rows="4"
-                              :class="{ 'is-invalid': submitted && $v.model.summary.$error, }"></textarea>
+                              :class="{ 'is-invalid': submitted && $v.model.description.$error, }"></textarea>
                             <div v-if="submitted && !$v.model.description.required" class="invalid-feedback">
                               Mô tả không được trống.
                             </div>

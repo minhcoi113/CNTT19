@@ -250,7 +250,13 @@ export default [{
         component: () => import("../pages/peopleAsk"),
     },
     {
-        path: "/du-an",
+        path: "/project",
+        name: "project",
+        // meta: {},
+        component: () => import("../pages/DuAn/index1.vue"),
+    },
+    {
+        path: "/project",
         name: "project",
         // meta: {},
         component: () => import("../pages/DuAn/index1.vue"),
@@ -280,4 +286,5 @@ export default [{
         meta: {can: 'viewpage-roles' },
         component: () => import("../pages/DuAn/detail"),
     },
+    
 ]

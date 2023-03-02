@@ -29,7 +29,7 @@ namespace SSR.WebAPI.APIs
                 return Ok(
                     new ResultResponse<dynamic>()
                         .WithData(response)
-                        .WithCode(EResultResponse.SUCCESS.ToString())
+                          .WithCode(EResultResponse.SUCCESS.ToString())
                         .WithMessage(DefaultMessage.CREATE_SUCCESS)
                 );
             }
