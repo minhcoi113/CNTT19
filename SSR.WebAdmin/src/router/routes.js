@@ -193,12 +193,4 @@ export default [{
         meta: {can: 'viewpage-roles' },
         component: () => import("../pages/DuAn/detail"),
     },
-    {
-        path: "/du-an1",
-        name: "Duan",
-        meta: {
-            authRequired: true
-        },
-        component: () => import('../pages/dashboard/index1'),
-    },
 ]
