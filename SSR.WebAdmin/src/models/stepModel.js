@@ -4,6 +4,7 @@ const toJson = (item) => {
         color: item.color,
         name: item.name,
         description: item.description,
+        projectId:item.projectId,
     }
 }
 
@@ -13,6 +14,7 @@ const fromJson = (item) => {
         color: item.color,
         name: item.name,
         description: item.description,
+        projectId:item.projectId,
     }
 }
 
@@ -22,6 +24,7 @@ const baseJson = () => {
         color: null,
         name: null,
         description: null,
+        projectId:null,
     }
 }
 

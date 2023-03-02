@@ -22,17 +22,17 @@ export default {
       radialBarChart: radialBarChart,
       statData: [
         {
-          title: "Tin tức - Sự kiện",
+          title: "Dự án",
           image: require("@/assets/images/services-icon/01.png"),
           value: "0",
           subText: "VBD",
           color: "white",
-          path: "/tin-tuc-su-kien",
+          path: "/project",
           className: "card-vanbanden",
           icon: "mdi-file text-primary"
         },
         {
-          title: "Tuyển dụng",
+          title: "Open",
           image: require("@/assets/images/services-icon/02.png"),
           value: "0",
           subText: "VBD",
@@ -42,7 +42,7 @@ export default {
           icon: "mdi-book-arrow-left text-success"
         },
         {
-          title: "Phòng máy",
+          title: "Closed",
           image: require("@/assets/images/services-icon/03.png"),
           value: "0",
           subText: "VBDXL",
@@ -52,7 +52,7 @@ export default {
           icon: "mdi-email text-danger"
         },
         {
-          title: "Nhân viên",
+          title: "Số lỗi cần xử lí",
           image: require("@/assets/images/services-icon/04.png"),
           value: "0",
           subText: "HT",
@@ -77,7 +77,7 @@ export default {
           if (resp.resultCode == CONSTANTS.SUCCESS) {
             this.modelSoLieu = resp.data;
             if (this.modelSoLieu) {
-              this.statData[0].value = this.modelSoLieu.soTinTucSuKien.toString();
+              this.statData[0].value = this.modelSoLieu.soProject.toString();
               this.statData[1].value = this.modelSoLieu.soTuyenDung.toString();
               this.statData[2].value = this.modelSoLieu.soNhanVien.toString();
               this.statData[3].value = this.modelSoLieu.soPhongMay.toString();
@@ -103,7 +103,7 @@ export default {
         <div class="page-title-box p-2 mb-2">
           <h4 class="font-size-18 text-dark"> Bảng điều khiển</h4>
           <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item active text-dark"> Chào mừng đến với hệ thống SSR - Đồng Tháp</li>
+            <li class="breadcrumb-item active text-dark"> Chào mừng đến với hệ thống Hỗ trợ người dùng</li>
           </ol>
         </div>
       </div>

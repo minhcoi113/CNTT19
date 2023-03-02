@@ -4,6 +4,7 @@ const baseJson = () => {
         soTuyenDung: 0,
         soPhongMay: 0,
         soNhanVien: 0,
+        soProject: 0,
     }
 }
 

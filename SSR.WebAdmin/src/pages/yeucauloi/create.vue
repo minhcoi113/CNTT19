@@ -9,16 +9,11 @@ import { required } from "vuelidate/lib/validators";
 import urlSlug from 'url-slug'
 import { notifyModel } from "@/models/notifyModel";
 import Treeselect from "@riophae/vue-treeselect";
-<<<<<<< HEAD
+
 import { donViModel } from "@/models/donViModel";
 import { labelModel } from "@/models/labelModel";
 import { projectModel } from "@/models/projectModel";
 import { stepModel } from "@/models/stepModel";
-=======
-import {donViModel} from "@/models/donViModel";
-import {labelModel} from "@/models/labelModel";
-import {projectModel} from "@/models/projectModel";
->>>>>>> ce8456fe79c0631ac1287caec342757e6b21954e
 
 export default {
   page: {
@@ -41,11 +36,9 @@ export default {
       modelgroup: groupModel.baseJson(),
       modellabel: labelModel.baseJson(),
       modelproject: projectModel.baseJson(),
-<<<<<<< HEAD
       modelstep: stepModel.baseJson(),
 
-=======
->>>>>>> ce8456fe79c0631ac1287caec342757e6b21954e
+
       submitted: false,
       editorConfig: {
         toolbar: {
@@ -121,13 +114,8 @@ export default {
     this.getGroup();
     this.getLabel();
     this.getProject();
-<<<<<<< HEAD
     this.getStep();
-
     if (this.$route.params.id) {
-=======
-    if(this.$route.params.id){
->>>>>>> ce8456fe79c0631ac1287caec342757e6b21954e
       this.getPostById(this.$route.params.id);
     } else {
       this.model = yeucauloiModel.baseJson();
@@ -287,11 +275,8 @@ export default {
         this.optionsGroup = [];
       });
     },
-<<<<<<< HEAD
-    async getProject() {
-=======
+
     async getProject(){
->>>>>>> ce8456fe79c0631ac1287caec342757e6b21954e
       await this.$store.dispatch("projectStore/get").then((res) => {
         if (res.resultCode === 'SUCCESS') {
           this.optionsProject = res.data;
@@ -300,7 +285,7 @@ export default {
         this.optionsProject = [];
       });
     },
-<<<<<<< HEAD
+
     async getStep() {
       await this.$store.dispatch("stepStore/get").then((res) => {
         if (res.resultCode === 'SUCCESS') {
@@ -310,8 +295,7 @@ export default {
         this.optionsStep = [];
       });
     },
-=======
->>>>>>> ce8456fe79c0631ac1287caec342757e6b21954e
+
     handleShowDeleteModal() {
       this.showDeleteModal = true;
     },
@@ -329,7 +313,6 @@ export default {
   }
 };
 </script>
-
 <template>
   <Layout>
     <div class="row">
@@ -354,7 +337,6 @@ export default {
       <div class="col-12">
         <div class="card">
           <div class="card-body">
-
             <form @submit.prevent="handleSubmit" ref="formContainer">
               <div class="row">
                 <div class="col-md-7">
@@ -422,7 +404,6 @@ export default {
                         </div> -->
                   </div>
                 </div>
-
                 <div class="col-md-5">
                   <div class="row">
                     <!-- <div class="col-md-12 mb-2">
@@ -463,22 +444,21 @@ export default {
                         <div v-if="submitted && !$v.model.Assignee.required" class="invalid-feedback">
                           Phân công không được để trống.
                         </div>
-
                       </div>
                     </div>
                     <div class="col-md-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Dự án </label>
-<<<<<<< HEAD
+
                         <span class="text-danger">*</span>
                         <multiselect v-model="modelproject.name" :options="optionsProject" track-by="id" label="name"
                           placeholder="Chọn dự án" deselect-label="Nhấn để xoá" selectLabel="Nhấn enter để chọn"
                           selectedLabel="Đã chọn" :class="{ 'is-invalid': submitted && $v.model.ProjectId.$error, }">
                         </multiselect>
                         <div v-if="submitted && !$v.model.category.required" class="invalid-feedback">
-=======
+
                         <multiselect
-                        v-model="modelproject.name"
+                          v-model="modelproject.name"
                             :options="optionsProject"
                             track-by="id"
                             label="name"
@@ -494,10 +474,8 @@ export default {
                             v-if="submitted && !$v.model.ProjectId.required"
                             class="invalid-feedback"
                         >
->>>>>>> ce8456fe79c0631ac1287caec342757e6b21954e
                           Dự án không được để trống.
                         </div>
-
                       </div>
                     </div>
                     <div class="col-md-12">
@@ -515,7 +493,6 @@ export default {
                         </treeselect>
                       </div>
                     </div>
-
                     <div class="col-md-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Ngày hoàn thành </label>
@@ -527,7 +504,6 @@ export default {
                         </div>
                       </div>
                     </div>
-
                     <div class="col-md-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Trạng thái </label>
@@ -536,11 +512,8 @@ export default {
                           placeholder="Chọn trạng thái" deselect-label="Nhấn để xoá" selectLabel="Nhấn enter để chọn"
                          selectedLabel="Đã chọn"
                           :class="{ 'is-invalid': submitted && $v.model.StepId.$error, }"></multiselect>
-
                       </div>
                     </div>
-
-
                     <div class="col-md-12">
                       <div class="mb-2">
                         <div class="text-end">
@@ -563,6 +536,7 @@ export default {
                     </div>
                   </div>
                 </div>
+              </div>
               </div>
             </form>
             <b-modal v-model="isShow" title="Thông tin lĩnh vực" title-class="text-black font-18" body-class="p-3"
@@ -589,7 +563,6 @@ export default {
                 </div>
               </Transition>
             </b-modal>
-
             <b-modal v-model="showDeleteModal" centered title="Xóa dữ liệu" title-class="font-18" no-close-on-backdrop>
               <p>
                 Dữ liệu xóa sẽ không được phục hồi!
@@ -615,20 +588,16 @@ export default {
 .title-capso {
   font-weight: bold;
   color: #00568C;
-
 }
-
 .content-capso {
   color: #00568C;
   padding-left: 10px;
 }
-
 .capso-container {
   margin-top: 10px;
   display: flex;
   padding: 0px;
 }
-
 .hidden-sortable:after,
 .hidden-sortable:before {
   display: none !important;
@@ -639,7 +608,6 @@ export default {
   width: 80px;
   height: 115px;
   margin: 0 auto;
-
   .check-icon {
     width: 80px;
     height: 80px;
@@ -647,7 +615,6 @@ export default {
     border-radius: 50%;
     box-sizing: content-box;
     border: 4px solid #4CAF50;
-
     &::before {
       top: 3px;
       left: -2px;
@@ -655,7 +622,6 @@ export default {
       transform-origin: 100% 50%;
       border-radius: 100px 0 0 100px;
     }
-
     &::after {
       top: 0;
       left: 30px;
@@ -664,7 +630,6 @@ export default {
       border-radius: 0 100px 100px 0;
       animation: rotate-circle 4.25s ease-in;
     }
-
     &::before,
     &::after {
       content: '';
@@ -673,7 +638,6 @@ export default {
       background: #FFFFFF;
       transform: rotate(-45deg);
     }
-
     .icon-line {
       height: 5px;
       background-color: #4CAF50;
@@ -681,7 +645,6 @@ export default {
       border-radius: 2px;
       position: absolute;
       z-index: 10;
-
       &.line-tip {
         top: 46px;
         left: 14px;
@@ -689,7 +652,6 @@ export default {
         transform: rotate(45deg);
         animation: icon-line-tip 0.75s;
       }
-
       &.line-long {
         top: 38px;
         right: 8px;
@@ -698,7 +660,6 @@ export default {
         animation: icon-line-long 0.75s;
       }
     }
-
     .icon-circle {
       top: -4px;
       left: -4px;
@@ -710,7 +671,6 @@ export default {
       box-sizing: content-box;
       border: 4px solid rgba(76, 175, 80, .5);
     }
-
     .icon-fix {
       top: 8px;
       width: 5px;
@@ -723,96 +683,80 @@ export default {
     }
   }
 }
-
 @keyframes rotate-circle {
   0% {
     transform: rotate(-45deg);
   }
-
   5% {
     transform: rotate(-45deg);
   }
-
   12% {
     transform: rotate(-405deg);
   }
-
   100% {
     transform: rotate(-405deg);
   }
 }
-
 @keyframes icon-line-tip {
   0% {
     width: 0;
     left: 1px;
     top: 19px;
   }
-
   54% {
     width: 0;
     left: 1px;
     top: 19px;
   }
-
   70% {
     width: 50px;
     left: -8px;
     top: 37px;
   }
-
   84% {
     width: 17px;
     left: 21px;
     top: 48px;
   }
-
   100% {
     width: 25px;
     left: 14px;
     top: 45px;
   }
 }
-
 @keyframes icon-line-long {
   0% {
     width: 0;
     right: 46px;
     top: 54px;
   }
-
   65% {
     width: 0;
     right: 46px;
     top: 54px;
   }
-
   84% {
     width: 55px;
     right: 0px;
     top: 35px;
   }
-
   100% {
     width: 47px;
     right: 8px;
     top: 38px;
   }
 }
-
 .btn-modal {
   background: #00568C;
   border: none;
   color: #fff;
 }
-
 .btn-modal:hover {
   background: #00568C;
   border: none;
   color: #fff;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
-
 #my-strictly-unique-vue-upload-multiple-image {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

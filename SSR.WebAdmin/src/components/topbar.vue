@@ -131,10 +131,10 @@ export default {
 
           <router-link to="/" class="logo logo-light d-flex align-items-center justify-content-center">
             <span class="logo-sm">
-              <img src="@/assets/images/logo.png" class="logo-dthu-sm" alt="logo dthu"/>
+              <img src="@/assets/long_logo.png" class="logo-dthu-sm" alt="logo dthu"/>
             </span>
             <span class="logo-lg">
-              <img src="@/assets/images/logo_1.png" alt height="50"/>
+              <img src="@/assets/long_logo.png" alt height="50"/>
             </span>
           </router-link>
         </div>

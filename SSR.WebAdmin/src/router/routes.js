@@ -256,6 +256,12 @@ export default [{
         component: () => import("../pages/DuAn/index1.vue"),
     },
     {
+        path: "/project",
+        name: "project",
+        // meta: {},
+        component: () => import("../pages/DuAn/index1.vue"),
+    },
+    {
         path: "/du-an/:id?",
         name: "project",
         // meta: {},
@@ -268,22 +274,17 @@ export default [{
         component: () => import("../pages/DuAn/create.vue"),
     },
     {
-<<<<<<< HEAD
+
         path: "/buoc-thuc-hien",
         name: "buoc-thuc-hien",
         // meta: {},
-        component: () => import("../pages/step"),
-=======
+        component: () => import("../pages/step/index.vue"),
+    },
+    {
         path: "/du-an/chi-tiet/:id?",
         name: "Vai trò",
         meta: {can: 'viewpage-roles' },
         component: () => import("../pages/DuAn/detail"),
     },
-    {
-        path: "/buoc-thuc-hien",
-        name: "project",
-        // meta: {},
-        component: () => import("../pages/QuanTriDoanhMuc/index1.vue"),
->>>>>>> ce8456fe79c0631ac1287caec342757e6b21954e
-    },
+    
 ]
