@@ -70,6 +70,11 @@ export default {
     this.getdata();
   },
   methods: {
+    addDonViToModel(node, instanceId) {
+      if (node.id) {
+        this.model.parentId = node.id;
+      }
+    },
     async handleSearch() {
       await this.$store.dispatch("labelStore/get-find").then((res) => {
         this.treeView = res.data;
@@ -207,43 +212,7 @@ export default {
               <div class="col-md-4 col-12 d-flex align-items-center">
                 <h4 class="font-size-18 fw-bold text-dark">Quản lý nhãn</h4>
               </div>
-              <div class="col-md-8 col-12 text-end">
-                <b-button v-b-toggle.collapseSearch variant="light" class="btn w-md btn-primary-outline me-2" size="sm">
-                  <i class="fas fa-caret-down align-middle me-2"></i>
-                  Tìm kiếm
-                </b-button>
-              </div>
             </div>
-            <b-collapse id="collapseSearch" class="mt-1">
-              <div class="row">
-                <div class="col-12">
-                  <div class="d-flex justify-content-between align-items-end flex-wrap mb-2">
-                    <div class="flex-grow-1 me-2">
-                      <label>Tên nhãn</label>
-                      <input size="sm" type="text" name="untyped-input" class="form-control" v-model="itemFilter.name"
-                        placeholder="Nhập tên nhãn..." />
-                    </div>
-                    <!--  Xử lý -->
-                    <div class="flex-grow-0 ms-2">
-                      <div class="d-flex justify-content-between align-items-center flex-wrap">
-                        <div class="flex-grow-1 mt-xl-0 mt-2">
-                          <b-button @click="handleSearch" variant="light" class="btn w-md btn-primary me-2" size="md">
-                            <i class="fas fa-search align-middle me-2"></i>
-                            Tìm kiếm
-                          </b-button>
-                        </div>
-                        <div class="flex-grow-1 mt-xl-0 mt-2">
-                          <b-button @click="clearSearch" variant="light" class="btn w-md btn-secondary me-2" size="md">
-                            <i class="fas fa-redo-alt align-middle me-2"></i>
-                            Làm mới
-                          </b-button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </b-collapse>
           </div>
         </div>
       </div>
@@ -252,17 +221,9 @@ export default {
       <div class="col-md-6 col-12">
         <div class="card">
           <div class="card-body">
-            <v-jstree :data="treeView" text-field-name="label" @item-click="itemClick" :item-events="itemEvents">
-              <template slot-scope="_">
-                <div style="display: inherit; width: 200px" @click.ctrl="customItemClickWithCtrl"
-                  @click.exact="customItemClick(_.vm, _.model, $event)">
-                  <i :class="_.vm.themeIconClasses" role="presentation" v-if="!_.model.loading"></i>
-                  <span> {{model.name }}</span>
-                </div>
-              </template>
+            <v-jstree :text-color="model.color" :data="treeView" text-field-name="label" @item-click="itemClick" :item-events="itemEvents">
+              
             </v-jstree>
-
-            <!-- <v-jstree :data="treeView" text-field-name="label" @item-click="itemClick" :item-events="itemEvents"></v-jstree> -->
           </div>
         </div>
       </div>

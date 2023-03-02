@@ -54,17 +54,7 @@ export default {
       apiUrl: process.env.VUE_APP_API_URL,
       url: `${process.env.VUE_APP_API_URL}files/upload`,
       urlView: `${process.env.VUE_APP_API_URL}files/view/`,
-      dropzoneOptions: {
-        url: `${process.env.VUE_APP_API_URL}files/upload`,
-        thumbnailWidth: 300,
-        thumbnailHeight: 160,
-        maxFiles: 1,
-        maxFilesize: 30,
-        headers: {"My-Awesome-Header": "header value"},
-        addRemoveLinks: true,
-        acceptedFiles: ".pdf",
-        dropzoneClassName: "dropzonevue-box"
-      },
+      
       optionsUser: [],
       optionsGroup: [],
       optionsLabel: [],
@@ -86,8 +76,8 @@ export default {
     model: {
       name: {required},
       description: {required},
-      member: {required},
-      group: {required},
+      //member: {required},
+      //group: {required},
       label: {required},
       slug: {required}
     },
@@ -163,6 +153,10 @@ export default {
         let loader = this.$loading.show({
           container: this.$refs.formContainer,
         });
+        if(this.model.group == null && this.model.member == null){
+          alert('Thêm nhóm hoặc thành viên cho dự án');
+        }
+        else{
         if (
             this.model.id != 0 &&
             this.model.id != null &&
@@ -183,7 +177,7 @@ export default {
             }
             this.$store.dispatch("snackBarStore/addNotify", notifyModel.addMessage(res))
           });
-        }
+        }}
         loader.hide();
       }
       this.submitted = false;

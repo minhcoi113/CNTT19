@@ -84,8 +84,6 @@ export default {
     model: {
       deep: true,
       handler(val) {
-        // addCoQuanToModel()
-        // this.saveValueToLocalStorage()
       }
     },
     showModal(status) {
@@ -190,19 +188,6 @@ export default {
         <div class="card">
           <div class="card-body">
             <div class="row mb-2">
-<!--              <div class="col-sm-4">-->
-<!--                <div class="search-box me-2 mb-2 d-inline-block">-->
-<!--                  <div class="position-relative">-->
-<!--                    <input-->
-<!--                        v-model = "filter"-->
-<!--                        type="text"-->
-<!--                        class="form-control"-->
-<!--                        placeholder="Tìm kiếm ..."-->
-<!--                    />-->
-<!--                    <i class="bx bx-search-alt search-icon"></i>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
               <div class="col-sm-12" style="float: right">
                 <div class="text-sm-end">
                   <b-button type="button" variant="primary" class="mb-2 me-2 w-md" @click="showModal = true" size="sm">

@@ -8,7 +8,6 @@ import {required} from "vuelidate/lib/validators";
 import urlSlug from 'url-slug'
 import {notifyModel} from "@/models/notifyModel";
 
-
 export default {
   page: {
     title: "Soạn bài viết",
@@ -17,8 +16,7 @@ export default {
   components: {
     Layout,
     Multiselect,
-    VueUploadMultipleImage,
-    // 'ckeditor-nuxt': () => { return import('@blowstack/ckeditor-nuxt')  },
+    VueUploadMultipleImage
   },
   data() {
     return {
@@ -86,13 +84,10 @@ export default {
     model: {
       name: {required},
       description: {required},
-      member: {required},
-      group: {required},
       label: {required},
       slug: {required}
     },
   },
-  
   async created() {
     this.getUser();
     this.getGroup();
@@ -163,6 +158,10 @@ export default {
         let loader = this.$loading.show({
           container: this.$refs.formContainer,
         });
+        if(this.model.group == null && this.model.member == null){
+          alert('Thêm nhóm hoặc thành viên cho dự án');
+        }
+        else{
         if (
             this.model.id != 0 &&
             this.model.id != null &&
@@ -183,7 +182,7 @@ export default {
             }
             this.$store.dispatch("snackBarStore/addNotify", notifyModel.addMessage(res))
           });
-        }
+        }}
         loader.hide();
       }
       this.submitted = false;
@@ -296,7 +295,6 @@ export default {
       <div class="col-12">
         <div class="card">
           <div class="card-body">
-   
             <form @submit.prevent="handleSubmit"
                   ref="formContainer">
               <div class="row">
@@ -339,8 +337,7 @@ export default {
                               Nội dung không được để trống.
                             </div>
                       </div>
-                    </div>
-                    
+                    </div>                    
                     <div class="col-lg-12 col-md-12 col-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Slug</label>
@@ -361,11 +358,9 @@ export default {
                           Slug không được để trống.
                         </div>
                       </div>
-                    </div>
-                    
+                    </div>                   
                   </div>
                 </div>
-
                 <div class="col-md-3">
                   <div class="row">
                      <div class="col-md-12 mb-2">
@@ -396,8 +391,7 @@ export default {
                             selectLabel="Nhấn enter để chọn"
                             selectedLabel="Đã chọn"
                             :class="{'is-invalid': submitted && $v.model.group.$error,}"
-                        ></multiselect>
-                        
+                        ></multiselect>                        
                       </div>
                     </div>
                     <div class="col-md-12">
@@ -445,10 +439,7 @@ export default {
                         </b-button>
                       </div>
             </form>
-
             </div>
-          
-
             <b-modal
                 v-model="showDeleteModal"
                 centered
@@ -479,7 +470,6 @@ export default {
           </div>
         </div>
       </div>
-    
   </Layout>
 </template>
 <style scoped>
