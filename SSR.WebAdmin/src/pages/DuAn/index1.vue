@@ -205,6 +205,12 @@ export default {
     clearSearch(){
       this.itemFilter.code= null;
       this.itemFilter.name= null;
+      
+      this.filter = null;
+    
+    },
+    handleSearch() {
+      this.fnGetList()
     },
     async fnGetList() {
          this.$refs.tblList?.refresh()
@@ -381,7 +387,11 @@ export default {
               <h4 class="font-size-18 fw-bold cs-title-page">Project</h4>
             </div>
             <div class="col-md-8 col-12 text-end">
-              
+              <b-button v-b-toggle.collapseSearch variant="light"
+                          class="btn w-md btn-primary-outline me-2" size="sm">
+                  <i class="fas fa-caret-down align-middle me-2"></i>
+                  Tìm kiếm
+                </b-button>
               <b-button
                     variant="primary"
                     type="button"
@@ -391,6 +401,43 @@ export default {
                 >
                   <i class="mdi mdi-plus me-1"></i> Thêm dự án
                 </b-button>
+                <b-collapse id="collapseSearch" class="mt-1">
+              <div class="row">
+                <div class="col-12">
+                  <div class="d-flex justify-content-between align-items-end flex-wrap mb-2">
+                    <!-- Nội dung -->
+                    <div class="flex-grow-1 me-2">
+                      <label>Nội dung</label>
+                      <input
+                          v-model = "filter"
+                          type="text"
+                          class="form-control"
+                          placeholder="Tìm kiếm ..."
+                      />
+                      <i class="bx bx-search-alt search-icon"></i>
+                    </div>
+                    <div class="flex-grow-0 ms-2">
+                      <div class="d-flex justify-content-between align-items-center flex-wrap">
+                        <div class="flex-grow-1 mt-xl-0 mt-2">
+                          <b-button @click="handleSearch" variant="light"
+                                    class="btn w-md btn-primary me-2" size="md">
+                            <i class="fas fa-search align-middle me-2"></i>
+                            Tìm kiếm
+                          </b-button>
+                        </div>
+                        <div class="flex-grow-1 mt-xl-0 mt-2">
+                          <b-button @click="clearSearch" variant="light"
+                                    class="btn w-md btn-secondary me-2" size="md">
+                            <i class="fas fa-redo-alt align-middle me-2"></i>
+                            Làm mới
+                          </b-button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </b-collapse>
             </div>
           </div>
         </div>
@@ -637,15 +684,7 @@ export default {
                           >
                         <i class="fas fa-pencil-alt"></i>
                       </button>
-<<<<<<< HEAD
-                      <button
-                          type="button"
-                          size="sm"
-                          class="btn btn-delete btn-sm"
-                          v-on:click="handleShowDeleteModal(data.item.id)">
-                        <i class="fas fa-trash-alt"></i>
-                      </button>
-=======
+
                     </router-link>
                       <button
                       
@@ -655,8 +694,6 @@ export default {
                           v-on:click="handleShowDeleteModal(data.item.id);">
                         <i class="fas fa-trash-alt"></i>
                       </button>
-                      
->>>>>>> ce8456fe79c0631ac1287caec342757e6b21954e
                     </template>
                   </b-table>
                   <template v-if="isBusy">

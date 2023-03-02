@@ -6,5 +6,7 @@
         public long SoTuyenDung { get; set; }
         public long SoPhongMay { get; set; }
         public long SoNhanVien { get; set; }
+        public long soProject { get; set; }
+
     }
 }
