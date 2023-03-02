@@ -90,8 +90,6 @@ export default {
     model: {
       deep: true,
       handler(val) {
-        // addCoQuanToModel()
-        // this.saveValueToLocalStorage()
       }
     },
     showModal(status) {
@@ -133,7 +131,6 @@ export default {
             this.$refs.tblList.refresh()
           }
           this.$store.dispatch("snackBarStore/addNotify", notifyModel.addMessage(res));
-          // });
         });
       }
     },
@@ -201,11 +198,6 @@ export default {
         this.loading = false
       }
     },
-    // todoFiltered(filteredItems) {
-    //   // Trigger pagination to update the number of buttons/pages due to filtering
-    //   this.todoTotalRows = filteredItems.length;
-    //   this.todocurrentPage = 1;
-    // }
     clearSearch(){
       this.filter = null;
     }
@@ -214,7 +206,6 @@ export default {
 </script>
 <template>
   <Layout>
-<!--    <PageHeader :title="title" :items="items"/>-->
     <div class="row">
       <div class="col-12">
         <div class="card mb-2">
@@ -224,11 +215,6 @@ export default {
                 <h4 class="font-size-18 fw-bold cs-title-page">Quản lý nhóm quyền</h4>
               </div>
               <div class="col-md-8 col-12 text-end">
-                <b-button v-b-toggle.collapseSearch variant="light"
-                          class="btn w-md btn-primary-outline me-2" size="sm">
-                  <i class="fas fa-caret-down align-middle me-2"></i>
-                  Tìm kiếm
-                </b-button>
                 <b-button
                     type="button"
                     variant="primary"
@@ -240,46 +226,6 @@ export default {
                 </b-button>
               </div>
             </div>
-            <b-collapse id="collapseSearch" class="mt-1">
-              <div class="row">
-                <div class="col-12">
-                  <div class="d-flex justify-content-between align-items-end flex-wrap mb-2">
-                    <!-- Nội dung -->
-                    <div class="flex-grow-1 me-2">
-                      <label>Từ khoá</label>
-                      <div class="position-relative">
-                        <input
-                            v-model="filter"
-                            type="text"
-                            class="form-control"
-                            placeholder="Tìm kiếm ..."
-                        />
-                        <i class="bx bx-search-alt search-icon"></i>
-                      </div>
-                    </div>
-                    <!--  Xử lý -->
-                    <div class="flex-grow-0 ms-2">
-                      <div class="d-flex justify-content-between align-items-center flex-wrap">
-                        <div class="flex-grow-1 mt-xl-0 mt-2">
-                          <b-button @click="handleSearch" variant="light"
-                                    class="btn w-md btn-primary me-2" size="md">
-                            <i class="fas fa-search align-middle me-2"></i>
-                            Tìm kiếm
-                          </b-button>
-                        </div>
-                        <div class="flex-grow-1 mt-xl-0 mt-2">
-                          <b-button @click="clearSearch" variant="light"
-                                    class="btn w-md btn-secondary me-2" size="md">
-                            <i class="fas fa-redo-alt align-middle me-2"></i>
-                            Làm mới
-                          </b-button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </b-collapse>
           </div>
         </div>
       </div>
@@ -289,6 +235,19 @@ export default {
         <div class="card">
           <div class="card-body">
             <div class="row mb-2">
+              <div class="col-sm-4">
+                <div class="search-box me-2 mb-2 d-inline-block">
+                  <div class="position-relative">
+                    <input
+                        v-model = "filter"
+                        type="text"
+                        class="form-control"
+                        placeholder="Tìm kiếm ..."
+                    />
+                    <i class="bx bx-search-alt search-icon"></i>
+                  </div>
+                </div>
+              </div>
               <div class="col-sm-8">
                 <div class="text-sm-end">
                   <b-modal

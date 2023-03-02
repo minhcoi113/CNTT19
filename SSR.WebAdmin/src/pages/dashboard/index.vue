@@ -22,7 +22,7 @@ export default {
       radialBarChart: radialBarChart,
       statData: [
         {
-          title: "Dự án",
+          title: "Quản lý dự án",
           image: require("@/assets/images/services-icon/01.png"),
           value: "0",
           subText: "VBD",
@@ -61,6 +61,36 @@ export default {
           className: "card-thongbao",
           icon: "mdi-bell text-warning"
         }
+        // {
+        //   title: "Tuyển dụng",
+        //   image: require("@/assets/images/services-icon/02.png"),
+        //   value: "0",
+        //   subText: "VBD",
+        //   color: "white",
+        //   path: "/tuyen-dung",
+        //   className: "card-vanbandi",
+        //   icon: "mdi-book-arrow-left text-success"
+        // },
+        // {
+        //   title: "Phòng máy",
+        //   image: require("@/assets/images/services-icon/03.png"),
+        //   value: "0",
+        //   subText: "VBDXL",
+        //   color: "white",
+        //   path: "/phong-may",
+        //   className: "card-hopthu",
+        //   icon: "mdi-email text-danger"
+        // },
+        // {
+        //   title: "Nhân viên",
+        //   image: require("@/assets/images/services-icon/04.png"),
+        //   value: "0",
+        //   subText: "HT",
+        //   color: "white",
+        //   path: "/nhan-vien",
+        //   className: "card-thongbao",
+        //   icon: "mdi-bell text-warning"
+        // }
       ],
       modelSoLieu: dashboardModel.baseJson(),
       activityUserData: [],
@@ -118,6 +148,7 @@ export default {
           </b-dropdown>
         </div>
       </div>
+        
     </div>
     <!-- end page title -->
     <div class="row mb-3">

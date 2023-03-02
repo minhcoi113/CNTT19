@@ -14,7 +14,9 @@ const fromJson = (item) => {
         color: item.color,
         name: item.name,
         description: item.description,
+
         projectId:item.projectId,
+
     }
 }
 

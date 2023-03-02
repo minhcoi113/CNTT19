@@ -250,7 +250,7 @@ export default [{
         component: () => import("../pages/peopleAsk"),
     },
     {
-        path: "/du-an",
+        path: "/project",
         name: "project",
         // meta: {},
         component: () => import("../pages/DuAn/index1.vue"),
@@ -278,7 +278,7 @@ export default [{
         path: "/buoc-thuc-hien",
         name: "buoc-thuc-hien",
         // meta: {},
-        component: () => import("../pages/step/index.vue"),
+        component: () => import("../pages/step"),
     },
     {
         path: "/du-an/chi-tiet/:id?",

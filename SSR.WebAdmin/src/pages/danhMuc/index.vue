@@ -238,46 +238,12 @@ export default {
                 <h4 class="font-size-18 fw-bold cs-title-page">Hướng dẫn xử lý yêu cầu lỗi</h4>
               </div>
               <div class="col-md-8 col-12 text-end">
-                <b-button v-b-toggle.collapseSearch variant="light" class="btn w-md btn-primary-outline me-2" size="sm">
-                  <i class="fas fa-caret-down align-middle me-2"></i>
-                  Tìm kiếm
-                </b-button>
                 <b-button variant="primary" type="button" class="btn w-md btn-primary" @click="showModal = true"
                   size="sm">
                   <i class="mdi mdi-plus me-1"></i> Tạo hướng dẫn xử lý 
                 </b-button>
               </div>
             </div>
-            <b-collapse id="collapseSearch" class="mt-1">
-              <div class="row">
-                <div class="col-12">
-                  <div class="d-flex justify-content-between align-items-end flex-wrap mb-2">
-                    <!-- Nội dung -->
-                    <div class="flex-grow-1 me-2">
-                      <label>Nội dung</label>
-                      <input v-model="filter" type="text" class="form-control" placeholder="Tìm kiếm ..." />
-                      <i class="bx bx-search-alt search-icon"></i>
-                    </div>
-                    <div class="flex-grow-0 ms-2">
-                      <div class="d-flex justify-content-between align-items-center flex-wrap">
-                        <div class="flex-grow-1 mt-xl-0 mt-2">
-                          <b-button @click="handleSearch" variant="light" class="btn w-md btn-primary me-2" size="md">
-                            <i class="fas fa-search align-middle me-2"></i>
-                            Tìm kiếm
-                          </b-button>
-                        </div>
-                        <div class="flex-grow-1 mt-xl-0 mt-2">
-                          <b-button @click="clearSearch" variant="light" class="btn w-md btn-secondary me-2" size="md">
-                            <i class="fas fa-redo-alt align-middle me-2"></i>
-                            Làm mới
-                          </b-button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </b-collapse>
           </div>
         </div>
       </div>
@@ -287,6 +253,19 @@ export default {
         <div class="card">
           <div class="card-body">
             <div class="row mb-2">
+              <div class="col-sm-4">
+                <div class="search-box me-2 mb-2 d-inline-block">
+                  <div class="position-relative">
+                    <input
+                        v-model = "filter"
+                        type="text"
+                        class="form-control"
+                        placeholder="Tìm kiếm ..."
+                    />
+                    <i class="bx bx-search-alt search-icon"></i>
+                  </div>
+                </div>
+              </div>
               <div class="col-sm-8">
                 <div class="text-sm-end">
                   <b-modal v-model="showModal" title="Thông tin danh mục" title-class="text-black font-18"
@@ -318,30 +297,6 @@ export default {
                             </div>
                           </div>
                         </div>
-                        <!-- <div class="col-12">
-                                  <div class="mb-3">
-                                    <label class="text-left">Loại danh mục</label>
-                                    <span style="color: red">&nbsp;*</span>
-                                    <multiselect v-model="model.loaiDanhMuc"
-                                                 :options="listLoaiDanhMuc"
-                                                 label="name"
-                                                 selectLabel="Nhấn vào để chọn"
-                                                 deselectLabel="Nhấn vào để xóa"
-                                                 track-by="id"
-                                                 :class="{
-                                        'is-invalid':
-                                          submitted && $v.model.loaiDanhMuc.$error,
-                                      }"
-                                                 placeholder="Chọn loại danh mục"
-                                    ></multiselect>
-                                    <div
-                                        v-if="submitted && !$v.model.loaiDanhMuc.required"
-                                        class="invalid-feedback"
-                                    >
-                                      Loại danh mục không được trống.
-                                    </div>
-                                  </div>
-                                </div> -->
                       </div>
                       <div class="text-end pt-2 mt-3">
                         <b-button variant="light" class="w-md" size="sm" @click="showModal = false">

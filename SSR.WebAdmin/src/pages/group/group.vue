@@ -21,7 +21,6 @@ export default {
         {
           text: "group",
           href:"/group",
-          // active: true,
         },
         {
           text: "Danh sách",
@@ -79,8 +78,6 @@ export default {
       numberOfElement: 1,
       totalRows: 1,
       model: groupModel.baseJson(),
-      //listCoQuan: [],
-      //listRole: [],
       listUser: [],
       pagination: pagingModel.baseJson(),
       itemFilter:{
@@ -181,11 +178,7 @@ export default {
         }
       });
     },
-    /* addCoQuanToModel : function (node, instanceId ){
-      if(node.id){
-        this.model.donVi = {id: node.id, ten: node.label};
-      }
-    }, */
+
     myProvider (ctx) {
       const params = {
         start: ctx.currentPage,
@@ -208,25 +201,7 @@ export default {
         this.loading = false
       }
     },
-    /* async handleExport() {
-      await this.$store
-          .dispatch("exportStore/dsUser")
-          .then((res) => {
-            console.log("Res", res)
-            var blob = new Blob(
-                [this.base64ToArrayBuffer(res.fileContents)],
-                {type: "application/xlsx"}
-            );
-            var link = document.createElement("a");
-            link.href = window.URL.createObjectURL(blob);
-            var fileName = res.fileDownloadName;
-            link.download = fileName;
-            link.click();
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-    }, */
+    
     base64ToArrayBuffer(base64) {
       var binaryString = window.atob(base64);
       var binaryLen = binaryString.length;
@@ -238,10 +213,8 @@ export default {
       return bytes;
     },
   },
-  created(){
-  
+  created(){ 
     this.getListUser();
-    
   },
   mounted() {
 
@@ -255,9 +228,6 @@ export default {
     showModal(status) {
       if (status == false) this.model = groupModel.baseJson();
     },
-    // model() {
-    //   return this.model;
-    // },
     showDeleteModal(val) {
       if (val == false) {
         this.model.id = null;
@@ -269,7 +239,6 @@ export default {
 
 <template>
   <Layout>
-<!--    <PageHeader :title="title" :items="items"/>-->
     <div class="row">
     <div class="col-12">
       <div class="card mb-2">
@@ -279,11 +248,6 @@ export default {
               <h4 class="font-size-18 fw-bold cs-title-page">Nhóm</h4>
             </div>
             <div class="col-md-8 col-12 text-end">
-              <b-button v-b-toggle.collapseSearch variant="light"
-                        class="btn w-md btn-primary-outline me-2" size="sm">
-                <i class="fas fa-caret-down align-middle me-2"></i>
-                Tìm kiếm
-              </b-button>
               <b-button
                   type="button"
                   variant="primary"
@@ -295,45 +259,6 @@ export default {
               </b-button>
             </div>
           </div>
-          <b-collapse id="collapseSearch" class="mt-1">
-            <div class="row">
-              <div class="col-12">
-                <div class="d-flex justify-content-between align-items-end flex-wrap mb-2">
-                  <!-- Nội dung -->
-                  <div class="flex-grow-1 me-2">
-                    <label>Mã đơn vị</label>
-                    <input
-                        size="sm"
-                        type="text"
-                        name="untyped-input"
-                        class="form-control"
-                        v-model="itemFilter.code"
-                        placeholder="Nhập mã đơn vị.."
-                    />
-                  </div>
-                  <!--  Xử lý -->
-                  <div class="flex-grow-0 ms-2">
-                    <div class="d-flex justify-content-between align-items-center flex-wrap">
-                      <div class="flex-grow-1 mt-xl-0 mt-2">
-                        <b-button @click="handleSearch" variant="light"
-                                  class="btn w-md btn-primary me-2" size="md">
-                          <i class="fas fa-search align-middle me-2"></i>
-                          Tìm kiếm
-                        </b-button>
-                      </div>
-                      <div class="flex-grow-1 mt-xl-0 mt-2">
-                        <b-button @click="clearSearch" variant="light"
-                                  class="btn w-md btn-secondary me-2" size="md">
-                          <i class="fas fa-redo-alt align-middle me-2"></i>
-                          Làm mới
-                        </b-button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </b-collapse>
         </div>
       </div>
     </div>
@@ -343,6 +268,19 @@ export default {
         <div class="card">
           <div class="card-body">
             <div class="row mb-2">
+              <div class="col-sm-4">
+                <div class="search-box me-2 mb-2 d-inline-block">
+                  <div class="position-relative">
+                    <input
+                        v-model = "filter"
+                        type="text"
+                        class="form-control"
+                        placeholder="Tìm kiếm ..."
+                    />
+                    <i class="bx bx-search-alt search-icon"></i>
+                  </div>
+                </div>
+              </div>
               <div class="col-sm-8">
                 <div class="text-sm-end">
                   <b-modal

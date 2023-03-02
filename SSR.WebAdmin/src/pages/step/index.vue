@@ -219,16 +219,13 @@ export default {
     model: {
       deep: true,
       handler(val) {
-        // addCoQuanToModel()
-        // this.saveValueToLocalStorage()
+
       }
     },
     showModal(status) {
       if (status == false) this.model = stepModel.baseJson();
     },
-    // model() {
-    //   return this.model;
-    // },
+
     showDeleteModal(val) {
       if (val == false) {
         this.model.id = null;
@@ -250,46 +247,11 @@ export default {
                 <h4 class="font-size-18 fw-bold cs-title-page">Bước thực hiện - Trạng thái</h4>
               </div>
               <div class="col-md-8 col-12 text-end">
-                <b-button v-b-toggle.collapseSearch variant="light" class="btn w-md btn-primary-outline me-2" size="sm">
-                  <i class="fas fa-caret-down align-middle me-2"></i>
-                  Tìm kiếm
-                </b-button>
                 <b-button type="button" variant="primary" class="w-md" size="sm" @click="showModal = true">
                   <i class="mdi mdi-plus me-1"></i> Tạo bước
                 </b-button>
               </div>
             </div>
-            <b-collapse id="collapseSearch" class="mt-1">
-              <div class="row">
-                <div class="col-12">
-                  <div class="d-flex justify-content-between align-items-end flex-wrap mb-2">
-                    <!-- Nội dung -->
-                    <div class="flex-grow-1 me-2">
-                      <label>Tên bước</label>
-                      <input size="sm" type="text" name="untyped-input" class="form-control" v-model="itemFilter.name"
-                        placeholder="Nhập tên.." />
-                    </div>
-                    <!--  Xử lý -->
-                    <div class="flex-grow-0 ms-2">
-                      <div class="d-flex justify-content-between align-items-center flex-wrap">
-                        <div class="flex-grow-1 mt-xl-0 mt-2">
-                          <b-button @click="handleSearch" variant="light" class="btn w-md btn-primary me-2" size="md">
-                            <i class="fas fa-search align-middle me-2"></i>
-                            Tìm kiếm
-                          </b-button>
-                        </div>
-                        <div class="flex-grow-1 mt-xl-0 mt-2">
-                          <b-button @click="clearSearch" variant="light" class="btn w-md btn-secondary me-2" size="md">
-                            <i class="fas fa-redo-alt align-middle me-2"></i>
-                            Làm mới
-                          </b-button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </b-collapse>
           </div>
         </div>
       </div>
@@ -299,31 +261,21 @@ export default {
         <div class="card">
           <div class="card-body">
             <div class="row mb-2">
-              <!--              <div class="col-sm-4">-->
-              <!--                <div class="search-box me-2 mb-2 d-inline-block">-->
-              <!--                  <div class="position-relative">-->
-              <!--                    <input-->
-              <!--                        v-model="filter"-->
-              <!--                        type="text"-->
-              <!--                        class="form-control"-->
-              <!--                        placeholder="Tìm kiếm ..."-->
-              <!--                    />-->
-              <!--                    <i class="bx bx-search-alt search-icon"></i>-->
-              <!--                  </div>-->
-              <!--                </div>-->
-              <!--              </div>-->
+              <div class="col-sm-4">
+                <div class="search-box me-2 mb-2 d-inline-block">
+                  <div class="position-relative">
+                    <input
+                        v-model = "filter"
+                        type="text"
+                        class="form-control"
+                        placeholder="Tìm kiếm ..."
+                    />
+                    <i class="bx bx-search-alt search-icon"></i>
+                  </div>
+                </div>
+              </div>    
               <div class="col-sm-8">
                 <div class="text-sm-end">
-                  <!--                  <b-button-->
-                  <!--                      type="button"-->
-                  <!--                      variant="primary"-->
-                  <!--                      class="w-md"-->
-                  <!--                      size="sm"-->
-                  <!--                      @click="handleExport"-->
-                  <!--                  >-->
-                  <!--                    <i class="mdi mdi-plus me-1"></i> export-->
-                  <!--                  </b-button>-->
-
                   <b-modal v-model="showModal" title="Thông tin tài khoản" title-class="text-black font-18"
                     body-class="p-3" hide-footer centered no-close-on-backdrop size="lg">
                     <form @submit.prevent="handleSubmit" ref="formContainer">

@@ -181,65 +181,7 @@ export default {
               <div class="col-md-4 col-12 d-flex align-items-center">
                 <h4 class="font-size-18 fw-bold text-dark">Quản lý đơn vị</h4>
               </div>
-              <div class="col-md-8 col-12 text-end">
-                <b-button v-b-toggle.collapseSearch variant="light"
-                          class="btn w-md btn-primary-outline me-2" size="sm">
-                  <i class="fas fa-caret-down align-middle me-2"></i>
-                  Tìm kiếm
-                </b-button>
-              </div>
             </div>
-            <b-collapse id="collapseSearch" class="mt-1">
-              <div class="row">
-                <div class="col-12">
-                  <div class="d-flex justify-content-between align-items-end flex-wrap mb-2">
-                    <!-- Nội dung -->
-                    <div class="flex-grow-1 me-2">
-                      <label>Mã đơn vị</label>
-                      <input
-                          size="sm"
-                          type="text"
-                          name="untyped-input"
-                          class="form-control"
-                          v-model="itemFilter.code"
-                          placeholder="Nhập mã đơn vị.."
-                      />
-                    </div>
-                    <!-- Nội dung -->
-                    <div class="flex-grow-1 me-2">
-                      <label>Tên đơn vị</label>
-                      <input
-                          size="sm"
-                          type="text"
-                          name="untyped-input"
-                          class="form-control"
-                          v-model="itemFilter.name"
-                          placeholder="Nhập tên đơn vị..."
-                      />
-                    </div>
-                    <!--  Xử lý -->
-                    <div class="flex-grow-0 ms-2">
-                      <div class="d-flex justify-content-between align-items-center flex-wrap">
-                        <div class="flex-grow-1 mt-xl-0 mt-2">
-                          <b-button @click="handleSearch" variant="light"
-                                    class="btn w-md btn-primary me-2" size="md">
-                            <i class="fas fa-search align-middle me-2"></i>
-                            Tìm kiếm
-                          </b-button>
-                        </div>
-                        <div class="flex-grow-1 mt-xl-0 mt-2">
-                          <b-button @click="clearSearch" variant="light"
-                                    class="btn w-md btn-secondary me-2" size="md">
-                            <i class="fas fa-redo-alt align-middle me-2"></i>
-                            Làm mới
-                          </b-button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </b-collapse>
           </div>
         </div>
       </div>

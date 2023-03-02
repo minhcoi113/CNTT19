@@ -118,11 +118,6 @@ export default {
                 <h4 class="font-size-18 fw-bold cs-title-page">Yêu cầu lỗi</h4>
               </div>
               <div class="col-md-8 col-12 text-end">
-                <b-button v-b-toggle.collapseSearch variant="light"
-                          class="btn w-md btn-primary-outline me-2" size="sm">
-                  <i class="fas fa-caret-down align-middle me-2"></i>
-                  Tìm kiếm
-                </b-button>
                 <b-button
                     variant="primary"
                     type="button"
@@ -134,43 +129,6 @@ export default {
                 </b-button>
               </div>
             </div>
-            <b-collapse id="collapseSearch" class="mt-1">
-              <div class="row">
-                <div class="col-12">
-                  <div class="d-flex justify-content-between align-items-end flex-wrap mb-2">
-                    <!-- Nội dung -->
-                    <div class="flex-grow-1 me-2">
-                      <label>Nội dung</label>
-                      <input
-                          v-model = "filter"
-                          type="text"
-                          class="form-control"
-                          placeholder="Tìm kiếm ..."
-                      />
-                      <i class="bx bx-search-alt search-icon"></i>
-                    </div>
-                    <div class="flex-grow-0 ms-2">
-                      <div class="d-flex justify-content-between align-items-center flex-wrap">
-                        <div class="flex-grow-1 mt-xl-0 mt-2">
-                          <b-button @click="handleSearch" variant="light"
-                                    class="btn w-md btn-primary me-2" size="md">
-                            <i class="fas fa-search align-middle me-2"></i>
-                            Tìm kiếm
-                          </b-button>
-                        </div>
-                        <div class="flex-grow-1 mt-xl-0 mt-2">
-                          <b-button @click="clearSearch" variant="light"
-                                    class="btn w-md btn-secondary me-2" size="md">
-                            <i class="fas fa-redo-alt align-middle me-2"></i>
-                            Làm mới
-                          </b-button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </b-collapse>
           </div>
         </div>
       </div>
@@ -179,6 +137,19 @@ export default {
       <div class="col-12">
         <div class="card">
           <div class="card-body">
+            <div class="col-sm-4">
+                <div class="search-box me-2 mb-2 d-inline-block">
+                  <div class="position-relative">
+                    <input
+                        v-model = "filter"
+                        type="text"
+                        class="form-control"
+                        placeholder="Tìm kiếm ..."
+                    />
+                    <i class="bx bx-search-alt search-icon"></i>
+                  </div>
+                </div>
+              </div>
             <div class="row">
               <div class="col-12">
                 <div class="row mb-3">
@@ -267,33 +238,6 @@ export default {
             </div>
           </div>
         </div>
-<!--        <b-modal-->
-<!--            v-model="showDeleteModal"-->
-<!--            centered-->
-<!--            title="Xóa dữ liệu"-->
-<!--            title-class="font-18"-->
-<!--            no-close-on-backdrop-->
-<!--        >-->
-<!--          <p>-->
-<!--            Dữ liệu xóa sẽ không được phục hồi!-->
-<!--          </p>-->
-<!--          <template #modal-footer>-->
-<!--            <b-button v-b-modal.modal-close_visit-->
-<!--                      size="sm"-->
-<!--                      class="btn btn-outline-info w-md"-->
-<!--                      v-on:click="showDeleteModal = false">-->
-<!--              Đóng-->
-<!--            </b-button>-->
-<!--            <b-button v-b-modal.modal-close_visit-->
-<!--                      size="sm"-->
-<!--                      variant="danger"-->
-<!--                      type="button"-->
-<!--                      class="w-md"-->
-<!--                      v-on:click="handleDelete">-->
-<!--              Xóa-->
-<!--            </b-button>-->
-<!--          </template>-->
-<!--        </b-modal>-->
       </div>
     </div>
   </Layout>
