@@ -62,14 +62,6 @@ export default [{
         }
     },
     {
-        path: '/linh-vuc',
-        name: 'LinhVuc',
-        component: () => import('../pages/linhvuc'),
-        meta: {
-            authRequired: true,
-        }
-    },
-    {
         path: '/group',
         name: 'Group',
         component: () => import('../pages/group/group'),
@@ -147,12 +139,6 @@ export default [{
         component: () => import("../pages/auth/profile"),
     },
     {
-        path: "/chuc-vu",
-        name: "Chức vụ",
-        // meta: {},
-        component: () => import("../pages/chucVu"),
-    },
-    {
         path: "/Label",
         name: "Nhãn",
         // meta: {},
@@ -171,83 +157,10 @@ export default [{
         component: () => import("../pages/yeucauloi"),
     },
     {
-        path: "/trang-thai",
-        name: "Trạng thái",
-        // meta: {},
-        component: () => import("../pages/trangThai"),
-    },
-    {
-        path: "/nhom-chi-tieu",
-        name: "Nhóm chỉ tiêu",
-        // meta: {},
-        component: () => import("../pages/nhomChiTieu"),
-    },
-    {
-        path: "/nhan-vien",
-        name: "employee",
-        // meta: {},
-        component: () => import("../pages/employee"),
-    },
-    {
-        path: "/loai-so-lieu-ke-khai",
-        name: "Loại số liệu kê khai",
-        // meta: {},
-        component: () => import("../pages/loaiSoLieuKeKhai"),
-    },
-    {
-        path: "/hinh-anh",
-        name: "gallery",
-        // meta: {},
-        component: () => import("../pages/gallery"),
-    },
-    {
-        path: "/phong-may",
-        name: "room",
-        // meta: {},
-        component: () => import("../pages/room"),
-    },
-    {
-        path: "/trang-thai",
-        name: "Trạng thái",
-        // meta: {},
-        component: () => import("../pages/trangThai"),
-    },
-    {
         path: "/yeu-cau-loi/:id?",
         name: "Yêu cầu lỗi",
         // meta: {},
         component: () => import("../pages/yeucauloi/create"),
-    },
-
-    {
-        path: "/tat-ca-bai-viet",
-        name: "TatCabaiViet",
-        // meta: {},
-        component: () => import("../pages/post"),
-    },
-    {
-        path: "/tin-tuc-su-kien",
-        name: "tin-tuc-su-kien",
-        // meta: {},
-        component: () => import("../pages/post/postEvents"),
-    },
-    {
-        path: "/tuyen-dung",
-        name: "tuyen-dung",
-        // meta: {},
-        component: () => import("../pages/post/postRecruitment"),
-    },
-    {
-        path: "/phan-loai-nhan-du-an",
-        name: "phan-loai-nhan-du-an",
-        // meta: {},
-        component: () => import("../pages/mauBaoCao"),
-    },
-    {
-        path: "/cam-nghi-nguoi-su-dung",
-        name: "cam-nghi-nguoi-su-dung",
-        // meta: {},
-        component: () => import("../pages/peopleAsk"),
     },
     {
         path: "/du-an",
@@ -280,5 +193,12 @@ export default [{
         meta: {can: 'viewpage-roles' },
         component: () => import("../pages/DuAn/detail"),
     },
-    
+    {
+        path: "/du-an1",
+        name: "Duan",
+        meta: {
+            authRequired: true
+        },
+        component: () => import('../pages/dashboard/index1'),
+    },
 ]

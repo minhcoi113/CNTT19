@@ -222,7 +222,7 @@ export default {
                     size="sm"
                     @click="showModal = true"
                 >
-                  <i class="mdi mdi-plus me-1"></i> Tạo tài khoản
+                  <i class="mdi mdi-plus me-1"></i> Tạo nhóm quyền
                 </b-button>
               </div>
             </div>

@@ -377,7 +377,11 @@ export default {
                         <span  class="badge bg-success ms-1"> {{value.name}}</span>
                       </div>
                     </template>
-                    
+                    <template v-slot:cell(name)="data">&nbsp;&nbsp;
+                      <router-link :to='`../menu`'>
+                        {{data.item.name}}
+                      </router-link>
+                    </template>
                     <template v-slot:cell(process)="data">
                        <router-link :to='`/du-an/chi-tiet/${data.item.id}`'>
                       <button
