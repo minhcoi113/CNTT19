@@ -27,7 +27,7 @@ export default {
           value: "0",
           subText: "VBD",
           color: "white",
-          path: "/tin-tuc-su-kien",
+          path: "/du-an",
           className: "card-vanbanden",
           icon: "mdi-file text-primary"
         },
@@ -77,7 +77,7 @@ export default {
           if (resp.resultCode == CONSTANTS.SUCCESS) {
             this.modelSoLieu = resp.data;
             if (this.modelSoLieu) {
-              this.statData[0].value = this.modelSoLieu.soTinTucSuKien.toString();
+              this.statData[0].value = this.modelSoLieu.soProject.toString();
               this.statData[1].value = this.modelSoLieu.soTuyenDung.toString();
               this.statData[2].value = this.modelSoLieu.soNhanVien.toString();
               this.statData[3].value = this.modelSoLieu.soPhongMay.toString();

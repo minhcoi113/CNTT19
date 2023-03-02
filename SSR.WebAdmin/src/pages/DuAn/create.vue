@@ -429,7 +429,7 @@ export default {
                       </div>
                     </div>    
                   </div>
-                </div>>
+                </div>
               </div>
               <div class="text-end pt-2">
                         <b-button variant="light" class="w-md" @click="showModal = false">
