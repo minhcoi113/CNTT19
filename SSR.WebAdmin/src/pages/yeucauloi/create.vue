@@ -429,7 +429,7 @@ export default {
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Nhãn yêu cầu lỗi </label>
                         <span class="text-danger">*</span>
-                        <treeselect :flat="true" :options="treeView2" :value="modellabel.ParentId" :searchable="true"
+                        <!-- <treeselect :flat="true" :options="treeView2" :value="modellabel.ParentId" :searchable="true"
                           :show-count="true" :default-expand-level="1" :multiple="true" placeholder="Chọn nhãn">
                           <label slot="option-label"
                             slot-scope="{ node, shouldShowCount, count, labelClassName, countClassName }"
@@ -437,7 +437,11 @@ export default {
                             {{ node.label }}
                             <span v-if="shouldShowCount" :class="countClassName">({{ count }})</span>
                           </label>
-                        </treeselect>
+                        </treeselect> -->
+                        <multiselect v-model="model.label" :options="optionsLabel" track-by="id" label="name"
+                          placeholder="Chọn nhãn" deselect-label="Nhấn để xoá" selectLabel="Nhấn enter để chọn"
+                          :multiple="true" selectedLabel="Đã chọn"
+                          :class="{ 'is-invalid': submitted && $v.model.label.$error, }"></multiselect>
                       </div>
                     </div>
                     <div class="col-md-12">
