@@ -378,7 +378,7 @@ export default {
                       </div>
                     </template>
                     <template v-slot:cell(name)="data">&nbsp;&nbsp;
-                      <router-link :to='`../menu`'>
+                      <router-link :to='`/${data.item.slug}/danh-sach-yeu-cau-loi`'>
                         {{data.item.name}}
                       </router-link>
                     </template>

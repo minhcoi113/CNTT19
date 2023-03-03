@@ -193,4 +193,10 @@ export default [{
         meta: {can: 'viewpage-roles' },
         component: () => import("../pages/DuAn/detail"),
     },
+    {
+        path: "/:slug/danh-sach-yeu-cau-loi",
+        name: "Du an",
+        
+        component: () => import("../pages/dashboard/index1"),
+    },
 ]
