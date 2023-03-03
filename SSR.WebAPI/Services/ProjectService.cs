@@ -188,7 +188,7 @@ public class ProjectService : BaseService, IProjectService
             filter = builder.And(filter,
                 builder.Where(x => x.Name.Trim().ToLower().Contains(param.Content.Trim().ToLower())));
         }
-        string sortBy = nameof(Project.ModifiedAt);
+        string sortBy = nameof(Project.CreatedAt);
         result.TotalRows = await _collection.CountDocumentsAsync(filter);
         result.Data = await _collection.Find(filter)
             .Sort(param.SortDesc

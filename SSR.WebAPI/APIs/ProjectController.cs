@@ -131,7 +131,7 @@ namespace SSR.WebAPI.APIs
             catch (ResponseMessageException ex)
             {
                 return Ok(
-                    new ResultMessageResponse().WithCode(ex.ResultCode)
+                    new ResultMessageResponse().WithCode(ex.ResultCode) 
                         .WithMessage(ex.ResultString)
                 );
             }

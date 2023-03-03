@@ -87,9 +87,14 @@ export default {
     this.getUser();
     this.getGroup();
     this.getLabel();
-    if (this.$route.params.id) {
-      this.getById(this.$route.params.id);
-    } else {
+    // if(this.$route.params.id){
+    //   this.getById(this.$route.params.id);
+    // }else{
+    //   this.model = projectModel.baseJson();
+    // }
+    if(this.$route.params.id){
+      this.getBySlug(this.$route.params.id);
+    }else{
       this.model = projectModel.baseJson();
     }
   },
@@ -138,6 +143,13 @@ export default {
     },
     async getById(id) {
       await this.$store.dispatch("projectStore/getById", id).then((res) => {
+        if (res.resultCode === 'SUCCESS') {
+          this.model = res.data
+        }
+      });
+    },
+    async getBySlug(slug) {
+      await this.$store.dispatch("projectStore/getBySlug", slug).then((res) => {
         if (res.resultCode === 'SUCCESS') {
           this.model = res.data
         }
