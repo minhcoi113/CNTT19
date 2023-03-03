@@ -190,8 +190,19 @@ export default {
       this.showDeleteModal = true;
     },
     
-    async handleUpdate(id) {
-      await this.$store.dispatch("projectStore/getById", id).then((res) => {
+    // async handleUpdate(id) {
+    //   await this.$store.dispatch("projectStore/getById", id).then((res) => {
+    //     this.$router.push("")
+    //     if (res.resultCode==='SUCCESS') {
+    //       this.model = projectModel.toJson(res.data);
+    //       this.showModal = true;
+    //     } else {
+    //       this.$store.dispatch("snackBarStore/addNotify", notifyModel.addMessage(res));
+    //     }
+    //   });
+    // },
+    async handleUpdate(slug) {
+      await this.$store.dispatch("projectStore/getBySlug", slug).then((res) => {
         this.$router.push("")
         if (res.resultCode==='SUCCESS') {
           this.model = projectModel.toJson(res.data);
@@ -201,7 +212,6 @@ export default {
         }
       });
     },
-
     myProvider (ctx) {
       const params = {
         start: ctx.currentPage,
@@ -237,6 +247,9 @@ export default {
     },
     handleNewPost(){
       this.$router.push("/tao-project")
+    },
+    handleDetail(id){
+      this.$router.push("/du-an/chi-tiet/" + id)
     },
     FormatJSon(FilterData, JsonData){
       return JsonData.map((v)=>FilterData.map((j=>{
@@ -383,15 +396,16 @@ export default {
                       </router-link>
                     </template>
                     <template v-slot:cell(process)="data">
-                       <router-link :to='`/du-an/chi-tiet/${data.item.id}`'>
+                       <!-- <router-link :to='`/du-an/chi-tiet/${data.item.slug}`'> -->
                       <button
                           type="button"
                           size="sm"
                           class="btn btn-edit btn-sm"
+                          v-on:click="handleDetail(data.item.slug)"
                           >
                         <i class="fas fa-pencil-alt"></i>
                       </button>
-                       </router-link>
+                    <!-- </router-link> -->
                       <button
                           type="button"
                           size="sm"
