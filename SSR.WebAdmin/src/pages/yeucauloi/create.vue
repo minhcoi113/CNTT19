@@ -36,6 +36,8 @@ export default {
       modellabel: labelModel.baseJson(),
       modelproject: projectModel.baseJson(),
       modelstep: stepModel.baseJson(),
+
+
       submitted: false,
       editorConfig: {
         toolbar: {
@@ -277,6 +279,7 @@ export default {
         this.optionsGroup = [];
       });
     },
+
     async getProject() {
       await this.$store.dispatch("projectStore/get").then((res) => {
         if (res.resultCode === 'SUCCESS') {
@@ -312,7 +315,6 @@ export default {
   }
 };
 </script>
-
 <template>
   <Layout>
     <div class="row">
@@ -340,68 +342,73 @@ export default {
             <form @submit.prevent="handleSubmit" ref="formContainer">
               <div class="row">
                 <div class="col-md-7">
-                  <div class="row">
-                    <div class="col-lg-12 col-md-12 col-12">
-                      <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Tiêu đề</label>
-                        <span class="text-danger">*</span>
-                        <input id="validationCustom01" v-model="model.Title" type="text" class="form-control"
-                          placeholder="" :class="{ 'is-invalid': submitted && $v.model.title.$error, }" />
-                        <div v-if="submitted && !$v.model.title.required" class="invalid-feedback">
-                          Tiêu đề không được để trống.
-                        </div>
+                  <div class="col-lg-12 col-md-12 col-12">
+                    <div class="mb-2">
+                      <label class="form-label cs-title-form" for="validationCustom01"> Tiêu đề</label>
+                      <span class="text-danger">*</span>
+                      <input id="validationCustom01" v-model="model.Title" type="text" class="form-control" placeholder=""
+                        :class="{ 'is-invalid': submitted && $v.model.title.$error, }" />
+                      <div v-if="submitted && !$v.model.title.required" class="invalid-feedback">
+                        Tiêu đề không được để trống.
                       </div>
                     </div>
-                    <div class="col-md-12">
-                      <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Mô tả</label>
-                        <span class="text-danger">*</span>
-                        <ckeditor-nuxt v-model="model.Descrption" :config="editorConfig" />
-                        <div v-if="submitted && !$v.model.content.required" class="invalid-feedback">
-                          Mô tả không được để trống.
-                        </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="mb-2">
+                      <label class="form-label cs-title-form" for="validationCustom01"> Mô tả</label>
+                      <span class="text-danger">*</span>
+                      <ckeditor-nuxt v-model="model.Descrption" :config="editorConfig" />
+                      <div v-if="submitted && !$v.model.content.required" class="invalid-feedback">
+                        Mô tả không được để trống.
                       </div>
-                    </div>                   
+                    </div>
                   </div>
                 </div>
-              
-                <div class="col-md-5">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="mb-2">
-                        <label class="text-left">Đơn vị</label>
-                        <treeselect :normalizer="normalizer" :options="treeView" :value="modeldonvi.ParentId"
-                          :searchable="true" :show-count="true" :default-expand-level="1" placeholder="Chọn đơn vị">
-                          <label slot="option-label"
-                            slot-scope="{ node, shouldShowCount, count, labelClassName, countClassName }"
-                            :class="labelClassName">
-                            {{ node.label }}
-                            <span v-if="shouldShowCount" :class="countClassName">({{ count }})</span>
-                          </label>
-                        </treeselect>
+              </div>
+              <div class="col-md-5">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="mb-2">
+                      <label class="text-left">Đơn vị</label>
+                      <treeselect :normalizer="normalizer" :options="treeView" :value="modeldonvi.ParentId"
+                        :searchable="true" :show-count="true" :default-expand-level="1" placeholder="Chọn đơn vị">
+                        <label slot="option-label"
+                          slot-scope="{ node, shouldShowCount, count, labelClassName, countClassName }"
+                          :class="labelClassName">
+                          {{ node.label }}
+                          <span v-if="shouldShowCount" :class="countClassName">({{ count }})</span>
+                        </label>
+                      </treeselect>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="mb-2">
+                      <label class="form-label cs-title-form" for="validationCustom01"> Phân công theo nhóm </label>
+                      <multiselect v-model="modelgroup.name" :options="optionsGroup" track-by="id" label="name"
+                        placeholder="Chọn phân công" deselect-label="Nhấn để xoá" selectLabel="Nhấn enter để chọn"
+                        :multiple="true" selectedLabel="Đã chọn"
+                        :class="{ 'is-invalid': submitted && $v.model.Assignee.$error, }"></multiselect>
+                      <div v-if="submitted && !$v.model.Assignee.required" class="invalid-feedback">
+                        Phân công không được để trống.
                       </div>
                     </div>
-                    <div class="col-md-12">
-                      <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Phân công theo nhóm </label>
-                        <multiselect v-model="modelgroup.name" :options="optionsGroup" track-by="id" label="name"
-                          placeholder="Chọn phân công" deselect-label="Nhấn để xoá" selectLabel="Nhấn enter để chọn"
-                          :multiple="true" selectedLabel="Đã chọn"
-                          :class="{ 'is-invalid': submitted && $v.model.Assignee.$error, }"></multiselect>
-                        <div v-if="submitted && !$v.model.Assignee.required" class="invalid-feedback">
-                          Phân công không được để trống.
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-12">
-                      <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Dự án </label>
-                        <span class="text-danger">*</span>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="mb-2">
+                      <label class="form-label cs-title-form" for="validationCustom01"> Dự án </label>
+                      <span class="text-danger">*</span>
+                      <multiselect v-model="modelproject.name" :options="optionsProject" track-by="id" label="name"
+                        placeholder="Chọn dự án" deselect-label="Nhấn để xoá" selectLabel="Nhấn enter để chọn"
+                        selectedLabel="Đã chọn" :class="{ 'is-invalid': submitted && $v.model.ProjectId.$error, }">
+                      </multiselect>
+                      <div v-if="submitted && !$v.model.category.required" class="invalid-feedback">
+
                         <multiselect v-model="modelproject.name" :options="optionsProject" track-by="id" label="name"
-                          placeholder="Chọn dự án" deselect-label="Nhấn để xoá" selectLabel="Nhấn enter để chọn"
-                          selectedLabel="Đã chọn" :class="{ 'is-invalid': submitted && $v.model.ProjectId.$error, }">
-                        </multiselect>
-                        <div v-if="submitted && !$v.model.category.required" class="invalid-feedback">
+                          placeholder="Chọn thể loại" deselect-label="Nhấn để xoá" selectLabel="Nhấn enter để chọn"
+                          :multiple="true" selectedLabel="Đã chọn"
+                          :class="{ 'is-invalid': submitted && $v.model.ProjectId.$error, }"></multiselect>
+
+                        <div v-if="submitted && !$v.model.ProjectId.required" class="invalid-feedback">
                           Dự án không được để trống.
                         </div>
                       </div>
@@ -438,87 +445,85 @@ export default {
                         <span class="text-danger">*</span>
                         <multiselect v-model="model.StepId" :options="optionsStep" track-by="id" label="name"
                           placeholder="Chọn trạng thái" deselect-label="Nhấn để xoá" selectLabel="Nhấn enter để chọn"
-                         selectedLabel="Đã chọn"
-                          :class="{ 'is-invalid': submitted && $v.model.StepId.$error, }"></multiselect>
+                          selectedLabel="Đã chọn" :class="{ 'is-invalid': submitted && $v.model.StepId.$error, }">
+                        </multiselect>
                       </div>
                     </div>
                   </div>
-                    <div class="col-md-12">
-                      <div class="mb-2">
-                        <div class="text-end">
-                          <b-button type="submit" variant="primary" class="ms-1" style="width: 100%" size="md"
-                            @click="handleSubmit">
-                            Lưu bài viết
-                          </b-button>
-                        </div>
+                  <div class="col-md-12">
+                    <div class="mb-2">
+                      <div class="text-end">
+                        <b-button type="submit" variant="primary" class="ms-1" style="width: 100%" size="md"
+                          @click="handleSubmit">
+                          Lưu bài viết
+                        </b-button>
                       </div>
                     </div>
-                    <div class="col-md-12" v-if="model.id">
-                      <div class="mb-2">
-                        <div class="text-end">
-                          <b-button type="button" variant="danger" class="ms-1" style="width: 100%" size="md"
-                            @click="handleShowDeleteModal">
-                            Xóa bài viết
-                          </b-button>
-                        </div>
+                  </div>
+                  <div class="col-md-12" v-if="model.id">
+                    <div class="mb-2">
+                      <div class="text-end">
+                        <b-button type="button" variant="danger" class="ms-1" style="width: 100%" size="md"
+                          @click="handleShowDeleteModal">
+                          Xóa bài viết
+                        </b-button>
                       </div>
                     </div>
                   </div>
                 </div>
-              </form>
               </div>
-            
-            <b-modal v-model="isShow" title="Thông tin lĩnh vực" title-class="text-black font-18" body-class="p-3"
-              hide-footer hide-header centered no-close-on-backdrop size="md" style="padding: 0px">
-              <Transition name="fade" mode="out-in">
-                <div class="row justify-content-center">
-                  <div class="col-md-12"
-                    style="display: flex; justify-content: center; align-items: center; padding: 40px 40px; flex-direction: column;">
-                    <div class="success-checkmark">
-                      <div class="check-icon">
-                        <span class="icon-line line-tip"></span>
-                        <span class="icon-line line-long"></span>
-                        <div class="icon-circle"></div>
-                        <div class="icon-fix"></div>
-                      </div>
-                    </div>
-                    <h1 v-if="responseData" class="fw-bold fs-3 text-dark text-uppercase">{{ responseData.resultString }}
-                    </h1>
-                    <button type="button" v-on:click="handleHideModal" class="btn btn-modal text-uppercase"
-                      style="width: 200px; margin-top: 20px; border-radius: 30px">Đồng ý
-                    </button>
-                  </div>
-                </div>
-              </Transition>
-            </b-modal>
-
-            <b-modal v-model="showDeleteModal" centered title="Xóa dữ liệu" title-class="font-18" no-close-on-backdrop>
-              <p>
-                Dữ liệu xóa sẽ không được phục hồi!
-              </p>
-              <template #modal-footer>
-                <b-button v-b-modal.modal-close_visit size="sm" class="btn btn-outline-info w-md"
-                  v-on:click="showDeleteModal = false">
-                  Đóng
-                </b-button>
-                <b-button v-b-modal.modal-close_visit size="sm" variant="danger" type="button" class="w-md"
-                  v-on:click="handleDelete">
-                  Xóa
-                </b-button>
-              </template>
-            </b-modal>
+            </form>
           </div>
+
+          <b-modal v-model="isShow" title="Thông tin lĩnh vực" title-class="text-black font-18" body-class="p-3"
+            hide-footer hide-header centered no-close-on-backdrop size="md" style="padding: 0px">
+            <Transition name="fade" mode="out-in">
+              <div class="row justify-content-center">
+                <div class="col-md-12"
+                  style="display: flex; justify-content: center; align-items: center; padding: 40px 40px; flex-direction: column;">
+                  <div class="success-checkmark">
+                    <div class="check-icon">
+                      <span class="icon-line line-tip"></span>
+                      <span class="icon-line line-long"></span>
+                      <div class="icon-circle"></div>
+                      <div class="icon-fix"></div>
+                    </div>
+                  </div>
+                  <h1 v-if="responseData" class="fw-bold fs-3 text-dark text-uppercase">{{ responseData.resultString }}
+                  </h1>
+                  <button type="button" v-on:click="handleHideModal" class="btn btn-modal text-uppercase"
+                    style="width: 200px; margin-top: 20px; border-radius: 30px">Đồng ý
+                  </button>
+                </div>
+              </div>
+            </Transition>
+          </b-modal>
+          <b-modal v-model="showDeleteModal" centered title="Xóa dữ liệu" title-class="font-18" no-close-on-backdrop>
+            <p>
+              Dữ liệu xóa sẽ không được phục hồi!
+            </p>
+            <template #modal-footer>
+              <b-button v-b-modal.modal-close_visit size="sm" class="btn btn-outline-info w-md"
+                v-on:click="showDeleteModal = false">
+                Đóng
+              </b-button>
+              <b-button v-b-modal.modal-close_visit size="sm" variant="danger" type="button" class="w-md"
+                v-on:click="handleDelete">
+                Xóa
+              </b-button>
+            </template>
+          </b-modal>
         </div>
       </div>
-   
-  
+    </div>
+
+
   </Layout>
 </template>
 <style scoped>
 .title-capso {
   font-weight: bold;
   color: #00568C;
-
 }
 
 .content-capso {

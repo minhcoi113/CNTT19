@@ -94,6 +94,9 @@ export default {
     },
   },
   methods: {
+    handleSearch() {
+      this.fnGetList()
+    },
     clearSearch(){
       this.itemFilter.code= null;
       this.itemFilter.name= null;
@@ -216,6 +219,7 @@ export default {
   mounted() {
 
   },
+
   watch: {
     model: {
       deep: true,

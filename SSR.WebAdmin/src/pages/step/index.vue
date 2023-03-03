@@ -70,11 +70,11 @@ export default {
     };
   },
   validations: {
-    model: {
+      model: {
       name: { required },
       description: { required },
       color: { required },
-
+      
     },
   },
   methods: {

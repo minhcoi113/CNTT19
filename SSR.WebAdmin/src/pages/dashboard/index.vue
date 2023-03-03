@@ -87,7 +87,7 @@ export default {
           value: "0",
           subText: "VBD",
           color: "white",
-          path: "/project",
+          path: "/du-an",
           className: "card-vanbanden",
           icon: "mdi-file text-primary"
         },
@@ -183,7 +183,7 @@ export default {
         <div class="page-title-box p-2 mb-2">
           <h4 class="font-size-18 text-dark"> Bảng điều khiển</h4>
           <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item active text-dark"> Chào mừng đến với hệ thống DTI - Đồng Tháp</li>
+            <li class="breadcrumb-item active text-dark"> Chào mừng đến với hệ thống Hỗ trợ người dùng</li>
           </ol>
         </div>
       </div>

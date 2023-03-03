@@ -5,7 +5,7 @@ import appConfig from "@/app.config";
 import {userModel} from "@/models/userModel";
 import {notifyModel} from "@/models/notifyModel";
 import {required, sameAs,minLength,maxLength} from "vuelidate/lib/validators";
-import vue2Dropzone from "vue2-dropzone";
+import VueUploadMultipleImage from 'vue-upload-multiple-image'
 import {mapState} from "vuex";
 
 export default {
@@ -13,11 +13,14 @@ export default {
     title: "Thông tin cá nhân",
     meta: [{ name: "description", content: appConfig.description }]
   },
-  components: { Layout, PageHeader, vueDropzone: vue2Dropzone},
+  components: { Layout, PageHeader, VueUploadMultipleImage},
 
   data() {
     return {
-      url :  process.env.VUE_APP_API_URL + 'files/view/' ,
+      url: `${process.env.VUE_APP_API_URL}files/upload`,
+      url1 :  process.env.VUE_APP_API_URL + 'files/view/' ,
+      apiUrl: process.env.VUE_APP_API_URL,
+      urlView: `${process.env.VUE_APP_API_URL}files/view/`,
       title: "Thông tin cá nhân",
       items: [
         {
@@ -41,14 +44,11 @@ export default {
       submitted: false,
       submittedPass: false,
       showNotifiModal: false,
-      dropzoneOptions: {
-        url: `${process.env.VUE_APP_API_URL}files/upload`,
-        thumbnailWidth: 300,
-        maxFilesize: 30,
-        maxFiles:1,
-        headers: { "My-Awesome-Header": "header value" },
-        addRemoveLinks: true,
-        acceptedFiles: ".jpeg,.jpg,.png,.gif"
+      simpleUpload: {
+        uploadUrl: process.env.VUE_APP_API_URL + "files/upload-ckeditor",
+        headers: {
+          'Authorization': 'optional_token'
+        }
       },
     };
   },
@@ -58,7 +58,25 @@ export default {
     this.getID();
   },
   computed: {
-    ...mapState('userStore', ['reloadAuthUser'])
+    ...mapState('userStore', ['reloadAuthUser']),
+    images() {
+      if(this.model && this.model.avatar){
+        let imgs = [];
+        this.model.avatar.map((value, index) =>{
+          imgs.push({
+            id: index,
+            fileId: value.fileId,
+            path: this.urlView + value.fileId,
+            default: 1,
+            highlight: 1,
+            caption: value.fileName, // Optional
+          })
+        })
+        console.log(imgs);
+        return imgs;
+      }
+      return [];
+    }
   },
   watch:{
     reloadAuthUser(value) {
@@ -181,23 +199,30 @@ export default {
       }
       this.submittedPass = false;
     },
-    removeHinhAnh(file, error, xhr){
-      let fileHinhAnh = JSON.parse( file.xhr.response);
-      if(fileHinhAnh.data && fileHinhAnh.data.id){
-        let idFile = fileHinhAnh.data.id;
-        let resultData =   this.model.avatar.filter(x => {
-          return x.fileId != idFile;
-        })
-        this.model.avatar= resultData;
-      }
-    },
-    addHinhAnh(file, response){
-      if(this.model ){
-        if(this.model.avatar == null || this.model.avatar.length <= 0){
-          this.model.avatar = [];
+    async uploadImageSuccess(formData, index, fileList) {
+      await this.$store.dispatch("fileStore/uploadFile", formData).then((res) => {
+        console.log(res)
+        if (res.resultCode === 'SUCCESS') {
+          var data = res.data;
+          if(this.model.avatar == null)
+            this.model.avatar = [];
+          this.model.avatar = [...this.model.avatar,  {fileId: data.id, fileName: data.fileName}]
+          return;
         }
-        let fileSuccess = response.data;
-        this.model.avatar = {fileId: fileSuccess.id,  name: fileSuccess.fileName};
+      });
+    },
+    beforeRemove (index, done, fileList) {
+      console.log(fileList);
+      var fileId = fileList.find(x => x.id == index);
+      var r = confirm("Xóa hình ảnh")
+      if (r == true) {
+        if(this.model && this.model.avatar && this.model.avatar.length > 0 && fileId){
+          this.model.avatar = this.model.avatar.filter(x => x.fileId != fileId.fileId);
+          console.log(this.model.avatar)
+        }
+        done();
+      } else {
+        console.log(1)
       }
     },
     logoutUser() {
@@ -240,13 +265,11 @@ export default {
               <div class="col-sm-12">
                 <div class="avatar-md profile-user-wid mb-2">
                   <div v-if="model.avatar != null">
-                    <b-img
-                        :src=" url + `${model.avatar.fileId}`"
-                        alt
-                        class="img-thumbnail rounded-circle"
-                        style="height: 72px ; width: 72px"
+                    <img 
+                      :src="url +`${model.avatar.fileId}`"
+                      class="img-thumbnail rounded-circle"
+                      style="height: 72px ; width: 72px"
                     >
-                    </b-img>
                   </div>
                   <div v-else>
                     <img
@@ -256,27 +279,10 @@ export default {
                         src="@/assets/logo.jpeg"
                     />
                   </div>
-
                 </div>
-
                 <h5 class="font-size-15 text-dark fw-bold">{{model.lastName+" "+model.firstName}}</h5>
                 <p class="mb-0 text-dark">@{{model.userName}}</p>
               </div>
-
-              <!--              <div class="col-sm-6">-->
-              <!--                <div class="pt-4">-->
-              <!--                  <div class="row">-->
-              <!--                    <div class="col-6">-->
-              <!--                      <h5 class="font-size-15">125</h5>-->
-              <!--                      <p class="text-muted mb-0">Projects</p>-->
-              <!--                    </div>-->
-              <!--                    <div class="col-6">-->
-              <!--                      <h5 class="font-size-15">$1245</h5>-->
-              <!--                      <p class="text-muted mb-0">Revenue</p>-->
-              <!--                    </div>-->
-              <!--                  </div>-->
-              <!--                </div>-->
-              <!--              </div>-->
             </div>
           </div>
         </div>
@@ -285,9 +291,7 @@ export default {
           <div class="card-body">
             <h4 class="card-title mb-4">Thông tin cá nhân</h4>
 
-            <!--            <p-->
-            <!--                class="text-muted mb-4"-->
-            <!--            >Hi I'm Cynthia Price,has been the industry's standard dummy text To an English person, it will seem like simplified English, as a skeptical Cambridge.</p>-->
+         
             <div class="table-responsive ">
               <table class="table table-nowrap mb-0">
                 <tbody>
@@ -310,7 +314,7 @@ export default {
                 <tr>
                   <th scope="row">Quyền :</th>
                   <td>
-                    <div v-for="item in model.role" v-bind:key="item.id">- {{item.name}}</div></td>
+                    <div v-for="item in model.role" v-bind:key="item.id">{{item.name}}</div></td>
                 </tr>
                 </tbody>
               </table>
@@ -321,11 +325,6 @@ export default {
       </div>
 
       <div class="col-xl-8">
-        <!--        <div class="row">-->
-        <!--          <div v-for="stat of statData" :key="stat.icon" class="col-md-4">-->
-        <!--            <Stat :icon="stat.icon" :title="stat.title" :value="stat.value" />-->
-        <!--          </div>-->
-        <!--        </div>-->
         <div class="col-xl-12">
           <div class="card">
             <div class="card-body">
@@ -427,7 +426,7 @@ export default {
                           <div v-if="model.avatar != null">
                             <b-img
                                 style="height: 200px ; width: 300px"
-                                :src=" url + `${model.avatar.fileId}`">
+                                :src=" url1 + `${model.avatar.fileId}`">
                             </b-img>
                           </div>
                           <div v-else>
@@ -442,19 +441,15 @@ export default {
                       <div class="col-6" >
                         <label class="text-left">Chọn ảnh </label>
                         <input type="hidden" v-model="model.id"/>
-                        <vue-dropzone
-                            id="myVueDropzone"
-                            ref="myVueDropzone"
-                            :use-custom-slot="true"
-                            :options="dropzoneOptions"
-                            v-on:vdropzone-removed-file="removeHinhAnh"
-                            v-on:vdropzone-success="addHinhAnh"
-                        >
-                          <div class="dropzone-custom-content">
-                            <i class="display-1 text-muted bx bxs-cloud-upload " style="font-size: 70px"></i>
-                            <h4>Kéo thả hình ảnh hoặc bấm vào để tải hình ảnh</h4>
-                          </div>
-                        </vue-dropzone>
+                        <vue-upload-multiple-image
+                            @upload-success="uploadImageSuccess"
+                            @before-remove="beforeRemove"
+                            :data-images="images"
+                            idUpload="myIdUpload"
+                            editUpload="myIdEdit"
+                            :showEdit="false"
+                            class="cs-upload-image"
+                        ></vue-upload-multiple-image>
                       </div>
                     </div>
                   </form>

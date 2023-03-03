@@ -10,7 +10,6 @@ import {CONSTANTS} from "@/helpers/constants";
 import {labelModel} from "@/models/labelModel";
 import {userModel} from "@/models/userModel";
 import {groupModel} from "@/models/groupModel";
-
 export default {
   page: {
     title: "Quản lý dự án",
@@ -252,6 +251,11 @@ export default {
     handleDetail(id){
       this.$router.push("/du-an/chi-tiet/" + id)
     },
+    FormatJSon(FilterData, JsonData){
+      return JsonData.map((v)=>FilterData.map((j=>{
+        return v[j];
+      })))
+    }
   },
 };
 </script>
@@ -282,7 +286,9 @@ export default {
                 >
                   <i class="mdi mdi-plus me-1"></i> Thêm dự án
                 </b-button>
-                <b-collapse id="collapseSearch" class="mt-1">
+            </div>
+          </div>
+          <b-collapse id="collapseSearch" class="mt-1">
               <div class="row">
                 <div class="col-12">
                   <div class="d-flex justify-content-between align-items-end flex-wrap mb-2">
@@ -319,8 +325,6 @@ export default {
                 </div>
               </div>
             </b-collapse>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -386,7 +390,11 @@ export default {
                         <span  class="badge bg-success ms-1"> {{value.name}}</span>
                       </div>
                     </template>
-                    
+                    <template v-slot:cell(name)="data">&nbsp;&nbsp;
+                      <router-link :to='`/${data.item.slug}/danh-sach-yeu-cau-loi`'>
+                        {{data.item.name}}
+                      </router-link>
+                    </template>
                     <template v-slot:cell(process)="data">
                        <!-- <router-link :to='`/du-an/chi-tiet/${data.item.slug}`'> -->
                       <button
@@ -405,9 +413,6 @@ export default {
                           v-on:click="handleShowDeleteModal(data.item.id)">
                         <i class="fas fa-trash-alt"></i>
                       </button>
-                   
-
-
                     </template>
                   </b-table>
                   <template v-if="isBusy">
