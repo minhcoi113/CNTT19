@@ -10,7 +10,7 @@ import {notifyModel} from "@/models/notifyModel";
 
 export default {
   page: {
-    title: "Soạn bài viết",
+    title: "Thông tin chi tiết",
     meta: [{name: "description", content: appConfig.description}]
   },
   components: {
@@ -20,7 +20,7 @@ export default {
   },
   data() {
     return {
-      title: "Soạn bài viết",
+      title: "Thông tin chi tiết",
       model: projectModel.baseJson(),
       submitted: false,
       editorConfig: {
@@ -92,8 +92,13 @@ export default {
     this.getUser();
     this.getGroup();
     this.getLabel();
+    // if(this.$route.params.id){
+    //   this.getById(this.$route.params.id);
+    // }else{
+    //   this.model = projectModel.baseJson();
+    // }
     if(this.$route.params.id){
-      this.getById(this.$route.params.id);
+      this.getBySlug(this.$route.params.id);
     }else{
       this.model = projectModel.baseJson();
     }
@@ -143,6 +148,13 @@ export default {
     },
     async getById(id) {
       await this.$store.dispatch("projectStore/getById", id).then((res) => {
+        if (res.resultCode === 'SUCCESS') {
+          this.model = res.data
+        }
+      });
+    },
+    async getBySlug(id) {
+      await this.$store.dispatch("projectStore/getBySlug", id).then((res) => {
         if (res.resultCode === 'SUCCESS') {
           this.model = res.data
         }
@@ -273,7 +285,7 @@ export default {
           <div class="card-body">
             <div class="row">
               <div class="col-md-4 col-12 d-flex align-items-center">
-                <h4 class="font-size-18 fw-bold cs-title-page">Soạn bài viết</h4>
+                <h4 class="font-size-18 fw-bold cs-title-page">Thông tin chi tiết</h4>
               </div>
               <div class="col-md-8 col-12 text-end">
                 <b-button
@@ -326,6 +338,7 @@ export default {
                         <label class="form-label cs-title-form" for="validationCustom01">Mô tả</label>
                         <span class="text-danger">*</span>
                         <textarea
+                        rows = "8"
                             id="validationCustom01"
                             v-model="model.description"
                             type="text"
