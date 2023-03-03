@@ -205,4 +205,10 @@ export default [{
         
         component: () => import("../pages/dashboard/index1"),
     },
+    {
+        path: "/thong-ke",
+        name: "ThongKe",
+        
+        component: () => import("../pages/thongke"),
+    },
 ]
