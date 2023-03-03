@@ -3,7 +3,7 @@ import { required } from "vuelidate/lib/validators";
 import appConfig from "@/app.config";
 import Vue from "vue";
 
-import {VueRecaptcha} from "vue-recaptcha";
+import { VueRecaptcha } from "vue-recaptcha";
 import LetterCube from "@/components/LetterCube";
 
 /**
@@ -15,9 +15,9 @@ export default {
     meta: [{ name: "description", content: appConfig.description }],
   },
   // eslint-disable-next-line vue/no-unused-components
-  components: {VueRecaptcha, LetterCube},
+  components: { VueRecaptcha, LetterCube },
   validations: {
-    model:{
+    model: {
       userName: {
         required,
       },
@@ -35,11 +35,11 @@ export default {
       authError: null,
       tryingToLogIn: false,
       isAuthError: false,
-      modelAuth:{
+      modelAuth: {
         isAuthError: false,
         message: null
       },
-      model:{
+      model: {
         userName: "",
         password: ""
       },
@@ -47,17 +47,17 @@ export default {
     };
   },
   computed: {
-    isVanThu(){
+    isVanThu() {
       return this.vanThuTruong == this.model.userName;
     }
   },
   methods: {
-    submit(response){
+    submit(response) {
       this.capcha = response;
     },
     async Login(e) {
       e.preventDefault();
-      if(!this.capcha && process.env.VUE_APP_ENV != 'development' && !this.isVanThu) {
+      if (!this.capcha && process.env.VUE_APP_ENV != 'development' && !this.isVanThu) {
         this.modelAuth.isAuthError = true;
         this.modelAuth.message = "Xác nhận đã nhập mã captcha";
         return;
@@ -69,7 +69,7 @@ export default {
       } else {
         let loader = this.$loading.show({
           container: this.$refs.formContainer,
-        },{
+        }, {
           default: this.$createElement(LetterCube),
         });
         // await setTimeout(function () {
@@ -102,9 +102,9 @@ export default {
           }
 
         })
-            .finally(() => {
-              loader.hide();
-            });
+          .finally(() => {
+            loader.hide();
+          });
       }
       this.submitted = false;
     },
@@ -113,152 +113,118 @@ export default {
 </script>
 
 <template>
-  <div class="account-pages">
-    <div class="row justify-content-center align-items-center login-box" >
-      <div class="col-md-6 col-lg-6 col-xl-4 bg-login-box d-flex justify-content-center align-items-center" >
-        <div>
-          <div class="text-primary text-center">
-            <a href="/" class="logo-login mb-1">
-              <img
-                  src="@/assets/images/logo_1.png"
-                  alt="logo"
-                  class="d-inline-block"
-              />
-            </a>
-            <h5 class="text-uppercase title-login mt-4"> CYBERCORE </h5>
-<!--            <p class="province">ĐỒNG THÁP</p>-->
-            <p class="text-white-50 fs-5">Hệ thống quản trị nội dung</p>
-          </div>
-          <div class="px-3">
-            <b-alert
-                v-model="modelAuth.isAuthError"
-                variant="danger"
-                class="mt-4"
-                dismissible
-            >
-              {{ modelAuth.message }}
-            </b-alert>
-            <b-form
-                @submit.prevent="Login"  ref="formContainer"
-                class="form-horizontal mt-4"
-            >
-              <b-form-group
-                  id="input-group-1"
-                  label="Tài khoản"
-                  label-for="input-1"
-                  class="mb-3 text-white"
-                  label-class="form-label"
-              >
-                <b-form-input
-                    id="input-1"
-                    v-model="model.userName"
-                    type="text"
-                    placeholder="Nhập tài khoản"
-                    :class="{ 'is-invalid': submitted && $v.model.userName.$error }"
-                    class="cs-form-input-login"
-                ></b-form-input>
-                <div
-                    v-if="submitted && $v.model.userName.$error"
-                    class="invalid-feedback"
-                >
-                  <span v-if="!$v.model.userName.required">Tài khoản không được trống.</span>
-                </div>
-              </b-form-group>
+    <div class="account-pages">
+        <div class="row justify-content-left align-items-left login-box">
+          <div class="col-md-6 col-lg-6 col-xl-4 bg-login-box d-flex justify-content-center align-items-center">
+            <div>
 
-              <b-form-group
-                  id="input-group-2"
-                  label="Mật khẩu"
-                  label-for="input-2"
-                  class="mb-3 text-white"
-                  label-class="form-label"
-              >
-                <b-form-input
-                    id="input-2"
-                    v-model="model.password"
-                    type="password"
-                    placeholder="Nhập mật khẩu"
-                    :class="{ 'is-invalid': submitted && $v.model.password.$error }"
-                    class="cs-form-input-login"
-                ></b-form-input>
-                <div
-                    v-if="submitted && !$v.model.password.required"
-                    class="invalid-feedback"
-                >
-                  Mật khẩu không được trống.
-                </div>
-              </b-form-group>
-
-              <div class="form-group row">
-                <!--              <div class="col-sm-6">-->
-                <!--                <div class="form-check">-->
-                <!--                  <input-->
-                <!--                      type="checkbox"-->
-                <!--                      class="form-check-input"-->
-                <!--                      id="customControlInline"-->
-                <!--                  />-->
-                <!--                  <label-->
-                <!--                      class="form-check-label text-white"-->
-                <!--                      for="customControlInline"-->
-                <!--                  >Ghi nhớ tài khoản</label-->
-                <!--                  >-->
-                <!--                </div>-->
-                <!--              </div>-->
-                <div class="my-2 d-flex justify-content-center align-items-center capcha-box">
-                  <vue-recaptcha v-if="!isVanThu"  @verify="submit" sitekey="6LeBwrgjAAAAAA4k6n8a21lzx_VqcfWR78yVnHhA"></vue-recaptcha>
-                </div>
-                <div class="col-sm-12 text-center">
-                  <b-button type="submit" class="btn-submit-login text-uppercase fw-bold"
-                  > Đăng nhập</b-button
-                  >
-                </div>
+              <div class="text-primary text-center">
+                <a href="/" class="logo-login mb-1">
+                  <img src="@/assets/images/logo.png" alt="logo" class="d-inline-block" />
+                  <h2 class="text-center" style="color:black">Chào mừng !</h2>
+                    <p class="font-size-18 text-center" style="color:black">Đến với hệ thống hỗ trợ yêu cầu người dùng.</p>
+                </a>
               </div>
 
-              <!--                  <div class="mt-2 mb-0 row">-->
-              <!--                    <div class="col-12 mt-4">-->
-              <!--                      <router-link to="/forgot-password">-->
-              <!--                        <i class="mdi mdi-lock"></i> Forgot your password?-->
-              <!--                      </router-link>-->
-              <!--                    </div>-->
-              <!--                  </div>-->
-            </b-form>
-          </div>
+              <div class="px-3">
+                <b-alert v-model="modelAuth.isAuthError" variant="danger" class="mt-4" dismissible>
+                  {{ modelAuth.message }}
+                </b-alert>
+                <b-form @submit.prevent="Login" ref="formContainer" class="form-horizontal mt-4">
+                  <b-form-group id="input-group-1" label="Tài khoản" label-for="input-1" class="mb-3 text-white"
+                    label-class="form-label">
+                    <b-form-input id="input-1" v-model="model.userName" type="text" placeholder="Nhập tài khoản"
+                      :class="{ 'is-invalid': submitted && $v.model.userName.$error }"
+                      class="cs-form-input-login"></b-form-input>
+                    <div v-if="submitted && $v.model.userName.$error" class="invalid-feedback">
+                      <span v-if="!$v.model.userName.required">Tài khoản không được trống.</span>
+                    </div>
+                  </b-form-group>
 
-<!--          <p class="mb-0 text-center text-white">-->
-<!--            ©-->
-<!--            {{ new Date().getFullYear() }}-->
-<!--            -  Trường Đại học Đồng Tháp-->
-<!--          </p>-->
-          <!--            <p>-->
-          <!--              Don't have an account ?-->
-          <!--              <router-link to="/register" class="fw-medium text-primary"-->
-          <!--              >Signup now</router-link-->
-          <!--              >-->
-          <!--            </p>-->
+                  <b-form-group id="input-group-2" label="Mật khẩu" label-for="input-2" class="mb-3 text-white"
+                    label-class="form-label">
+                    <b-form-input id="input-2" v-model="model.password" type="password" placeholder="Nhập mật khẩu"
+                      :class="{ 'is-invalid': submitted && $v.model.password.$error }"
+                      class="cs-form-input-login"></b-form-input>
+                    <div v-if="submitted && !$v.model.password.required" class="invalid-feedback">
+                      Mật khẩu không được trống.
+                    </div>
+                  </b-form-group>
+
+                  <div class="form-group row">
+                    <!--              <div class="col-sm-6">-->
+                    <!--                <div class="form-check">-->
+                    <!--                  <input-->
+                    <!--                      type="checkbox"-->
+                    <!--                      class="form-check-input"-->
+                    <!--                      id="customControlInline"-->
+                    <!--                  />-->
+                    <!--                  <label-->
+                    <!--                      class="form-check-label text-white"-->
+                    <!--                      for="customControlInline"-->
+                    <!--                  >Ghi nhớ tài khoản</label-->
+                    <!--                  >-->
+                    <!--                </div>-->
+                    <!--              </div>-->
+                    <div class="my-2 d-flex justify-content-center align-items-center capcha-box">
+                      <vue-recaptcha v-if="!isVanThu" @verify="submit"
+                        sitekey="6LeBwrgjAAAAAA4k6n8a21lzx_VqcfWR78yVnHhA"></vue-recaptcha>
+                    </div>
+                    <div class="col-sm-12 text-center">
+                          <b-button type="submit" class="btn-submit-login text-uppercase fw-bold"> Đăng nhập</b-button>
+                        </div>
+                  </div>
+
+                  <!--                  <div class="mt-2 mb-0 row">-->
+                  <!--                    <div class="col-12 mt-4">-->
+                  <!--                      <router-link to="/forgot-password">-->
+                  <!--                        <i class="mdi mdi-lock"></i> Forgot your password?-->
+                  <!--                      </router-link>-->
+                  <!--                    </div>-->
+                  <!--                  </div>-->
+                </b-form>
+              </div>
+
+              <!--          <p class="mb-0 text-center text-white">-->
+              <!--            ©-->
+              <!--            {{ new Date().getFullYear() }}-->
+              <!--            -  Trường Đại học Đồng Tháp-->
+              <!--          </p>-->
+              <!--            <p>-->
+              <!--              Don't have an account ?-->
+              <!--              <router-link to="/register" class="fw-medium text-primary"-->
+              <!--              >Signup now</router-link-->
+              <!--              >-->
+              <!--            </p>-->
+            </div>
+          </div>
+          <!-- end col -->
         </div>
-      </div>
-      <!-- end col -->
     </div>
-  </div>
+
+
 </template>
 
 <style lang="scss" >
-
-.account-pages{
-  background-image: url("~@/assets/images/bg/background-login.png");
+.account-pages {
+  background-image: url("~@/assets/images/bg/background.png");
   background-repeat: no-repeat;
   background-size: cover;
   height: 100vh;
   overflow-x: hidden;
-  & .login-box{
+
+  & .login-box {
     height: 100% !important;
-    & .bg-login-box{
+
+    & .bg-login-box {
       //height: 100%;
       background: transparent;
       margin: auto;
       padding: 20px;
       border-radius: 10px;
       box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-      & .title-login{
+
+      & .title-login {
         font-family: 'refault' !important;
         font-size: 28px;
         font-weight: 700;
@@ -269,36 +235,43 @@ export default {
         //-webkit-text-fill-color: transparent;
         //-webkit-text-stroke: 1px #1d6bb8;
 
-        @media (max-width: 936px){
+        @media (max-width: 936px) {
           font-size: 24px;
         }
-        @media (max-width: 768px){
+
+        @media (max-width: 768px) {
           font-size: 28px;
         }
-        @media (max-width: 425px){
+
+        @media (max-width: 425px) {
           font-size: 24px;
         }
-        @media (max-width: 375px){
+
+        @media (max-width: 375px) {
           font-size: 18px;
         }
-        @media (max-width: 320px){
+
+        @media (max-width: 320px) {
           font-size: 16px;
         }
       }
-      & .province{
+
+      & .province {
         font-family: inherit;
         font-weight: 600;
         font-size: 18px;
         color: #fff;
       }
-      & .capcha-box{
-        & div{
-          & div{
-            @media (max-width: 320px){
+
+      & .capcha-box {
+        & div {
+          & div {
+            @media (max-width: 320px) {
               width: 240px !important;
             }
+
             & iframe {
-              @media (max-width: 320px){
+              @media (max-width: 320px) {
                 width: 100%;
               }
             }
@@ -309,27 +282,29 @@ export default {
     }
   }
 }
-.rc-anchor-content{
-  @media (max-width: 320px){
+
+.rc-anchor-content {
+  @media (max-width: 320px) {
     display: none;
   }
 }
 
-.logo-login>img{
+.logo-login>img {
   height: 70px !important;
 }
 
-.cs-form-input-login{
+.cs-form-input-login {
   height: 45px;
   background: #171535 !important;
   border: 1px solid #a7a7fc !important;
   color: #fff !important;
 }
-.cs-form-input-login:hover{
+
+.cs-form-input-login:hover {
   border: 1px solid #10758f !important;
 }
 
-.btn-submit-login{
+.btn-submit-login {
   height: 45px;
   width: fit-content;
   padding: 0px 30px;
@@ -355,7 +330,7 @@ export default {
 .btn-submit-login:after {
   content: "\f061";
   color: #e74c3c;
-  font-family:  'Font Awesome 5 Free';
+  font-family: 'Font Awesome 5 Free';
   display: inline-block;
   position: relative;
   right: -55px;
@@ -366,6 +341,4 @@ export default {
   margin: -5px 15px;
   right: 0px;
 }
-
-
 </style>
