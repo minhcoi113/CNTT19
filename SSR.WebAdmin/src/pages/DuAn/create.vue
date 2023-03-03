@@ -7,7 +7,7 @@ import VueUploadMultipleImage from 'vue-upload-multiple-image'
 import { required } from "vuelidate/lib/validators";
 import urlSlug from 'url-slug'
 import { notifyModel } from "@/models/notifyModel";
-
+import { labelModel } from "@/models/labelModel";
 
 export default {
   page: {
@@ -18,12 +18,15 @@ export default {
     Layout,
     Multiselect,
     VueUploadMultipleImage,
-    // 'ckeditor-nuxt': () => { return import('@blowstack/ckeditor-nuxt')  },
+    'ckeditor-nuxt': () => { return import('@blowstack/ckeditor-nuxt') },
   },
   data() {
     return {
-      title: "Soạn bài viết",
+      title: "Thêm dự án",
       model: projectModel.baseJson(),
+      modellabel: labelModel.baseJson(),
+
+      selected: [],
       submitted: false,
       editorConfig: {
         toolbar: {
@@ -54,7 +57,17 @@ export default {
       apiUrl: process.env.VUE_APP_API_URL,
       url: `${process.env.VUE_APP_API_URL}files/upload`,
       urlView: `${process.env.VUE_APP_API_URL}files/view/`,
-
+      dropzoneOptions: {
+        url: `${process.env.VUE_APP_API_URL}files/upload`,
+        thumbnailWidth: 300,
+        thumbnailHeight: 160,
+        maxFiles: 1,
+        maxFilesize: 30,
+        headers: { "My-Awesome-Header": "header value" },
+        addRemoveLinks: true,
+        acceptedFiles: ".pdf",
+        dropzoneClassName: "dropzonevue-box"
+      },
       optionsUser: [],
       optionsGroup: [],
       optionsLabel: [],
@@ -76,25 +89,18 @@ export default {
     model: {
       name: { required },
       description: { required },
-      //member: {required},
-      //group: {required},
-      label: { required },
-      slug: { required }
+      slug: { required },
     },
   },
 
   async created() {
     this.getUser();
     this.getGroup();
+    this.GetNhan();
     this.getLabel();
-    // if(this.$route.params.id){
-    //   this.getById(this.$route.params.id);
-    // }else{
-    //   this.model = projectModel.baseJson();
-    // }
-    if(this.$route.params.id){
-      this.getBySlug(this.$route.params.id);
-    }else{
+    if (this.$route.params.id) {
+      this.getById(this.$route.params.id);
+    } else {
       this.model = projectModel.baseJson();
     }
   },
@@ -141,15 +147,9 @@ export default {
       this.responseData.resultCode = res.resultCode;
       this.responseData.resultString = res.resultString;
     },
+
     async getById(id) {
       await this.$store.dispatch("projectStore/getById", id).then((res) => {
-        if (res.resultCode === 'SUCCESS') {
-          this.model = res.data
-        }
-      });
-    },
-    async getBySlug(slug) {
-      await this.$store.dispatch("projectStore/getBySlug", slug).then((res) => {
         if (res.resultCode === 'SUCCESS') {
           this.model = res.data
         }
@@ -177,7 +177,10 @@ export default {
             // Update model
             await this.$store.dispatch("projectStore/update", this.model).then((res) => {
               if (res.resultCode === 'SUCCESS') {
-                this.fnGetList()
+                this.fnGetList(),
+                  this.getUser(),
+                  this.getGroup(),
+                  this.GetNhan()
               }
               this.$store.dispatch("snackBarStore/addNotify", notifyModel.addMessage(res))
             });
@@ -185,7 +188,10 @@ export default {
             // Create model
             await this.$store.dispatch("projectStore/create", this.model).then((res) => {
               if (res.resultCode === 'SUCCESS') {
-                this.fnGetList()
+                this.fnGetList(),
+                  this.getUser(),
+                  this.getGroup(),
+                  this.GetNhan()
               }
               this.$store.dispatch("snackBarStore/addNotify", notifyModel.addMessage(res))
             });
@@ -255,6 +261,12 @@ export default {
         this.optionsLabel = [];
       });
     },
+    async GetNhan() {
+      await this.$store.dispatch("labelStore/getTree").then((res) => {
+        this.treeView = res.data;
+        console.log("log tree", this.treeView)
+      })
+    },
     handleShowDeleteModal() {
       this.showDeleteModal = true;
     },
@@ -281,7 +293,7 @@ export default {
           <div class="card-body">
             <div class="row">
               <div class="col-md-4 col-12 d-flex align-items-center">
-                <h4 class="font-size-18 fw-bold cs-title-page">Thêm dự án</h4>
+                <h4 class="font-size-18 fw-bold cs-title-page">Soạn bài viết</h4>
               </div>
               <div class="col-md-8 col-12 text-end">
                 <b-button variant="primary" type="button" class="btn w-md btn-primary" @click="$router.go(-1)" size="sm">
@@ -304,7 +316,7 @@ export default {
                   <div class="row">
                     <div class="col-lg-12 col-md-12 col-12">
                       <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Name</label>
+                        <label class="form-label cs-title-form" for="validationCustom01"> Tên dự án </label>
                         <span class="text-danger">*</span>
                         <input id="validationCustom01" v-model="model.name" type="text" class="form-control"
                           placeholder="" :class="{ 'is-invalid': submitted && $v.model.name.$error, }" />
@@ -315,12 +327,9 @@ export default {
                     </div>
                     <div class="col-md-12">
                       <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01">Mô tả</label>
+                        <label class="form-label cs-title-form" for="validationCustom01"> Mô tả</label>
                         <span class="text-danger">*</span>
-                        <textarea rows="8" id="validationCustom01" v-model="model.description" type="text"
-                          class="form-control" placeholder=""
-                          :class="{ 'is-invalid': submitted && $v.model.description.$error, }">
-                            </textarea>
+                        <ckeditor-nuxt v-model="model.description" :config="editorConfig" />
                         <div v-if="submitted && !$v.model.description.required" class="invalid-feedback">
                           Mô tả không được để trống.
                         </div>
@@ -329,7 +338,7 @@ export default {
 
                     <div class="col-lg-12 col-md-12 col-12">
                       <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Slug</label>
+                        <label class="form-label cs-title-form" for="validationCustom01"> Đường dẫn </label>
                         <span class="text-danger">*</span>
                         <input id="validationCustom01" v-model="model.slug" type="text" class="form-control"
                           placeholder="" :class="{ 'is-invalid': submitted && $v.model.slug.$error, }" />
@@ -355,7 +364,7 @@ export default {
                     </div>
                     <div class="col-md-12">
                       <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Group</label>
+                        <label class="form-label cs-title-form" for="validationCustom01"> Nhóm </label>
                         <multiselect v-model="model.group" :options="optionsGroup" :multiple="true" track-by="id"
                           label="name" placeholder="Chọn nhóm" deselect-label="Nhấn để xoá"
                           selectLabel="Nhấn enter để chọn" selectedLabel="Đã chọn"
@@ -372,15 +381,7 @@ export default {
                           :class="{ 'is-invalid': submitted && $v.model.member.$error, }"></multiselect>
                       </div>
                     </div>
-                    <!-- <div class="col-md-12">
-                      <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Label</label>
-                        <multiselect v-model="model.label" :options="optionsLabel" track-by="id" label="name"
-                          placeholder="Chọn thẻ" deselect-label="Nhấn để xoá" selectLabel="Nhấn enter để chọn"
-                          selectedLabel="Đã chọn" :multiple="true"
-                          :class="{ 'is-invalid': submitted && $v.model.label.$error, }"></multiselect>
-                      </div>
-                    </div> -->
+
                   </div>
                 </div>
               </div>
