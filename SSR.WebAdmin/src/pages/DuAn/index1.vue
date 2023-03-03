@@ -43,7 +43,7 @@ export default {
       },
       items: [
         {
-          text: "project",
+          text: "Dự án",
           href:"/du-an",
           // active: true,
         },
@@ -59,27 +59,30 @@ export default {
           class: 'cs-text-center',
           sortable: false,
           thClass: 'hidden-sortable',
-          thStyle: {width: '30px', minWidth: '30px'}
+          thStyle: {width: '40px', minWidth: '40px'}
         },
         {
           key: "name",
-          label: "Tên",
+          label: "Tên dự án",
           sortable: true,
+          thClass: 'hidden-sortable',
+          thStyle: {width: '400px', minWidth: '100px'},
         },
         {
           key: "description",
           label: "Mô tả",
-          class: 'td-xuly',
+          // class: 'td-xuly',
+          thClass: 'hidden-sortable',
           sortable: true,
-          thStyle: {width: '100px', minWidth: '100px'},
+          // thStyle: {width: '100px', minWidth: '100px'},
         },
-        {
-          key: "label",
-          label: "label",
-          class: 'td-xuly',
-          sortable: true,
-          thStyle: {width: '120px', minWidth: '120px'},
-        },
+        // {
+        //   key: "label",
+        //   label: "label",
+        //   class: 'td-xuly',
+        //   sortable: true,
+        //   thStyle: {width: '120px', minWidth: '120px'},
+        // },
        
         {
           key: 'process',
@@ -103,6 +106,11 @@ export default {
     this.getLabel();
     if(this.$route.params.id){
       this.getById(this.$route.params.id);
+    }else{
+      this.model = projectModel.baseJson();
+    }
+    if(this.$route.params.slug){
+      this.getBySlug(this.$route.params.slug);
     }else{
       this.model = projectModel.baseJson();
     }
@@ -269,7 +277,7 @@ export default {
         <div class="card-body">
           <div class="row">
             <div class="col-md-4 col-12 d-flex align-items-center">
-              <h4 class="font-size-18 fw-bold cs-title-page">Project</h4>
+              <h4 class="font-size-18 fw-bold cs-title-page">Danh sách dự án</h4>
             </div>
             <div class="col-md-8 col-12 text-end">
               <b-button v-b-toggle.collapseSearch variant="light"
@@ -385,18 +393,18 @@ export default {
                       {{ data.index + ((currentPage-1)*perPage) + 1  }}
                     </template>
                     
-                    <template v-slot:cell(label)="data">
+                    <!-- <template v-slot:cell(label)="data">
                       <div v-for="(value , index) in data.item.label" :key="index">
                         <span  class="badge bg-success ms-1"> {{value.name}}</span>
                       </div>
-                    </template>
+                    </template> -->
                     <template v-slot:cell(name)="data">&nbsp;&nbsp;
                       <router-link :to='`/${data.item.slug}/danh-sach-yeu-cau-loi`'>
                         {{data.item.name}}
                       </router-link>
                     </template>
                     <template v-slot:cell(process)="data">
-                       <!-- <router-link :to='`/du-an/chi-tiet/${data.item.slug}`'> -->
+                       <router-link :to='`/du-an/chi-tiet/${data.item.slug}`'>
                       <button
                           type="button"
                           size="sm"
@@ -405,7 +413,7 @@ export default {
                           >
                         <i class="fas fa-pencil-alt"></i>
                       </button>
-                    <!-- </router-link> -->
+                    </router-link>
                       <button
                           type="button"
                           size="sm"

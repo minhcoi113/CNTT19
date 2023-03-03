@@ -19,7 +19,7 @@ export const actions = {
     async getById({commit}, id) {
         return apiClient.get(controller + "/get-by-id/" + id);
     },
-    async getBySlug({commit}, id) {
-        return apiClient.get(controller + "/get-by-slug/" + id);
+    async getBySlug({commit}, slug) {
+        return apiClient.get(controller + "/get-by-slug/" + slug);
     }
 };
