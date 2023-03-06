@@ -66,16 +66,17 @@ export default {
           label: "Tên dự án",
           sortable: true,
           thClass: 'hidden-sortable',
-          thStyle: {width: '400px', minWidth: '100px'},
+          // thStyle: {width: '400px', minWidth: '0px'},
+          thStyle: {width: '500px'},
         },
-        {
-          key: "description",
-          label: "Mô tả",
-          // class: 'td-xuly',
-          thClass: 'hidden-sortable',
-          sortable: true,
-          // thStyle: {width: '100px', minWidth: '100px'},
-        },
+        // {
+        //   key: "description",
+        //   label: "Mô tả",
+        //   // class: 'td-xuly',
+        //   thClass: 'hidden-sortable',
+        //   sortable: true,
+        //   // thStyle: {width: '100px', minWidth: '100px'},
+        // },
         // {
         //   key: "label",
         //   label: "label",
@@ -89,8 +90,8 @@ export default {
           label: 'Xử lý',
           class: 'td-xuly btn-process',
           thClass: 'hidden-sortable',
-          sortable: false,
-          thStyle: {width: '130px', minWidth: '130px'},
+          // sortable: false,
+          thStyle: {width: '100px', minWidth: '50px'},
         }
       ],
        
@@ -401,7 +402,8 @@ this.$router.push(`/${slug}/danh-sach-yeu-cau-loi`)
                     </template>
                     <template v-slot:cell(process)="data">
                        <router-link :to='`/du-an/chi-tiet/${data.item.slug}`'>
-                      <button
+                     <button
+                     v-bind:aria-readonly="true"
                           type="button"
                           size="sm"
                           class="btn btn-edit btn-sm"

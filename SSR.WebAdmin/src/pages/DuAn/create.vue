@@ -70,7 +70,7 @@ export default {
       },
       optionsUser: [],
       optionsGroup: [],
-      optionsLabel: [],
+      // optionsLabel: [],
       simpleUpload: {
         uploadUrl: process.env.VUE_APP_API_URL + "files/upload-ckeditor",
         headers: {
@@ -314,7 +314,7 @@ export default {
               <div class="row">
                 <div class="col-md-9">
                   <div class="row">
-                    <div class="col-lg-12 col-md-12 col-12">
+                    <div class="col-lg-10 col-md-12 col-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Tên dự án </label>
                         <span class="text-danger">*</span>
@@ -325,7 +325,7 @@ export default {
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-12 col-lg-10">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Mô tả</label>
                         <span class="text-danger">*</span>
@@ -336,7 +336,7 @@ export default {
                       </div>
                     </div>
 
-                    <div class="col-lg-12 col-md-12 col-12">
+                    <div class="col-lg-10 col-md-12 col-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Đường dẫn </label>
                         <span class="text-danger">*</span>
@@ -355,14 +355,17 @@ export default {
                   <div class="row">
                     <div class="col-md-12 mb-2">
                       <label class="form-label cs-title-form" for="validationCustom01"> Hình ảnh</label>
-                      <div class="col-md-12 d-flex justify-content-center"
+                      <div class="col-md-6 d-flex justify-content-center"  
                         id="my-strictly-unique-vue-upload-multiple-image">
                         <vue-upload-multiple-image @upload-success="uploadImageSuccess" @before-remove="beforeRemove"
                           :data-images="images" idUpload="myIdUpload" editUpload="myIdEdit" :showEdit="false"
                           class="cs-upload-image"></vue-upload-multiple-image>
                       </div>
                     </div>
-                    <div class="col-md-12">
+                  </div>
+                </div>
+                
+                    <div class="col-md-3">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Nhóm </label>
                         <multiselect v-model="model.group" :options="optionsGroup" :multiple="true" track-by="id"
@@ -372,7 +375,9 @@ export default {
 
                       </div>
                     </div>
-                    <div class="col-md-12">
+                  
+                  
+                    <div class="col-md-3">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Thành viên</label>
                         <multiselect v-model="model.member" :options="optionsUser" :multiple="true" track-by="id"
@@ -382,8 +387,8 @@ export default {
                       </div>
                     </div>
 
-                  </div>
-                </div>
+                  
+                
               </div>
               <div class="text-end pt-2">
                 <b-button variant="light" class="w-md" @click="showModal = false">

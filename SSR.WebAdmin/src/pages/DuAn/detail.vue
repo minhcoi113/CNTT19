@@ -85,10 +85,10 @@ export default {
   },
   validations: {
     model: {
-      name: { required },
-      description: { required },
-      label: { required },
-      slug: { required }
+      name: {required},
+      description: {required},
+      // label: {required},
+      slug: {required}
     },
   },
   async created() {
@@ -311,11 +311,21 @@ export default {
                   <div class="row">
                     <div class="col-lg-12 col-md-12 col-12">
                       <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Name</label>
-                        <span class="text-danger">*</span>
-                        <input id="validationCustom01" v-model="model.name" type="text" class="form-control"
-                          placeholder="" :class="{ 'is-invalid': submitted && $v.model.name.$error, }" />
-                        <div v-if="submitted && !$v.model.name.required" class="invalid-feedback">
+                        <label class="form-label cs-title-form" for="validationCustom01"> Tên dự án</label>
+                                                        <span
+                                                          class="text-danger">*</span>
+                        <input
+                            id="validationCustom01"
+                            v-model="model.name"
+                            type="text"
+                            class="form-control"
+                            placeholder=""
+                            :class="{'is-invalid': submitted && $v.model.name.$error,}"
+                        />
+                        <div
+                            v-if="submitted && !$v.model.name.required"
+                            class="invalid-feedback"
+                        >
                           Tiêu đề không được để trống.
                         </div>
                       </div>
@@ -356,11 +366,19 @@ export default {
                     </div>
                     <div class="col-md-12">
                       <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Group</label>
-                        <multiselect v-model="model.group" :options="optionsGroup" :multiple="true" track-by="id"
-                          label="name" placeholder="Chọn nhóm" deselect-label="Nhấn để xoá"
-                          selectLabel="Nhấn enter để chọn" selectedLabel="Đã chọn"
-                          :class="{ 'is-invalid': submitted && $v.model.group.$error, }"></multiselect>
+                        <label class="form-label cs-title-form" for="validationCustom01"> Nhóm</label>
+                        <multiselect
+                            v-model="model.group"
+                            :options="optionsGroup"
+                            :multiple="true"
+                            track-by="id"
+                            label="name"
+                            placeholder="Chọn nhóm"
+                            deselect-label="Nhấn để xoá"
+                            selectLabel="Nhấn enter để chọn"
+                            selectedLabel="Đã chọn"
+                            :class="{'is-invalid': submitted && $v.model.group.$error,}"
+                        ></multiselect>                        
                       </div>
                     </div>
                     <div class="col-md-12">
