@@ -5,6 +5,7 @@ import {CONSTANTS} from "@/helpers/constants";
 import {required} from "vuelidate/lib/validators";
 import {pagingModel} from "@/models/pagingModel";
 import {tagModel} from "@/models/tagModel";
+import {yeucauloiModel} from "@/models/yeucauloiModel";
 
 export default {
   page: {
@@ -15,6 +16,7 @@ export default {
   data() {
     return {
       title: "Yêu cầu lỗi",
+      model: yeucauloiModel.baseJson,
       data: [],
       showModal: false,
       showDetail: false,
@@ -33,7 +35,7 @@ export default {
       sortBy: "age",
       sortDesc: false,
       fields: [
-        { key: 'issue',
+        { key: 'Yêu cầu',
           class: 'cs-text-left',
           sortable: false,
           thClass: 'hidden-sortable',
@@ -44,7 +46,6 @@ export default {
   validations: {
     model: {
       name: {required},
-      sort: {required}
     },
   },
   created() {
@@ -187,14 +188,9 @@ export default {
                     <template v-slot:cell(STT)="data">
                       {{ data.index + ((currentPage-1)*perPage) + 1  }}
                     </template>
-                    <template v-slot:cell(category)="data">
-                      <template v-if="data.item.category">
-                        {{data.item.category.name}}
-                      </template>
-                    </template>
-                    <template v-slot:cell(status)="data">
-                      <template v-if="data.item.status">
-                        {{data.item.status.name}}
+                    <template v-slot:cell(name)="data">
+                      <template v-if="data.item.name">
+                        {{data.item.name}}
                       </template>
                     </template>
                     <template v-slot:cell(process)="data">

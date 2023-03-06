@@ -4,11 +4,11 @@
         Title : item.Title ,
         StepId:item.StepId,
         ProjectId:item.ProjectId,
-        Labels: item.Labels,
+        Label: item.Label,
         DueDate: item.DueDate,
         Donvi: item.Donvi,
         Assignee: item.Assignee,
-        Descrption: item.Descrption,
+        Description: item.Description,
     }
 }
 const fromJson = (item) => {
@@ -17,25 +17,25 @@ const fromJson = (item) => {
         Title : item.Title ,
         StepId:item.StepId,
         ProjectId:item.ProjectId,
-        Labels: item.Labels,
+        Label: item.Label,
         DueDate: item.DueDate,
         Donvi: item.Donvi,
         Assignee: item.Assignee,
-        Descrption: item.Descrption,
+        Description: item.Description,
     }
 }
 
 const baseJson = () => {
     return {
-        id : null,
+        id: null,
         Title : null ,
-        StepId: false,
+        StepId: "Open",
         ProjectId: null,
-        Labels: null,
+        Label: null,
         DueDate: null,
         Donvi: null,
         Assignee: null,
-        Descrption: null,
+        Description: null,
     }
 }
 
