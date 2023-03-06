@@ -60,7 +60,6 @@ export default {
     model: {
       name: { required },
       color: { required },
-      knowledge: { required },
       isglobal: { required },
     },
   },
@@ -248,7 +247,6 @@ export default {
 
                   <div class="mb-3">
                     <label class="text-left">Chọn hướng dẫn</label>
-                    <span style="color: red">&nbsp;*</span>
                     <multiselect v-model="model.knowledge" :options="listKnowledge" track-by="id" label="name"
                       placeholder="Chọn hướng dẫn" deselect-label="Nhấn để xoá" selectLabel="Nhấn enter để chọn"
                       selectedLabel="Đã chọn" :multiple="true"></multiselect>

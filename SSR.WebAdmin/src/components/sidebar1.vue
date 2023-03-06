@@ -77,8 +77,10 @@ export default {
     },
     created(){
         let currentProjectLocal = localStorage.getItem('currentProject');
-
         this.slug = JSON.parse(currentProjectLocal)
+        if (!this.slug){
+            this.$router.push(`/${this.slug}/du-an`)
+        }
     }
 }
 

@@ -260,12 +260,12 @@ export default {
     },
     handleDetailProject(slug){
 
-let currentProject = JSON.stringify(slug)
+      let currentProject = JSON.stringify(slug)
 
-localStorage.setItem("currentProject", currentProject);
+      localStorage.setItem("currentProject", currentProject);
 
-this.$router.push(`/${slug}/danh-sach-yeu-cau-loi`)
-}
+      this.$router.push(`/${slug}/danh-sach-yeu-cau-loi`)
+    }
   },
 };
 </script>
@@ -396,7 +396,7 @@ this.$router.push(`/${slug}/danh-sach-yeu-cau-loi`)
                     </template>
                     
                     <template v-slot:cell(name)="data">&nbsp;&nbsp;
-                      <a class="link-dark" href="" v-on:click="handleDetailProject(data.item.slug)">
+                      <a class="link-dark" v-on:click="handleDetailProject(data.item.slug)">
                         {{data.item.name}}  
                       </a>
                     </template>
