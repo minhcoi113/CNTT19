@@ -12,7 +12,7 @@
                             <div id="sidebar-menu" class="p-0">
                                 <ul id="side-menu" class="metismenu list-unstyled">
                                     <li>                                       
-                                        <a href="/danh-sach-yeu-cau-loi" class="side-nav-link router-link-active">
+                                        <a href="/:slug/danh-sach-yeu-cau-loi" class="side-nav-link router-link-active">
                                             <i class="bx bx ti-home"></i>
                                             <span>Danh sách Issue</span>                                        
                                         </a>
