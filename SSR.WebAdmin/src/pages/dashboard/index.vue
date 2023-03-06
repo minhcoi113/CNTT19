@@ -7,6 +7,7 @@ import {CONSTANTS} from "@/helpers/constants";
 import {dashboardModel} from "@/models/dashboardModel";
 import {pagingModel} from "@/models/pagingModel";
 import {projectModel} from "@/models/projectModel";
+import {notifyModel} from "@/models/notifyModel";
 export default {
   page: {
     title: "Bảng điều khiển",
@@ -30,55 +31,70 @@ export default {
       totalRows: 1,
       todoTotalRows: 1,
       currentPage: 1,
-      numberOfElement: 1,
-      perPage: 10,
-      pageOptions: [5,10, 25, 50, 100],
+      numberOfElement: 5,
+      perPage: 5,
+      pageOptions: [5],
       filter: null,
       filterOn: [],
       isBusy: false,
-      sortBy: "age",
+      sortBy: "date",
       sortDesc: false,
       model: projectModel.baseJson(),
       itemFilter:{
         code: null,
         name: null,
       },
+      items: [
+        {
+          text: "Dự án",
+          href:"/du-an",
+          // active: true,
+        },
+        {
+          text: "Danh sách",
+          active: true,
+        }
+      ],
+      
       fields: [
       { key: 'STT',
           label: 'STT',
           class: 'cs-text-center',
           sortable: false,
           thClass: 'hidden-sortable',
-          thStyle: {width: '30px', minWidth: '30px'}
+          thStyle: {width: '40px', minWidth: '40px'}
         },
         {
           key: "name",
-          label: "Tên",
+          label: "Tên dự án",
           sortable: true,
+          thClass: 'hidden-sortable',
+          thStyle: {width: '400px', minWidth: '100px'},
         },
         {
           key: "description",
           label: "Mô tả",
-          class: 'td-xuly',
+          // class: 'td-xuly',
+          thClass: 'hidden-sortable',
           sortable: true,
-          // thStyle: {width: '100px', Width: '100px'},
+          // thStyle: {width: '100px', minWidth: '100px'},
         },
-        {
-          key: "label",
-          label: "label",
-          class: 'td-xuly',
-          sortable: true,
-          thStyle: {width: '120px', minWidth: '120px'},
-        },
-       
         // {
-        //   key: 'process',
-        //   label: 'Xử lý',
-        //   class: 'td-xuly btn-process',
-        //   thClass: 'hidden-sortable',
-        //   sortable: false,
-        //   thStyle: {width: '130px', minWidth: '130px'},
-        // }
+        //   key: "label",
+        //   label: "label",
+        //   class: 'td-xuly',
+        //   sortable: true,
+        //   thStyle: {width: '120px', minWidth: '120px'},
+        // },
+       
+        {
+          key: 'process',
+          label: 'Xử lý',
+          class: 'td-xuly btn-process',
+          thClass: 'hidden-sortable',
+          sortable: false,
+          thStyle: {width: '130px', minWidth: '130px'},
+        }
       ],
       statData: [
         {
@@ -119,7 +135,7 @@ export default {
           color: "white",
           path: "/nhan-vien",
           className: "card-thongbao",
-          icon: "mdi-bell text-warning"
+          icon: "mdi-alert text-warning"
         },
         {
           title: "Thống kê trong ngày",
@@ -128,18 +144,18 @@ export default {
           subText: "HT",
           color: "white",
           path: "/nhan-vien",
-          className: "card-thongbao",
-          icon: "mdi-bell text-warning"
+          className: "card-hopthu",
+          icon: "mdi mdi-chart-bar text-warning"
         },
         {
           title: "Nhân viên",
-          image: require("@/assets/images/services-icon/04.png"),
+          image: require("@/assets/images/services-icon/02.png"),
           value: "0",
           subText: "HT",
-          color: "white",
+          color: "red",
           path: "/nhan-vien",
           className: "card-thongbao",
-          icon: "mdi-bell text-warning"
+          icon: "mdi mdi-account text-warning"
         }
       ],
       modelSoLieu: dashboardModel.baseJson(),
@@ -149,6 +165,19 @@ export default {
   },
   async created() {
     this.soLieuDashboard();
+    this.getUser();
+    this.getGroup();
+    this.getLabel();
+    if(this.$route.params.id){
+      this.getById(this.$route.params.id);
+    }else{
+      this.model = projectModel.baseJson();
+    }
+    if(this.$route.params.slug){
+      this.getBySlug(this.$route.params.slug);
+    }else{
+      this.model = projectModel.baseJson();
+    }
   },
   methods: {
     soLieuDashboard() {
@@ -170,6 +199,94 @@ export default {
       } finally {
         console.log()
       }
+    },
+    
+  async getUser(){
+      await this.$store.dispatch("userStore/getAll").then((res) => {
+        if (res.resultCode === 'SUCCESS') {
+          this.optionsUser = res.data;
+          return;
+        }
+        this.optionsUser = [];
+      });
+    },
+
+    async getGroup(){
+      await this.$store.dispatch("groupStore/get").then((res) => {
+        if (res.resultCode === 'SUCCESS') {
+          this.optionsGroup = res.data;
+          return;
+        }
+        this.optionsGroup = [];
+      });
+    },
+    async getLabel(){
+      await this.$store.dispatch("labelStore/get").then((res) => {
+        if (res.resultCode === 'SUCCESS') {
+          this.optionsLabel = res.data;
+          return;
+        }
+        this.optionsLabel = [];
+      });
+    },
+    async handleDelete() {
+      if (this.model.id != 0 && this.model.id != null && this.model.id) {
+        await this.$store.dispatch("projectStore/delete", this.model.id).then((res) => {
+          if (res.resultCode==='SUCCESS') {
+            this.fnGetList();
+            this.showDeleteModal = false;
+          }
+          this.$store.dispatch("snackBarStore/addNotify", notifyModel.addMessage(res));
+        });
+      }
+    },
+    handleShowDeleteModal(id) {
+      this.model.id = id;
+      this.showDeleteModal = true;
+    },
+    async handleUpdate(slug) {
+      await this.$store.dispatch("projectStore/getBySlug", slug).then((res) => {
+        this.$router.push("")
+        if (res.resultCode==='SUCCESS') {
+          this.model = projectModel.toJson(res.data);
+          this.showModal = true;
+        } else {
+          this.$store.dispatch("snackBarStore/addNotify", notifyModel.addMessage(res));
+        }
+      });
+    },
+    myProvider (ctx) {
+      const params = {
+        start: ctx.currentPage,
+        limit: ctx.perPage,
+        content: this.filter,
+        sortBy: ctx.sortBy,
+        sortDesc: ctx.sortDesc,
+      }
+      this.loading = true
+      try {
+        let promise =  this.$store.dispatch("projectStore/getPagingParams", params)
+        return promise.then(resp => {
+          let items = resp.data.data
+          this.totalRows = resp.data.totalRows
+          this.numberOfElement = resp.data.data.length
+          this.loading = false
+          return items || []
+        })
+      } finally {
+        this.loading = false
+      }
+    },
+    
+    base64ToArrayBuffer(base64) {
+      var binaryString = window.atob(base64);
+      var binaryLen = binaryString.length;
+      var bytes = new Uint8Array(binaryLen);
+      for (var i = 0; i < binaryLen; i++) {
+        var ascii = binaryString.charCodeAt(i);
+        bytes[i] = ascii;
+      }
+      return bytes;
     },
   }
 };
@@ -232,21 +349,12 @@ export default {
                   </div>
                 </div>
               </div>
-            <div class="row">
+              <div class="row">
               <div class="col-12">
                 <div class="row mb-3">
                   <div class="col-sm-12 col-md-6">
                     <div id="tickets-table_length" class="dataTables_length">
-                      <!-- <label class="d-inline-flex align-items-center">
-                        Hiện
-                        <b-form-select
-                            class="form-select form-select-sm"
-                            v-model="perPage"
-                            size="sm"
-                            :options="pageOptions"
-                        ></b-form-select
-                        >&nbsp;dòng
-                      </label> -->
+                      
                     </div>
                   </div>
                 </div>
@@ -271,14 +379,18 @@ export default {
                       {{ data.index + ((currentPage-1)*perPage) + 1  }}
                     </template>
                     
-                    <template v-slot:cell(label)="data">
+                    <!-- <template v-slot:cell(label)="data">
                       <div v-for="(value , index) in data.item.label" :key="index">
                         <span  class="badge bg-success ms-1"> {{value.name}}</span>
                       </div>
+                    </template> -->
+                    <template v-slot:cell(name)="data">&nbsp;&nbsp;
+                      <router-link :to='`/${data.item.slug}/danh-sach-yeu-cau-loi`'>
+                        {{data.item.name}}
+                      </router-link>
                     </template>
-                    
                     <template v-slot:cell(process)="data">
-                       <!-- <router-link :to='`/du-an/chi-tiet/${data.item.slug}`'> -->
+                       <router-link :to='`/du-an/chi-tiet/${data.item.slug}`'>
                       <button
                           type="button"
                           size="sm"
@@ -287,7 +399,7 @@ export default {
                           >
                         <i class="fas fa-pencil-alt"></i>
                       </button>
-                    <!-- </router-link> -->
+                    </router-link>
                       <button
                           type="button"
                           size="sm"
@@ -295,9 +407,6 @@ export default {
                           v-on:click="handleShowDeleteModal(data.item.id)">
                         <i class="fas fa-trash-alt"></i>
                       </button>
-                   
-
-
                     </template>
                   </b-table>
                   <template v-if="isBusy">
@@ -309,23 +418,9 @@ export default {
                 </div>
                 <div class="row">
                   <b-col>
-                    <div>Hiển thị {{numberOfElement}} trên tổng số {{totalRows}} dòng</div>
+                    <div>Hiển thị 5 dự án mới nhất</div>
                   </b-col>
-                  <div class="col">
-                    <div
-                        class="dataTables_paginate paging_simple_numbers float-end">
-                      <ul class="pagination pagination-rounded mb-0">
-                        <!-- pagination -->
-                        <b-pagination
-                            class="pagination-rounded"
-                            v-model="currentPage"
-                            :total-rows="totalRows"
-                            :per-page="perPage"
-                            size="sm"
-                        ></b-pagination>
-                      </ul>
-                    </div>
-                  </div>
+                  
                 </div>
 
               </div>

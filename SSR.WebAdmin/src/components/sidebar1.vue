@@ -12,17 +12,19 @@
                             <div id="sidebar-menu" class="p-0">
                                 <ul id="side-menu" class="metismenu list-unstyled">
                                     <li>                                       
-                                        <a href="/danh-sach-yeu-cau-loi" class="side-nav-link router-link-active">
+                                        <a :href="`/${slug}/danh-sach-yeu-cau-loi`" class="side-nav-link router-link-active">
                                             <i class="bx bx ti-home"></i>
                                             <span>Danh sách Issue</span>                                        
                                         </a>
                                     </li>
+                                    <router-link :to='``'>
                                     <li>
-                                        <a href="/du-an" class="side-nav-link">
+                                        <a class="side-nav-link">
                                             <i class="bx ti-agenda"></i>
                                             <span>Thông tin dự án</span>
                                         </a>
                                     </li>
+                                    </router-link>
                                     <li>
                                         <a href="/du-an" class="side-nav-link">
                                             <i class="bx ti-agenda"></i>
@@ -64,3 +66,20 @@
     </div>
 </div>
 </template>
+
+<script>
+
+export default {
+    data() {
+        return {
+            slug: null
+        }
+    },
+    created(){
+        let currentProjectLocal = localStorage.getItem('currentProject');
+
+        this.slug = JSON.parse(currentProjectLocal)
+    }
+}
+
+</script>

@@ -206,6 +206,12 @@ export default [{
         component: () => import("../pages/dashboard/index1"),
     },
     {
+        path: "/:slug/thong-tin",
+        name: "Thong tin",
+        
+        component: () => import("../pages/thongtinduan"),
+    },
+    {
         path: "/thong-ke",
         name: "ThongKe",
         

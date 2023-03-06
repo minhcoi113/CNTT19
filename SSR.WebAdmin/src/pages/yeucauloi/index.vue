@@ -50,6 +50,7 @@ export default {
   },
   created() {
     this.fnGetList();
+    console.log(this.$route);
   },
   watch: {
     showModal(status) {
@@ -78,7 +79,7 @@ export default {
       }
       this.loading = true
       try {
-        let promise =  this.$store.dispatch("postStore/getPagingParams", params)
+        let promise =  this.$store.dispatch("yeucauloiStore/getPagingParams", params)
         return promise.then(resp => {
           if(resp.resultCode == CONSTANTS.SUCCESS){
             let data = resp.data;

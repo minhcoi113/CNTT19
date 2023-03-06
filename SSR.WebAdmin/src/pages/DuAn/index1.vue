@@ -114,6 +114,8 @@ export default {
     }else{
       this.model = projectModel.baseJson();
     }
+
+
     },
   watch:{
     model: {
@@ -263,6 +265,14 @@ export default {
       return JsonData.map((v)=>FilterData.map((j=>{
         return v[j];
       })))
+    },
+    handleDetailProject(slug){
+
+      let currentProject = JSON.stringify(slug)
+
+      localStorage.setItem("currentProject", currentProject);
+
+      this.$router.push(`/${slug}/danh-sach-yeu-cau-loi`)
     }
   },
 };
@@ -399,9 +409,9 @@ export default {
                       </div>
                     </template> -->
                     <template v-slot:cell(name)="data">&nbsp;&nbsp;
-                      <router-link :to='`/${data.item.slug}/danh-sach-yeu-cau-loi`'>
-                        {{data.item.name}}
-                      </router-link>
+                      <a class="link-dark" href="" v-on:click="handleDetailProject(data.item.slug)">
+                        {{data.item.name}}  
+                      </a>
                     </template>
                     <template v-slot:cell(process)="data">
                        <router-link :to='`/du-an/chi-tiet/${data.item.slug}`'>
