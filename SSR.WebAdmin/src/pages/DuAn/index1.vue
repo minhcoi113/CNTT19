@@ -101,7 +101,6 @@ export default {
     };
   },
   async created() {
-    
     this.getUser();
     this.getGroup();
     this.getLabel();
@@ -198,8 +197,6 @@ export default {
       this.model.id = id;
       this.showDeleteModal = true;
     },
-    
- 
     async handleUpdate(slug) {
       await this.$store.dispatch("projectStore/getBySlug", slug).then((res) => {
         this.$router.push("")
@@ -348,9 +345,6 @@ export default {
                   </div>
                 </div>
               </div>
-              <div>
-                {{this.$route.query}}
-              </div>
             <div class="row">
               <div class="col-12">
                 <div class="row mb-3">
@@ -385,8 +379,7 @@ export default {
                       primary-key="id"
                       :busy.sync="isBusy"
                       tbody-tr-class="b-table-chucvu"
-                  >
-                  
+                  >                 
                     <template v-slot:cell(STT)="data">
                       {{ data.index + ((currentPage-1)*perPage) + 1  }}
                     </template>
@@ -396,7 +389,6 @@ export default {
                       {{data.item.name}}
                       </div>
                     </template>
-                    
                     <template v-slot:cell(process)="data">
                        <router-link :to='`/du-an/chi-tiet/${data.item.slug}`'>
                       <button
