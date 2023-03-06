@@ -2,21 +2,24 @@
 import Layout from "../../layouts/main";
 import appConfig from "@/app.config";
 import Multiselect from "vue-multiselect";
-import {projectModel} from "@/models/projectModel";
+import { projectModel } from "@/models/projectModel";
 import VueUploadMultipleImage from 'vue-upload-multiple-image'
-import {required} from "vuelidate/lib/validators";
+import { required } from "vuelidate/lib/validators";
 import urlSlug from 'url-slug'
-import {notifyModel} from "@/models/notifyModel";
+import { notifyModel } from "@/models/notifyModel";
 
 export default {
   page: {
     title: "Thông tin chi tiết",
-    meta: [{name: "description", content: appConfig.description}]
+    meta: [{ name: "description", content: appConfig.description }]
   },
   components: {
     Layout,
     Multiselect,
-    VueUploadMultipleImage
+    VueUploadMultipleImage,
+    'ckeditor-nuxt': () => {
+      return import('@blowstack/ckeditor-nuxt')
+    },
   },
   data() {
     return {
@@ -58,7 +61,7 @@ export default {
         thumbnailHeight: 160,
         maxFiles: 1,
         maxFilesize: 30,
-        headers: {"My-Awesome-Header": "header value"},
+        headers: { "My-Awesome-Header": "header value" },
         addRemoveLinks: true,
         acceptedFiles: ".pdf",
         dropzoneClassName: "dropzonevue-box"
@@ -73,7 +76,7 @@ export default {
         }
       },
       isShow: false,
-      responseData:{
+      responseData: {
         resultString: null,
         resultCode: null
       },
@@ -82,10 +85,10 @@ export default {
   },
   validations: {
     model: {
-      name: {required},
-      description: {required},
-      label: {required},
-      slug: {required}
+      name: { required },
+      description: { required },
+      label: { required },
+      slug: { required }
     },
   },
   async created() {
@@ -97,16 +100,16 @@ export default {
     // }else{
     //   this.model = projectModel.baseJson();
     // }
-    if(this.$route.params.id){
+    if (this.$route.params.id) {
       this.getBySlug(this.$route.params.id);
-    }else{
+    } else {
       this.model = projectModel.baseJson();
     }
-    },
-  watch:{
+  },
+  watch: {
     model: {
       handler: function (val, oldVal) {
-        if(val.name == null){
+        if (val.name == null) {
           this.model.slug = "";
         }
         else
@@ -115,11 +118,11 @@ export default {
       deep: true
     }
   },
-  computed:{
+  computed: {
     images() {
-      if(this.model && this.model.files){
+      if (this.model && this.model.files) {
         let imgs = [];
-        this.model.files.map((value, index) =>{
+        this.model.files.map((value, index) => {
           imgs.push({
             id: index,
             fileId: value.fileId,
@@ -141,7 +144,7 @@ export default {
     fnGetList() {
       this.$refs.tblList?.refresh()
     },
-    handleShowNotify(res){
+    handleShowNotify(res) {
       this.isShow = true;
       this.responseData.resultCode = res.resultCode;
       this.responseData.resultString = res.resultString;
@@ -170,37 +173,38 @@ export default {
         let loader = this.$loading.show({
           container: this.$refs.formContainer,
         });
-        if(this.model.group == null && this.model.member == null){
+        if (this.model.group == null && this.model.member == null) {
           alert('Thêm nhóm hoặc thành viên cho dự án');
         }
-        else{
-        if (
+        else {
+          if (
             this.model.id != 0 &&
             this.model.id != null &&
             this.model.id
-        ) {
-          // Update model
-          await this.$store.dispatch("projectStore/update", this.model).then((res) => {
-            if (res.resultCode === 'SUCCESS') {
-              this.fnGetList()
-            }
-            this.$store.dispatch("snackBarStore/addNotify", notifyModel.addMessage(res))
-          });
-        } else {
-          // Create model
-          await this.$store.dispatch("projectStore/create", this.model).then((res) => {
-            if (res.resultCode === 'SUCCESS') {
-              this.fnGetList()
-            }
-            this.$store.dispatch("snackBarStore/addNotify", notifyModel.addMessage(res))
-          });
-        }}
+          ) {
+            // Update model
+            await this.$store.dispatch("projectStore/update", this.model).then((res) => {
+              if (res.resultCode === 'SUCCESS') {
+                this.fnGetList()
+              }
+              this.$store.dispatch("snackBarStore/addNotify", notifyModel.addMessage(res))
+            });
+          } else {
+            // Create model
+            await this.$store.dispatch("projectStore/create", this.model).then((res) => {
+              if (res.resultCode === 'SUCCESS') {
+                this.fnGetList()
+              }
+              this.$store.dispatch("snackBarStore/addNotify", notifyModel.addMessage(res))
+            });
+          }
+        }
         loader.hide();
       }
       this.submitted = false;
     },
-    handleHideModal(){
-      this.isShow  = false;
+    handleHideModal() {
+      this.isShow = false;
       this.responseData = {
         resultString: null,
         resultCode: null
@@ -211,19 +215,19 @@ export default {
         console.log(res)
         if (res.resultCode === 'SUCCESS') {
           var data = res.data;
-          if(this.model.files == null)
+          if (this.model.files == null)
             this.model.files = [];
-          this.model.files = [...this.model.files,  {fileId: data.id, fileName: data.fileName}]
+          this.model.files = [...this.model.files, { fileId: data.id, fileName: data.fileName }]
           return;
         }
       });
     },
-    beforeRemove (index, done, fileList) {
+    beforeRemove(index, done, fileList) {
       console.log(fileList);
       var fileId = fileList.find(x => x.id == index);
       var r = confirm("Xóa hình ảnh")
       if (r == true) {
-        if(this.model && this.model.files && this.model.files.length > 0 && fileId){
+        if (this.model && this.model.files && this.model.files.length > 0 && fileId) {
           this.model.files = this.model.files.filter(x => x.fileId != fileId.fileId);
           console.log(this.model.files)
         }
@@ -232,7 +236,7 @@ export default {
         console.log(1)
       }
     },
-    async getUser(){
+    async getUser() {
       await this.$store.dispatch("userStore/getAll").then((res) => {
         if (res.resultCode === 'SUCCESS') {
           this.optionsUser = res.data;
@@ -241,7 +245,7 @@ export default {
         this.optionsUser = [];
       });
     },
-    async getGroup(){
+    async getGroup() {
       await this.$store.dispatch("groupStore/get").then((res) => {
         if (res.resultCode === 'SUCCESS') {
           this.optionsGroup = res.data;
@@ -250,7 +254,7 @@ export default {
         this.optionsGroup = [];
       });
     },
-    async getLabel(){
+    async getLabel() {
       await this.$store.dispatch("labelStore/get").then((res) => {
         if (res.resultCode === 'SUCCESS') {
           this.optionsLabel = res.data;
@@ -288,13 +292,7 @@ export default {
                 <h4 class="font-size-18 fw-bold cs-title-page">Thông tin chi tiết</h4>
               </div>
               <div class="col-md-8 col-12 text-end">
-                <b-button
-                    variant="primary"
-                    type="button"
-                    class="btn w-md btn-primary"
-                    @click="$router.go(-1)"
-                    size="sm"
-                >
+                <b-button variant="primary" type="button" class="btn w-md btn-primary" @click="$router.go(-1)" size="sm">
                   <i class="mdi mdi-keyboard-backspace me-1"></i> Trở về
                 </b-button>
               </div>
@@ -307,182 +305,103 @@ export default {
       <div class="col-12">
         <div class="card">
           <div class="card-body">
-            <form @submit.prevent="handleSubmit"
-                  ref="formContainer">
+            <form @submit.prevent="handleSubmit" ref="formContainer">
               <div class="row">
                 <div class="col-md-9">
                   <div class="row">
                     <div class="col-lg-12 col-md-12 col-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Name</label>
-                                                        <span
-                                                          class="text-danger">*</span>
-                        <input
-                            id="validationCustom01"
-                            v-model="model.name"
-                            type="text"
-                            class="form-control"
-                            placeholder=""
-                            :class="{'is-invalid': submitted && $v.model.name.$error,}"
-                        />
-                        <div
-                            v-if="submitted && !$v.model.name.required"
-                            class="invalid-feedback"
-                        >
+                        <span class="text-danger">*</span>
+                        <input id="validationCustom01" v-model="model.name" type="text" class="form-control"
+                          placeholder="" :class="{ 'is-invalid': submitted && $v.model.name.$error, }" />
+                        <div v-if="submitted && !$v.model.name.required" class="invalid-feedback">
                           Tiêu đề không được để trống.
                         </div>
                       </div>
                     </div>
                     <div class="col-md-12">
                       <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01">Mô tả</label>
+                        <label class="form-label cs-title-form" for="validationCustom01"> Mô tả</label>
                         <span class="text-danger">*</span>
-                        <textarea
-                        rows = "8"
-                            id="validationCustom01"
-                            v-model="model.description"
-                            type="text"
-                            class="form-control"
-                            placeholder=""
-                            :class="{'is-invalid': submitted && $v.model.description.$error,}">
-                          </textarea>
-                            <div v-if="submitted && !$v.model.description.required" class="invalid-feedback">
-                              Nội dung không được để trống.
-                            </div>
+                        <ckeditor-nuxt v-model="model.description" :config="editorConfig" />
+                        <div v-if="submitted && !$v.model.description.required" class="invalid-feedback">
+                          Mô tả không được để trống.
+                        </div>
                       </div>
-                    </div>                    
+                    </div>
                     <div class="col-lg-12 col-md-12 col-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Slug</label>
-                        <span
-                            class="text-danger">*</span>
-                        <input
-                            id="validationCustom01"
-                            v-model="model.slug"
-                            type="text"
-                            class="form-control"
-                            placeholder=""
-                            :class="{'is-invalid': submitted && $v.model.slug.$error,}"
-                        />
-                        <div
-                            v-if="submitted && !$v.model.slug.required"
-                            class="invalid-feedback"
-                        >
+                        <span class="text-danger">*</span>
+                        <input id="validationCustom01" v-model="model.slug" type="text" class="form-control"
+                          placeholder="" :class="{ 'is-invalid': submitted && $v.model.slug.$error, }" />
+                        <div v-if="submitted && !$v.model.slug.required" class="invalid-feedback">
                           Slug không được để trống.
                         </div>
                       </div>
-                    </div>                   
+                    </div>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="row">
-                     <div class="col-md-12 mb-2">
+                    <div class="col-md-12 mb-2">
                       <label class="form-label cs-title-form" for="validationCustom01"> Hình ảnh</label>
-                      <div class="col-md-12 d-flex justify-content-center" id="my-strictly-unique-vue-upload-multiple-image">
-                        <vue-upload-multiple-image
-                            @upload-success="uploadImageSuccess"
-                            @before-remove="beforeRemove"
-                            :data-images="images"
-                            idUpload="myIdUpload"
-                            editUpload="myIdEdit"
-                            :showEdit="false"
-                            class="cs-upload-image"
-                        ></vue-upload-multiple-image>
+                      <div class="col-md-12 d-flex justify-content-center"
+                        id="my-strictly-unique-vue-upload-multiple-image">
+                        <vue-upload-multiple-image @upload-success="uploadImageSuccess" @before-remove="beforeRemove"
+                          :data-images="images" idUpload="myIdUpload" editUpload="myIdEdit" :showEdit="false"
+                          class="cs-upload-image"></vue-upload-multiple-image>
                       </div>
-                    </div> 
+                    </div>
                     <div class="col-md-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Group</label>
-                        <multiselect
-                            v-model="model.group"
-                            :options="optionsGroup"
-                            :multiple="true"
-                            track-by="id"
-                            label="name"
-                            placeholder="Chọn nhóm"
-                            deselect-label="Nhấn để xoá"
-                            selectLabel="Nhấn enter để chọn"
-                            selectedLabel="Đã chọn"
-                            :class="{'is-invalid': submitted && $v.model.group.$error,}"
-                        ></multiselect>                        
+                        <multiselect v-model="model.group" :options="optionsGroup" :multiple="true" track-by="id"
+                          label="name" placeholder="Chọn nhóm" deselect-label="Nhấn để xoá"
+                          selectLabel="Nhấn enter để chọn" selectedLabel="Đã chọn"
+                          :class="{ 'is-invalid': submitted && $v.model.group.$error, }"></multiselect>
                       </div>
                     </div>
                     <div class="col-md-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Thành viên</label>
-                        <multiselect
-                            v-model="model.member"
-                            :options="optionsUser"
-                            :multiple="true"
-                            track-by="id"
-                            label="fullName"
-                            placeholder="Chọn thể loại"
-                            deselect-label="Nhấn để xoá"
-                            selectLabel="Nhấn enter để chọn"
-                            selectedLabel="Đã chọn"
-                            :class="{'is-invalid': submitted && $v.model.member.$error,}"
-                        ></multiselect>
+                        <multiselect v-model="model.member" :options="optionsUser" :multiple="true" track-by="id"
+                          label="fullName" placeholder="Chọn thể loại" deselect-label="Nhấn để xoá"
+                          selectLabel="Nhấn enter để chọn" selectedLabel="Đã chọn"
+                          :class="{ 'is-invalid': submitted && $v.model.member.$error, }"></multiselect>
                       </div>
                     </div>
-                    <div class="col-md-12">
-                      <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Label</label>
-                        <multiselect
-                            v-model="model.label"
-                            :options="optionsLabel"
-                            track-by="id"
-                            label="name"
-                            placeholder="Chọn thẻ"
-                            deselect-label="Nhấn để xoá"
-                            selectLabel="Nhấn enter để chọn"
-                            selectedLabel="Đã chọn"
-                            :multiple="true"
-                            :class="{'is-invalid': submitted && $v.model.label.$error,}"
-                        ></multiselect>
-                      </div>
-                    </div>    
                   </div>
-                </div>>
+                </div>
               </div>
               <div class="text-end pt-2">
-                        <b-button variant="light" class="w-md" @click="showModal = false">
-                          Đóng
-                        </b-button>
-                        <b-button  type="submit" variant="primary" class="ms-1 w-md">Lưu
-                        </b-button>
-                      </div>
-            </form>
-            </div>
-            <b-modal
-                v-model="showDeleteModal"
-                centered
-                title="Xóa dữ liệu"
-                title-class="font-18"
-                no-close-on-backdrop
-            >
-              <p>
-                Dữ liệu xóa sẽ không được phục hồi!
-              </p>
-              <template #modal-footer>
-                <b-button v-b-modal.modal-close_visit
-                          size="sm"
-                          class="btn btn-outline-info w-md"
-                          v-on:click="showDeleteModal = false">
+                <b-button variant="light" class="w-md" @click="showModal = false">
                   Đóng
                 </b-button>
-                <b-button v-b-modal.modal-close_visit
-                          size="sm"
-                          variant="danger"
-                          type="button"
-                          class="w-md"
-                          v-on:click="handleDelete">
-                  Xóa
+                <b-button type="submit" variant="primary" class="ms-1 w-md">Lưu
                 </b-button>
-              </template>
-            </b-modal>
+              </div>
+            </form>
           </div>
+          <b-modal v-model="showDeleteModal" centered title="Xóa dữ liệu" title-class="font-18" no-close-on-backdrop>
+            <p>
+              Dữ liệu xóa sẽ không được phục hồi!
+            </p>
+            <template #modal-footer>
+              <b-button v-b-modal.modal-close_visit size="sm" class="btn btn-outline-info w-md"
+                v-on:click="showDeleteModal = false">
+                Đóng
+              </b-button>
+              <b-button v-b-modal.modal-close_visit size="sm" variant="danger" type="button" class="w-md"
+                v-on:click="handleDelete">
+                Xóa
+              </b-button>
+            </template>
+          </b-modal>
         </div>
       </div>
+    </div>
   </Layout>
 </template>
 <style scoped>
@@ -503,7 +422,8 @@ export default {
   padding: 0px;
 }
 
-.hidden-sortable:after, .hidden-sortable:before {
+.hidden-sortable:after,
+.hidden-sortable:before {
   display: none !important;
 }
 </style>
@@ -538,7 +458,8 @@ export default {
       animation: rotate-circle 4.25s ease-in;
     }
 
-    &::before, &::after {
+    &::before,
+    &::after {
       content: '';
       height: 100px;
       position: absolute;
@@ -600,12 +521,15 @@ export default {
   0% {
     transform: rotate(-45deg);
   }
+
   5% {
     transform: rotate(-45deg);
   }
+
   12% {
     transform: rotate(-405deg);
   }
+
   100% {
     transform: rotate(-405deg);
   }
@@ -617,21 +541,25 @@ export default {
     left: 1px;
     top: 19px;
   }
+
   54% {
     width: 0;
     left: 1px;
     top: 19px;
   }
+
   70% {
     width: 50px;
     left: -8px;
     top: 37px;
   }
+
   84% {
     width: 17px;
     left: 21px;
     top: 48px;
   }
+
   100% {
     width: 25px;
     left: 14px;
@@ -645,16 +573,19 @@ export default {
     right: 46px;
     top: 54px;
   }
+
   65% {
     width: 0;
     right: 46px;
     top: 54px;
   }
+
   84% {
     width: 55px;
     right: 0px;
     top: 35px;
   }
+
   100% {
     width: 47px;
     right: 8px;
@@ -674,6 +605,7 @@ export default {
   color: #fff;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
+
 #my-strictly-unique-vue-upload-multiple-image {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
