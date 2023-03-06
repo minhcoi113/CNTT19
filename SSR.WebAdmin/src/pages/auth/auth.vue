@@ -152,20 +152,7 @@ export default {
                   </b-form-group>
 
                   <div class="form-group row">
-                    <!--              <div class="col-sm-6">-->
-                    <!--                <div class="form-check">-->
-                    <!--                  <input-->
-                    <!--                      type="checkbox"-->
-                    <!--                      class="form-check-input"-->
-                    <!--                      id="customControlInline"-->
-                    <!--                  />-->
-                    <!--                  <label-->
-                    <!--                      class="form-check-label text-white"-->
-                    <!--                      for="customControlInline"-->
-                    <!--                  >Ghi nhớ tài khoản</label-->
-                    <!--                  >-->
-                    <!--                </div>-->
-                    <!--              </div>-->
+
                     <div class="my-2 d-flex justify-content-center align-items-center capcha-box">
                       <vue-recaptcha v-if="!isVanThu" @verify="submit"
                         sitekey="6LeBwrgjAAAAAA4k6n8a21lzx_VqcfWR78yVnHhA"></vue-recaptcha>
@@ -175,27 +162,9 @@ export default {
                         </div>
                   </div>
 
-                  <!--                  <div class="mt-2 mb-0 row">-->
-                  <!--                    <div class="col-12 mt-4">-->
-                  <!--                      <router-link to="/forgot-password">-->
-                  <!--                        <i class="mdi mdi-lock"></i> Forgot your password?-->
-                  <!--                      </router-link>-->
-                  <!--                    </div>-->
-                  <!--                  </div>-->
                 </b-form>
               </div>
 
-              <!--          <p class="mb-0 text-center text-white">-->
-              <!--            ©-->
-              <!--            {{ new Date().getFullYear() }}-->
-              <!--            -  Trường Đại học Đồng Tháp-->
-              <!--          </p>-->
-              <!--            <p>-->
-              <!--              Don't have an account ?-->
-              <!--              <router-link to="/register" class="fw-medium text-primary"-->
-              <!--              >Signup now</router-link-->
-              <!--              >-->
-              <!--            </p>-->
             </div>
           </div>
           <!-- end col -->

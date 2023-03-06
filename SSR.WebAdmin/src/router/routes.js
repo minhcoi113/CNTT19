@@ -203,7 +203,7 @@ export default [{
         path: "/:slug/danh-sach-yeu-cau-loi",
         name: "Du an",
         
-        component: () => import("../pages/dashboard/index1"),
+        component: () => import("../pages/yeucauloi/index"),
     },
     {
         path: "/thong-ke",
