@@ -199,18 +199,6 @@ export default {
       this.model.id = id;
       this.showDeleteModal = true;
     },
-    
-    // async handleUpdate(id) {
-    //   await this.$store.dispatch("projectStore/getById", id).then((res) => {
-    //     this.$router.push("")
-    //     if (res.resultCode==='SUCCESS') {
-    //       this.model = projectModel.toJson(res.data);
-    //       this.showModal = true;
-    //     } else {
-    //       this.$store.dispatch("snackBarStore/addNotify", notifyModel.addMessage(res));
-    //     }
-    //   });
-    // },
     async handleUpdate(slug) {
       await this.$store.dispatch("projectStore/getBySlug", slug).then((res) => {
         this.$router.push("")
@@ -260,6 +248,9 @@ export default {
     },
     handleDetail(id){
       this.$router.push("/du-an/chi-tiet/" + id)
+    },
+    Project(slug){
+      this.$router.push(slug + "/danh-sach-yeu-cau-loi")
     },
     FormatJSon(FilterData, JsonData){
       return JsonData.map((v)=>FilterData.map((j=>{
@@ -398,16 +389,12 @@ export default {
                       primary-key="id"
                       :busy.sync="isBusy"
                       tbody-tr-class="b-table-chucvu"
-                  >
+                  >                 
                     <template v-slot:cell(STT)="data">
                       {{ data.index + ((currentPage-1)*perPage) + 1  }}
                     </template>
                     
-                    <!-- <template v-slot:cell(label)="data">
-                      <div v-for="(value , index) in data.item.label" :key="index">
-                        <span  class="badge bg-success ms-1"> {{value.name}}</span>
-                      </div>
-                    </template> -->
+                    
                     <template v-slot:cell(name)="data">&nbsp;&nbsp;
                       <a class="link-dark" href="" v-on:click="handleDetailProject(data.item.slug)">
                         {{data.item.name}}  

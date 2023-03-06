@@ -1,5 +1,5 @@
 <script>
-import Layout from "../../layouts/main";
+import Layout from "../../layouts/main1";
 import {required} from "vuelidate/lib/validators";
 import appConfig from "@/app.config";
 import {notifyModel} from "@/models/notifyModel";
@@ -151,6 +151,7 @@ export default {
                   </div>
                 </div>
               </div>
+              
             <div class="row">
               <div class="col-12">
                 <div class="row mb-3">
@@ -166,6 +167,7 @@ export default {
                         ></b-form-select
                         >&nbsp;dòng
                       </label>
+                      
                     </div>
                   </div>
                 </div>

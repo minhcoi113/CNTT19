@@ -84,7 +84,7 @@ export default {
   validations: {
     model: {
       name: {required},
-      code: {required}
+
     },
   },
   created() {
