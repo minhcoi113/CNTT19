@@ -18,7 +18,6 @@ export default {
     Layout,
     Multiselect,
     VueUploadMultipleImage,
-    //'ckeditor-nuxt': () => { return import('@blowstack/ckeditor-nuxt') },
   },
   data() {
     return {
@@ -293,7 +292,7 @@ export default {
           <div class="card-body">
             <div class="row">
               <div class="col-md-4 col-12 d-flex align-items-center">
-                <h4 class="font-size-18 fw-bold cs-title-page">Tạo dự án</h4>
+                <h4 class="font-size-18 fw-bold cs-title-page">Thêm dự án</h4>
               </div>
               <div class="col-md-8 col-12 text-end">
                 <b-button variant="primary" type="button" class="btn w-md btn-primary" @click="$router.go(-1)" size="sm">
@@ -326,10 +325,19 @@ export default {
                     </div>
                     <div class="col-md-12 col-lg-12">
                       <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Mô tả</label>
+                        <label class="form-label cs-title-form" for="validationCustom01">Mô tả</label>
                         <span class="text-danger">*</span>
-                        <textarea v-model="model.description" :config="editorConfig"></textarea>
-                        <div v-if="submitted && !$v.model.description.required" class="invalid-feedback">
+                        <textarea 
+                        
+                        class="form-control ellipsis" 
+                        v-model="model.description" 
+                        rows="8"   
+                        :class="{'is-invalid': submitted && $v.model.description.$error,}">
+                      </textarea>
+                        <div
+                            v-if="submitted && !$v.model.description.required"
+                            class="invalid-feedback"
+                        >
                           Mô tả không được để trống.
                         </div>
                       </div>
@@ -340,9 +348,9 @@ export default {
                         <span class="text-danger">*</span>
                         <input id="validationCustom01" v-model="model.slug" type="text" class="form-control"
                           placeholder="" :class="{ 'is-invalid': submitted && $v.model.slug.$error, }" />
-                        <div v-if="submitted && !$v.model.slug.required" class="invalid-feedback">
-                          Đường dẫn không được để trống.
-                        </div>
+                        <!-- <div v-if="submitted && !$v.model.slug.required" class="invalid-feedback">
+                          Slug không được để trống.
+                        </div> -->
                       </div>
                     </div>
                   </div>
@@ -351,7 +359,7 @@ export default {
                   <div class="row">
                     <div class="col-md-12 mb-2">
                       <label class="form-label cs-title-form" for="validationCustom01"> Hình ảnh</label>
-                      <div class="col-md-12 d-flex justify-content-center"  
+                      <div class="col-md-12 d-flex justify-content-center"
                         id="my-strictly-unique-vue-upload-multiple-image">
                         <vue-upload-multiple-image @upload-success="uploadImageSuccess" @before-remove="beforeRemove"
                           :data-images="images" idUpload="myIdUpload" editUpload="myIdEdit" :showEdit="false"
@@ -367,7 +375,9 @@ export default {
                           selectLabel="Nhấn enter để chọn" selectedLabel="Đã chọn"
                           :class="{ 'is-invalid': submitted && $v.model.group.$error, }"></multiselect>
                       </div>
-                    </div>  
+                    </div>
+                  
+                  
                     <div class="col-md-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Thành viên</label>
@@ -377,13 +387,15 @@ export default {
                           :class="{ 'is-invalid': submitted && $v.model.member.$error, }"></multiselect>
                       </div>
                     </div>
-                </div>
+
+                  </div>
+                
               </div>
               <div class="text-end pt-2">
-                <b-button variant="light" class="w-md" @click="showModal = false">
+                <b-button variant="light" class="w-md " style="width: 200px;" @click="showModal = false">
                   Đóng
                 </b-button>
-                <b-button type="submit" variant="primary" class="ms-1 w-md">Lưu
+                <b-button type="submit" variant="primary" class="ms-1 w-md " style="width: 200px;">Lưu
                 </b-button>
               </div>
             </form>
@@ -617,5 +629,28 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+.parent {
+    width: 300px;
+}
+
+.ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.block-ellipsis {
+  display: block;
+  display: -webkit-box;
+  max-width: 100%;
+  height: 43px;
+  margin: 0 auto;
+  font-size: 14px;
+  line-height: 1;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

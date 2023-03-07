@@ -17,9 +17,9 @@ export default {
     Layout,
     Multiselect,
     VueUploadMultipleImage,
-    'ckeditor-nuxt': () => {
-      return import('@blowstack/ckeditor-nuxt')
-    },
+    // 'ckeditor-nuxt': () => {
+    //   return import('@blowstack/ckeditor-nuxt')
+    // },
   },
   data() {
     return {
@@ -299,51 +299,54 @@ export default {
       <div class="col-12">
         <div class="card">
           <div class="card-body">
+
             <form @submit.prevent="handleSubmit" ref="formContainer">
               <div class="row">
                 <div class="col-md-8">
                   <div class="row">
                     <div class="col-lg-12 col-md-12 col-12">
                       <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Tên dự án</label>
+                        <label class="form-label cs-title-form" for="validationCustom01"> Tên dự án </label>
                         <span class="text-danger">*</span>
-                        <input
-                            id="validationCustom01"
-                            v-model="model.name"
-                            type="text"
-                            class="form-control"
-                            placeholder=""
-                            :class="{'is-invalid': submitted && $v.model.name.$error,}"
-                        />
-                        <div
-                            v-if="submitted && !$v.model.name.required"
-                            class="invalid-feedback"
-                        >
+                        <input id="validationCustom01" v-model="model.name" type="text" class="form-control"
+                          placeholder="" :class="{ 'is-invalid': submitted && $v.model.name.$error, }" />
+                        <div v-if="submitted && !$v.model.name.required" class="invalid-feedback">
                           Tiêu đề không được để trống.
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-12 col-lg-12">
                       <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Mô tả</label>
+                        <label class="form-label cs-title-form" for="validationCustom01">Mô tả</label>
                         <span class="text-danger">*</span>
-                        <ckeditor-nuxt v-model="model.description" :config="editorConfig" />
-                        <div v-if="submitted && !$v.model.description.required" class="invalid-feedback">
+                        <textarea 
+                        
+                        class="form-control" 
+                        v-model="model.description" 
+                        rows="8"   
+                        :class="{'is-invalid': submitted && $v.model.description.$error,}">
+                      </textarea>
+                        <div
+                            v-if="submitted && !$v.model.description.required"
+                            class="invalid-feedback"
+                        >
                           Mô tả không được để trống.
                         </div>
                       </div>
                     </div>
+
                     <div class="col-lg-12 col-md-12 col-12">
                       <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Đường dẫn</label>
+                        <label class="form-label cs-title-form" for="validationCustom01"> Đường dẫn </label>
                         <span class="text-danger">*</span>
                         <input id="validationCustom01" v-model="model.slug" type="text" class="form-control"
                           placeholder="" :class="{ 'is-invalid': submitted && $v.model.slug.$error, }" />
-                        <div v-if="submitted && !$v.model.slug.required" class="invalid-feedback">
-                          Đường dẫn không được để trống.
-                        </div>
+                        <!-- <div v-if="submitted && !$v.model.slug.required" class="invalid-feedback">
+                          Slug không được để trống.
+                        </div> -->
                       </div>
                     </div>
+
                   </div>
                 </div>
                 <div class="col-md-4">
@@ -357,23 +360,21 @@ export default {
                           class="cs-upload-image"></vue-upload-multiple-image>
                       </div>
                     </div>
-                    <div class="col-md-12">
+                  </div>
+                
+                
+                    <div class="col-md-">
                       <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Nhóm</label>
-                        <multiselect
-                            v-model="model.group"
-                            :options="optionsGroup"
-                            :multiple="true"
-                            track-by="id"
-                            label="name"
-                            placeholder="Chọn nhóm"
-                            deselect-label="Nhấn để xoá"
-                            selectLabel="Nhấn enter để chọn"
-                            selectedLabel="Đã chọn"
-                            :class="{'is-invalid': submitted && $v.model.group.$error,}"
-                        ></multiselect>                        
+                        <label class="form-label cs-title-form" for="validationCustom01"> Nhóm </label>
+                        <multiselect v-model="model.group" :options="optionsGroup" :multiple="true" track-by="id"
+                          label="name" placeholder="Chọn nhóm" deselect-label="Nhấn để xoá"
+                          selectLabel="Nhấn enter để chọn" selectedLabel="Đã chọn"
+                          :class="{ 'is-invalid': submitted && $v.model.group.$error, }"></multiselect>
+
                       </div>
                     </div>
+                  
+                  
                     <div class="col-md-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Thành viên</label>
@@ -383,14 +384,15 @@ export default {
                           :class="{ 'is-invalid': submitted && $v.model.member.$error, }"></multiselect>
                       </div>
                     </div>
+
                   </div>
-                </div>
+                
               </div>
               <div class="text-end pt-2">
                 <b-button class="btn-delete ms-1 w-md"
                   v-on:click="handleShowDeleteModal(model.id)">Xóa
                 </b-button>
-                <b-button type="submit" variant="primary" class="ms-1 w-md">Lưu
+                <b-button type="submit" variant="primary" class="ms-1 w-md " style="width: 200px;">Lưu
                 </b-button>
                 
               </div>

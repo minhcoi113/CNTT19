@@ -151,7 +151,7 @@ export default {
         <!--          <h5 class="pt-4 d-inline-block text-white fs-5 fw-medium">Trường Đại học Đồng Tháp</h5>-->
         <!--        </div>-->
         <div class="align-items-center d-none d-sm-flex cs-menu-top">
-          <router-link
+          <!-- <router-link
               tag="a"
               class-active="active"
               class="p-2 item-link"
@@ -168,7 +168,7 @@ export default {
               exact
           >
             Tuyển dụng
-          </router-link>
+          </router-link> -->
           <!--          <router-link-->
           <!--              tag="a"-->
           <!--              class-active="active"-->

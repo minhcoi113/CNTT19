@@ -69,6 +69,7 @@ export default {
           // thStyle: {width: '400px', minWidth: '0px'},
           thStyle: {width: '300px'},
         },
+
         // {
         //   key: "description",
         //   label: "Mô tả",
@@ -77,6 +78,7 @@ export default {
         //   sortable: true,
         //   thStyle: {width: '100px', minWidth: '100px'},
         // },
+
         // {
         //   key: "label",
         //   label: "label",
@@ -371,9 +373,9 @@ export default {
                     </div>
                   </div>
                 </div>
-                <div class="table-responsive mb-0">
+                <div class="table-responsive mb-0 " >
                     <b-table
-                      class="datatables custom-table"
+                      class="datatables custom-table "
                       :items="myProvider"
                       :fields="fields"
                       responsive="sm"
@@ -393,6 +395,7 @@ export default {
                       {{ data.index + ((currentPage-1)*perPage) + 1  }}</div>
                     </template>
                     
+
                     <template v-slot:cell(name)="data">
                       <a class="link-dark" v-on:click="handleDetailProject(data.item.slug)">
                         <div class="fw-normal font-size-18" style="color: red;">{{data.item.name}}
@@ -527,6 +530,7 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 </style>
 <style lang="scss">
 #my-strictly-unique-vue-upload-multiple-image {
