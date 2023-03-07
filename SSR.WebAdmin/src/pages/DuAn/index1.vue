@@ -70,32 +70,6 @@ export default {
           thStyle: { width: '500px' },
         },
         {
-          key: "description",
-          label: "Mô tả",
-          // class: 'td-xuly',
-          thClass: 'hidden-sortable',
-          sortable: true,
-          thStyle: {width: '300px'},
-        },
-
-        // {
-        //   key: "description",
-        //   label: "Mô tả",
-        //   class: 'td-xuly',
-        //   thClass: 'hidden-sortable',
-        //   sortable: true,
-        //   thStyle: {width: '100px', minWidth: '100px'},
-        // },
-
-        // {
-        //   key: "label",
-        //   label: "label",
-        //   class: 'td-xuly',
-        //   sortable: true,
-        //   thStyle: {width: '120px', minWidth: '120px'},
-        // },
-
-        {
           key: 'process',
           label: 'Xử lý',
           class: 'td-xuly btn-process',
@@ -364,9 +338,8 @@ export default {
                     :filter="filter" :filter-included-fields="filterOn" ref="tblList" primary-key="id" :busy.sync="isBusy"
                     tbody-tr-class="b-table-chucvu">
                     <template v-slot:cell(STT)="data">
-                      {{ data.index + ((currentPage-1)*perPage) + 1 }}
-                      <div class="fw-normal font-size-18">
-                      {{ data.index + ((currentPage-1)*perPage) + 1  }}</div>
+                      
+                      {{ data.index + ((currentPage-1)*perPage) + 1  }}
                     </template>
                     
 
@@ -402,7 +375,6 @@ export default {
                           v-on:click="handleShowDeleteModal(data.item.id)">
                         <i class="fas fa-trash-alt"></i>
                       </button>
->>>>>>> e95c5e7baca970fa58a6c591c09b0c735eb29c1f
                     </template>
                   </b-table>
                   <template v-if="isBusy">

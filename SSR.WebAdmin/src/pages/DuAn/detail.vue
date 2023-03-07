@@ -154,6 +154,7 @@ export default {
           if (res.resultCode==='SUCCESS') {
             this.fnGetList();
             this.showDeleteModal = false;
+            this.$router.push("/")
           }
           this.$store.dispatch("snackBarStore/addNotify", notifyModel.addMessage(res));
         });
