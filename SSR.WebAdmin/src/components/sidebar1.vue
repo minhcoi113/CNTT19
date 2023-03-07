@@ -17,11 +17,11 @@
                                             <span>Danh sách Issue</span>                                        
                                         </a>
                                     </li>
-                                    <router-link :to='``'>
+                                    <router-link :to='`/${slug}/thong-tin`'>
                                     <li>
                                         <a class="side-nav-link">
                                             <i class="bx ti-agenda"></i>
-                                            <span>Thông tin dự án</span>
+                                            <span>Cài đặt dự án</span>
                                         </a>
                                     </li>
                                     </router-link>

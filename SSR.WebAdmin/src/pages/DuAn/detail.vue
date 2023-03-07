@@ -1,5 +1,5 @@
 <script>
-import Layout from "../../layouts/main";
+import Layout from "../../layouts/main1";
 import appConfig from "@/app.config";
 import Multiselect from "vue-multiselect";
 import { projectModel } from "@/models/projectModel";
@@ -100,8 +100,8 @@ export default {
     // }else{
     //   this.model = projectModel.baseJson();
     // }
-    if (this.$route.params.id) {
-      this.getBySlug(this.$route.params.id);
+    if (this.$route.params.slug) {
+      this.getBySlug(this.$route.params.slug);
     } else {
       this.model = projectModel.baseJson();
     }
@@ -156,8 +156,8 @@ export default {
         }
       });
     },
-    async getBySlug(id) {
-      await this.$store.dispatch("projectStore/getBySlug", id).then((res) => {
+    async getBySlug(slug) {
+      await this.$store.dispatch("projectStore/getBySlug", slug).then((res) => {
         if (res.resultCode === 'SUCCESS') {
           this.model = res.data
         }
