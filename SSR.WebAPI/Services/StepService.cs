@@ -50,7 +50,8 @@ namespace SSR.WebAPI.Services
                 ModifiedBy = CurrentUserName,
                 CreatedAt = DateTime.Now,
                 ModifiedAt = DateTime.Now,
-                ProjectId = model.ProjectId
+                ProjectId = model.ProjectId,
+                Block = model.Block,
             };
 
             var result = await BaseMongoDb.CreateAsync(entity);
@@ -97,6 +98,7 @@ namespace SSR.WebAPI.Services
             entity.Color = model.Color;
             entity.ModifiedAt = DateTime.Now;
             entity.ModifiedBy = CurrentUserName;
+            entity.Block = model.Block;
             entity.ProjectId = model.ProjectId;
             var result = await BaseMongoDb.UpdateAsync(entity);
             if (!result.Success)

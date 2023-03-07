@@ -138,12 +138,7 @@ export default [{
         // meta: {},
         component: () => import("../pages/auth/profile"),
     },
-    {
-        path: "/Label",
-        name: "Nhãn",
-        // meta: {},
-        component: () => import("../pages/label"),
-    },
+   
     {
         path: "/huong-dan-xu-ly",
         name: "Hướng dẫn xử lý",
@@ -206,6 +201,12 @@ export default [{
         component: () => import("../pages/yeucauloi/index"),
     },
     {
+        path: "/:slug/yeu-cau-loi",
+        name: "Them yeu cau loi",
+        
+        component: () => import("../pages/yeucauloi/create"),
+    },
+    {
         path: "/:slug/thong-tin",
         name: "Thong tin",
         
@@ -216,5 +217,23 @@ export default [{
         name: "ThongKe",
         
         component: () => import("../pages/thongke"),
+    },
+    {
+        path: "/:slug/buoc-thuc-hien",
+        name: "Buoc Thuc Hien",
+        
+        component: () => import("../pages/step/index"),
+    },
+    {
+        path: "/:slug/nhan-du-an",
+        name: "Nhãn",
+        // meta: {},
+        component: () => import("../pages/label/index"),
+    },
+    {
+        path: "/:slug/thong-ke",
+        name: "Nhãn",
+        // meta: {},
+        component: () => import("../pages/thongke/index"),
     },
 ]

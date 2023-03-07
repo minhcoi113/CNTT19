@@ -1,5 +1,5 @@
 <script>
-import Layout from "../../layouts/main";
+import Layout from "../../layouts/main1";
 import PageHeader from "@/components/page-header";
 import { numeric, required } from "vuelidate/lib/validators";
 import appConfig from "@/app.config";
@@ -40,14 +40,14 @@ export default {
           class: 'td-ten',
           sortable: true,
         },
-        {
-          key: 'process',
-          label: 'Xử lý',
-          class: 'td-xuly btn-process',
-          thClass: 'hidden-sortable',
-          sortable: false,
-          thStyle: { width: '130px', minWidth: '130px' },
-        }
+        // {
+        //   key: 'process',
+        //   label: 'Xử lý',
+        //   class: 'td-xuly btn-process',
+        //   thClass: 'hidden-sortable',
+        //   sortable: false,
+        //   thStyle: { width: '130px', minWidth: '130px' },
+        // }
       ],
       currentPage: 1,
       perPage: 10,
@@ -365,7 +365,7 @@ export default {
                         {{ data.item.description }}
                       </template>
                     </template>
-                    <template v-slot:cell(process)="data">
+                    <!-- <template v-slot:cell(process)="data">
                       <button type="button" size="sm" class="btn btn-edit btn-sm" v-on:click="handleUpdate(data.item.id)">
                         <i class="fas fa-pencil-alt"></i>
                       </button>
@@ -373,7 +373,7 @@ export default {
                         v-on:click="handleShowDeleteModal(data.item.id)">
                         <i class="fas fa-trash-alt"></i>
                       </button>
-                    </template>
+                    </template> -->
                   </b-table>
                 </div>
                 <div class="row">

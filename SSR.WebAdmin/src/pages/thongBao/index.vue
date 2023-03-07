@@ -684,7 +684,7 @@ export default {
                         <div @click="handleDetail(data.item.id), handleChangeStatus(data.item.id)"
                              style="cursor: pointer">
                           <strong v-html="data.item.title" v-if="!data.item.read"></strong>
-                          <div v-html="data.item.title" v-else> {{ data.item.title }}</div>
+                          <div v-else> {{ data.item.title }}</div>
                         </div>
 
                       </template>

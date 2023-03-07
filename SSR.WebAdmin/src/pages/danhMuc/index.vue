@@ -9,10 +9,10 @@ import { knowledgeModel } from "@/models/knowledgeModel";
 
 export default {
   page: {
-    title: "Hướng dẫn xử lý lỗi",
+    title: "Hướng dẫn xử lý",
     meta: [{ name: "description", content: appConfig.description }],
   },
-  components: { Layout, 'ckeditor-nuxt': () => { return import('@blowstack/ckeditor-nuxt')  },},
+  components: { Layout, 'ckeditor-nuxt': () => { return import('@blowstack/ckeditor-nuxt') }, },
   data() {
     return {
       editorConfig: {
@@ -45,6 +45,7 @@ export default {
       title: "Hướng dẫn xử lý lỗi",
       data: [],
       showModal: false,
+      showModalXemchitiet: false,
       showPhanloai: false,
       showDetail: false,
       showDeleteModal: false,
@@ -72,8 +73,14 @@ export default {
         },
         {
           key: "name",
-          label: "Hướng dẫn",
+          label: "Tiêu đề",
           sortable: true,
+        },
+        {
+          key: "summary",
+          label: "Mô tả ngắn",
+          sortable: true,
+          thStyle: { width: '750px', minWidth: '750px' },
         },
         {
           key: 'process',
@@ -90,15 +97,20 @@ export default {
   validations: {
     model: {
       name: { required },
+      summary: { required },
       content: { required },
     },
   },
   created() {
     this.fnGetList();
     this.getListKnowledge();
+    this.stripHtml();
   },
   watch: {
     showModal(status) {
+      if (status == false) this.model = knowledgeModel.baseJson();
+    },
+    showModalXemchitiet(status) {
       if (status == false) this.model = knowledgeModel.baseJson();
     },
     showDeleteModal(val) {
@@ -108,6 +120,13 @@ export default {
     },
   },
   methods: {
+    stripHtml() {
+      const value = this.model.summary;
+      const div = document.createElement('div');
+      div.innerHTML = value;
+      const text = div.textContent || div.innerText || '';
+      return text;
+    },
     handleSearch() {
       this.fnGetList()
     },
@@ -137,6 +156,24 @@ export default {
           this.showDetail = true;
         } else {
           this.$store.dispatch("snackBarStore/addNotify", notifyModel.addMessage(res));
+        }
+      });
+    },
+    async handleRedirectToDetail(id) {
+      await this.$store.dispatch("knowledgeStore/getById", id).then((res) => {
+        if (res.resultCode === 'SUCCESS') {
+          this.model = res.data
+          this.showModalXemchitiet = true;
+
+          const value = this.model.summary;
+          const div = document.createElement('div');
+          div.innerHTML = value;
+          const text = div.textContent || div.innerText || '';
+          return text;
+
+        } else {
+          this.$store.dispatch("snackBarStore/addNotify", notifyModel.addMessage(res));
+          this.fnGetList();
         }
       });
     },
@@ -240,7 +277,7 @@ export default {
               <div class="col-md-8 col-12 text-end">
                 <b-button variant="primary" type="button" class="btn w-md btn-primary" @click="showModal = true"
                   size="sm">
-                  <i class="mdi mdi-plus me-1"></i> Tạo hướng dẫn xử lý 
+                  <i class="mdi mdi-plus me-1"></i> Tạo hướng dẫn xử lý
                 </b-button>
               </div>
             </div>
@@ -256,14 +293,48 @@ export default {
               <div class="col-sm-4">
                 <div class="search-box me-2 mb-2 d-inline-block">
                   <div class="position-relative">
-                    <input
-                        v-model = "filter"
-                        type="text"
-                        class="form-control"
-                        placeholder="Tìm kiếm ..."
-                    />
+                    <input v-model="filter" type="text" class="form-control" placeholder="Tìm kiếm ..." />
                     <i class="bx bx-search-alt search-icon"></i>
                   </div>
+                </div>
+              </div>
+              <div class="col-sm-8">
+                <div class="text-sm-end">
+                  <b-modal v-model="showModalXemchitiet" title="Thông tin chi tiết" title-class="text-black font-18"
+                    body-class="p-3" hide-footer centered no-close-on-backdrop size="lg">
+                    <form @submit.prevent="handleSubmit" ref="formContainer">
+                      <div class="row">
+                        <div class="col-12">
+                          <div class="mb-3">
+                            <label class="text-left">Tên hướng dẫn</label>
+                            <input type="hidden" v-model="model.id" />
+                            <input id="name" v-model.trim="model.name" type="text" class="form-control"
+                              :class="{ 'is-invalid': submitted && $v.model.name.$error }" style="border: none"
+                              disabled />
+                            <div v-if="submitted && !$v.model.name.required" class="invalid-feedback">
+                              Tên hướng dẫn không được để trống.
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="mb-2">
+                            <label class="form-label cs-title-form" for="validationCustom01">Mô tả ngắn</label>
+                            <textarea class="form-control" v-model="model.summary" rows="4"
+                              :class="{ 'is-invalid': submitted && $v.model.summary.$error, }" style="border: none"
+                              disabled></textarea>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="mb-2">
+                            <label class="form-label cs-title-form" for="validationCustom01">Nội dung </label>
+                            <textarea class="form-control" v-model="model.content" rows="10"
+                              :class="{ 'is-invalid': submitted && $v.model.content.$error, }" style="border: none"
+                              disabled></textarea>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </b-modal>
                 </div>
               </div>
               <div class="col-sm-8">
@@ -284,6 +355,16 @@ export default {
                               }" />
                             <div v-if="submitted && !$v.model.name.required" class="invalid-feedback">
                               Tên hướng dẫn không được để trống.
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="mb-2">
+                            <label class="form-label cs-title-form" for="validationCustom01">Mô tả ngắn</label>
+                            <textarea class="form-control" v-model="model.summary" rows="4"
+                              :class="{ 'is-invalid': submitted && $v.model.summary.$error, }"></textarea>
+                            <div v-if="submitted && !$v.model.summary.required" class="invalid-feedback">
+                              Trích yếu không được để trống.
                             </div>
                           </div>
                         </div>
@@ -339,10 +420,19 @@ export default {
                         </div>
                       </template>
                     </template>
+                    <template v-slot:cell(summary)="data">
+                      <div class="ellipsis">
+                        <span>{{ data.item.summary }}</span>
+                      </div>
+                    </template>
                     <template v-slot:cell(content)="data">
-                          <span>{{ data.item.content }}</span>
+                      <span>{{ data.item.content }}</span>
                     </template>
                     <template v-slot:cell(process)="data">
+                      <button type="button" size="sm" class="btn btn-detail btn-sm" data-toggle="tooltip"
+                        data-placement="bottom" title="Xem chi tiết" v-on:click="handleRedirectToDetail(data.item.id)">
+                        <i class="fas fas fa-eye"></i>
+                      </button>
                       <button type="button" size="sm" class="btn btn-edit btn-sm" data-toggle="tooltip"
                         data-placement="bottom" title="Cập nhật" v-on:click="handleUpdate(data.item.id)">
                         <i class="fas fa-pencil-alt"></i>
@@ -397,6 +487,15 @@ export default {
   </Layout>
 </template>
 <style>
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 30px;
+  -webkit-line-clamp: 3;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+
 .td-stt {
   text-align: center;
 }
