@@ -12,19 +12,20 @@
                             <div id="sidebar-menu" class="p-0">
                                 <ul id="side-menu" class="metismenu list-unstyled">
                                     <li>                                       
-                                        <a :href="`/${slug}/danh-sach-yeu-cau-loi`" class="side-nav-link router-link-active">
+                                        <router-link :to='`/${slug}/danh-sach-yeu-cau-loi`' :class="side-nav-link">
                                             <i class="bx bx ti-home"></i>
                                             <span>Danh sách Issue</span>                                        
-                                        </a>
+                                        </router-link>
                                     </li>
-                                    <router-link :to='`/${slug}/thong-tin`'>
+                                    
                                     <li>
-                                        <a class="side-nav-link">
+                                        <router-link :to='`/${slug}/thong-tin`' :class="side-nav-link">
+                                        
                                             <i class="bx ti-agenda"></i>
-                                            <span>Cài đặt dự án</span>
-                                        </a>
+                                            <span>Thông tin dự án</span>
+                                        </router-link>
                                     </li>
-                                    </router-link>
+                                    
                                     <li>
                                         <a href="/du-an" class="side-nav-link">
                                             <i class="bx ti-agenda"></i>
@@ -49,6 +50,13 @@
                                             <span>Bước thực hiện</span>
                                         </a>
                                     </li>
+                                    <li>
+                                        <router-link :to='`/${slug}/thong-tin`' :class="side-nav-link">
+                                        
+                                            <i class="bx ti-agenda"></i>
+                                            <span>Cài đặt dự án</span>
+                                        </router-link>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -68,7 +76,6 @@
 </template>
 
 <script>
-
 export default {
     data() {
         return {
