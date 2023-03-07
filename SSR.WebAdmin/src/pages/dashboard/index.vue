@@ -67,7 +67,7 @@ export default {
         {
           key: "name",
           label: "Tên dự án",
-          sortable: true,
+          sortable: false,
           thClass: 'hidden-sortable',
           thStyle: {width: '400px', minWidth: '100px'},
         },

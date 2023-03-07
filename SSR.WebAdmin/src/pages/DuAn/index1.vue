@@ -69,14 +69,14 @@ export default {
           // thStyle: {width: '400px', minWidth: '0px'},
           thStyle: {width: '500px'},
         },
-        // {
-        //   key: "description",
-        //   label: "Mô tả",
-        //   // class: 'td-xuly',
-        //   thClass: 'hidden-sortable',
-        //   sortable: true,
-        //   // thStyle: {width: '100px', minWidth: '100px'},
-        // },
+        {
+          key: "description",
+          label: "Mô tả",
+          // class: 'td-xuly',
+          thClass: 'hidden-sortable',
+          sortable: true,
+          // thStyle: {width: '100px', minWidth: '100px'},
+        },
         // {
         //   key: "label",
         //   label: "label",
@@ -374,9 +374,9 @@ this.$router.push(`/${slug}/danh-sach-yeu-cau-loi`)
                     </div>
                   </div>
                 </div>
-                <div class="table-responsive mb-0">
+                <div class="table-responsive mb-0 " >
                     <b-table
-                      class="datatables custom-table"
+                      class="datatables custom-table "
                       :items="myProvider"
                       :fields="fields"
                       responsive="sm"
@@ -396,7 +396,7 @@ this.$router.push(`/${slug}/danh-sach-yeu-cau-loi`)
                     </template>
                     
                     <template v-slot:cell(name)="data">&nbsp;&nbsp;
-                      <a class="link-dark" href="" v-on:click="handleDetailProject(data.item.slug)">
+                      <a class="link-dark"  v-on:click="handleDetailProject(data.item.slug)">
                         {{data.item.name}}  
                       </a>
                     </template>
@@ -508,6 +508,29 @@ this.$router.push(`/${slug}/danh-sach-yeu-cau-loi`)
 .td-sodienthoai {
   text-align: center;
   width: 100px;
+}
+.parent {
+    width: 300px;
+}
+
+.ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.block-ellipsis {
+  display: block;
+  display: -webkit-box;
+  max-width: 100%;
+  height: 43px;
+  margin: 0 auto;
+  font-size: 14px;
+  line-height: 1;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 </style>
