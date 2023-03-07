@@ -38,8 +38,7 @@ public class IssueService : BaseService, IIssueService
         var code = CommonExtensions.GenerateNewRandomDigit();
         
         var entity = new Issue
-        {
-            
+        {        
             Description = model.Description,
             Title = model.Title,
             Assignee = model.Assignee,

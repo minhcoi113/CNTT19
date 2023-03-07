@@ -1,5 +1,5 @@
 <script>
-import Layout from "../../layouts/main";
+import Layout from "../../layouts/main1";
 import appConfig from "@/app.config";
 import Multiselect from "vue-multiselect";
 import { yeucauloiModel } from "@/models/yeucauloiModel";
@@ -106,14 +106,12 @@ export default {
     this.getGroup();
     this.getLabel();
     this.getProject();
+    this.handleCreate();
 
     if (this.$route.params.id) {
-
-      if (this.$route.params.id) {
-        this.getPostById(this.$route.params.id);
-      } else {
-        this.model = yeucauloiModel.baseJson();
-      }
+      this.getPostById(this.$route.params.id);
+    } else {
+      this.model = yeucauloiModel.baseJson();
     }
   },
   watch: {
@@ -151,23 +149,41 @@ export default {
   mounted() {
   },
   methods: {
+    handleCreate() {
+      let currentProjectLocal = localStorage.getItem('currentProject');
+
+      this.$store.dispatch("projectStore/get").then((res) => {
+        if (res.resultCode === 'SUCCESS') {
+
+          this.listProject = res.data; //lấy hết cái list
+          this.nameproject = JSON.parse(currentProjectLocal);  //test6
+          
+          const project = this.listProject.find(p => p.name ===  this.nameproject )
+          if (project){
+            this.idproject = project.id;
+          }
+          else {
+            this.idproject = null;
+          }
+
+          this.model.ProjectId = this.idproject;
+          // if (this.listProject.name === this.nameproject) { 
+          //    this.idproject = this.listProject.id;
+          //    this.model.ProjectId = this.idproject;
+          // } 
+          return;
+        }
+        this.listProject = [];
+      });
+    
+    },
+
     handleSelectionChange(selected) {
       selected.forEach(item => {
         this.model.Labels.push(item);
         this.optionsLabel.push(item);
       });
     },
-    // addTag(newTag) {
-    //   this.modellabel.push({
-    //     id : null,
-    //     name : newTag ,
-    //     color: "#FF0000",
-    //     parentId: null,
-    //     knowledge: null,
-    //     isglobal: false,
-    //   }) 
-    // },
-
     addTag(newTag) {
       const tag = {
         id: null,
@@ -304,11 +320,11 @@ export default {
         this.optionsGroup = [];
       });
     },
-
     async getProject() {
       await this.$store.dispatch("projectStore/get").then((res) => {
         if (res.resultCode === 'SUCCESS') {
           this.optionsProject = res.data;
+
           return;
         }
         this.optionsProject = [];
@@ -349,6 +365,7 @@ export default {
             <div class="row">
               <div class="col-md-4 col-12 d-flex align-items-center">
                 <h4 class="font-size-18 fw-bold cs-title-page">Yêu cầu lỗi</h4>
+                <!-- <button @click="handleCreate()">Xem</button> -->
               </div>
               <div class="col-md-8 col-12 text-end">
                 <b-button variant="primary" type="button" class="btn w-md btn-primary" @click="$router.go(-1)" size="sm">
@@ -372,25 +389,12 @@ export default {
                       <label class="form-label cs-title-form" for="validationCustom01"> Tiêu đề</label>
                       <span class="text-danger">*</span>
                       <input id="validationCustom01" v-model="model.Title" type="text" class="form-control" placeholder=""
-                        :class="{ 'is-invalid': submitted && $v.model.title.$error, }" />
+                        :class="{ 'is-invalid': submitted && $v.model.title.$error, }" @change="handleCreate()" />
                       <div v-if="submitted && !$v.model.title.required" class="invalid-feedback">
                         Tiêu đề không được để trống.
                       </div>
                     </div>
                   </div>
-                  <!-- <div class="col-md-12">
-                                                      <div class="mb-2">
-                                                        <label class="form-label cs-title-form" for="validationCustom01">Mô tả</label>
-                                                        <span class="text-danger">*</span>
-                                                        <textarea class="form-control" v-model="model.summary" rows="4"   :class="{'is-invalid': submitted && $v.model.summary.$error,}"></textarea>
-                                                        <div
-                                                            v-if="submitted && !$v.model.summary.required"
-                                                            class="invalid-feedback"
-                                                        >
-                                                          Trích yếu không được để trống.
-                                                        </div>
-                                                      </div>
-                                                    </div> -->
                   <div class="col-md-12">
                     <div class="mb-2">
                       <label class="form-label cs-title-form" for="validationCustom01"> Mô tả</label>
@@ -402,46 +406,46 @@ export default {
                     </div>
                   </div>
                   <!-- <div class="col-lg-12 col-md-12 col-12">
-                                                      <div class="mb-2">
-                                                        <label class="form-label cs-title-form" for="validationCustom01"> Slug</label>
-                                                        <span
-                                                            class="text-danger">*</span>
-                                                        <input
-                                                            id="validationCustom01"
-                                                            v-model="model.slug"
-                                                            type="text"
-                                                            class="form-control"
-                                                            placeholder=""
-                                                            :class="{'is-invalid': submitted && $v.model.slug.$error,}"
-                                                        />
-                                                        <div
-                                                            v-if="submitted && !$v.model.slug.required"
-                                                            class="invalid-feedback"
-                                                        >
-                                                          Slug không được để trống.
-                                                        </div>
-                                                      </div>
-                                                    </div> -->
+                                                          <div class="mb-2">
+                                                            <label class="form-label cs-title-form" for="validationCustom01"> Slug</label>
+                                                            <span
+                                                                class="text-danger">*</span>
+                                                            <input
+                                                                id="validationCustom01"
+                                                                v-model="model.slug"
+                                                                type="text"
+                                                                class="form-control"
+                                                                placeholder=""
+                                                                :class="{'is-invalid': submitted && $v.model.slug.$error,}"
+                                                            />
+                                                            <div
+                                                                v-if="submitted && !$v.model.slug.required"
+                                                                class="invalid-feedback"
+                                                            >
+                                                              Slug không được để trống.
+                                                            </div>
+                                                          </div>
+                                                        </div> -->
                 </div>
                 <div class="col-md-5">
                   <div class="row">
                     <!-- <div class="col-md-12 mb-2">
-                                                      <label class="form-label cs-title-form" for="validationCustom01"> Hình ảnh</label>
-                                                      <div class="col-md-12 d-flex justify-content-center" id="my-strictly-unique-vue-upload-multiple-image">
-                                                        <vue-upload-multiple-image
-                                                            @upload-success="uploadImageSuccess"
-                                                            @before-remove="beforeRemove"
-                                                            :data-images="images"
-                                                            idUpload="myIdUpload"
-                                                            editUpload="myIdEdit"
-                                                            :showEdit="false"
-                                                            class="cs-upload-image"
-                                                        ></vue-upload-multiple-image>
-                                                      </div>
-                                                    </div> -->
+                                                          <label class="form-label cs-title-form" for="validationCustom01"> Hình ảnh</label>
+                                                          <div class="col-md-12 d-flex justify-content-center" id="my-strictly-unique-vue-upload-multiple-image">
+                                                            <vue-upload-multiple-image
+                                                                @upload-success="uploadImageSuccess"
+                                                                @before-remove="beforeRemove"
+                                                                :data-images="images"
+                                                                idUpload="myIdUpload"
+                                                                editUpload="myIdEdit"
+                                                                :showEdit="false"
+                                                                class="cs-upload-image"
+                                                            ></vue-upload-multiple-image>
+                                                          </div>
+                                                        </div> -->
                     <div class="col-md-12">
                       <div class="mb-2">
-                        <label class="text-left">Đơn vị</label>
+                        <label class="form-label cs-title-form" for="validationCustom01"> Đơn vị </label>
                         <treeselect :options="treeView" :value="modeldonvi.ParentId" :searchable="true" :show-count="true"
                           :default-expand-level="1" placeholder="Chọn đơn vị" v-model="model.Donvi">
                           <label slot="option-label"
@@ -493,9 +497,13 @@ export default {
                     <div class="col-md-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Trạng thái </label>
-                        <input id="validationCustom01" v-model="model.StepId" type="text" class="form-control" placeholder=""
-                        :class="{ 'is-invalid': submitted && $v.model.StepId.$error, }" value="Open" disabled/>
+                        <input id="validationCustom01" v-model="model.StepId" type="text" class="form-control"
+                          placeholder="" :class="{ 'is-invalid': submitted && $v.model.StepId.$error, }" disabled />
                       </div>
+
+                      <!-- <input id="validationCustom01"  v-model="model.ProjectId" type="text" class="form-control" placeholder=""
+                            :class="{ 'is-invalid': submitted && $v.model.StepId.$error, }" @input="handleCreate()" value="nameproject" /> -->
+                      <input type="text" v-model="model.ProjectId" @input="handleCreate" hidden>
                     </div>
 
 
@@ -777,3 +785,4 @@ export default {
   color: #2c3e50;
 }
 </style>
+

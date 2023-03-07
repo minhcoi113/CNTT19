@@ -2,16 +2,16 @@
     return {
         id : item.id,
         name: item.name,
+        summary: item.summary,
         content : item.content ,
-        //loaiDanhMuc:item.loaiDanhMuc,
     }
 }
 const fromJson = (item) => {
     return {
         id : item.id,
         name: item.name,
+        summary: item.summary,
         content : item.content ,
-        //loaiDanhMuc:item.loaiDanhMuc,
     }
 }
 
@@ -19,8 +19,8 @@ const baseJson = () => {
     return {
         id : null,
         name: null,
+        summary: null,
         content : null ,
-        //loaiDanhMuc:null,
     }
 }
 

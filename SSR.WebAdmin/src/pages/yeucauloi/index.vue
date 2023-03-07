@@ -50,7 +50,6 @@ export default {
   },
   created() {
     this.fnGetList();
-    console.log(this.$route);
   },
   watch: {
     showModal(status) {
@@ -99,9 +98,12 @@ export default {
     clearSearch(){
       this.filter = null;
     },
-    handleNewPost(){
-      this.$router.push("/yeu-cau-loi")
+    handleCreate(){
+      let currentProjectLocal = localStorage.getItem('currentProject');
+      this.slug = JSON.parse(currentProjectLocal);
+      this.$router.push(`/${this.slug}/yeu-cau-loi`);
     },
+    
     handleRedirectToDetail(id){
       this.$router.push("/yeu-cau-loi/" + id)
     }
@@ -123,7 +125,7 @@ export default {
                     variant="primary"
                     type="button"
                     class="btn w-md btn-primary"
-                    @click="handleNewPost"
+                    @click="handleCreate()"
                     size="sm"
                 >
                   <i class="mdi mdi-plus me-1"></i> Tạo Yêu cầu lỗi

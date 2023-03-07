@@ -37,6 +37,7 @@ namespace SSR.WebAPI.Services
             {
                 Name = model.Name,
                 Content = model.Content,
+                Summary = model.Summary,
             };
 
             var result = await BaseMongoDb.CreateAsync(entity);
@@ -69,6 +70,7 @@ namespace SSR.WebAPI.Services
 
             entity.Name = model.Name;
             entity.Content = model.Content;
+            entity.Summary = model.Summary;
 
             var result = await BaseMongoDb.UpdateAsync(entity);
             if (!result.Success)

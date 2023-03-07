@@ -206,6 +206,12 @@ export default [{
         component: () => import("../pages/yeucauloi/index"),
     },
     {
+        path: "/:slug/yeu-cau-loi",
+        name: "Them yeu cau loi",
+        
+        component: () => import("../pages/yeucauloi/create"),
+    },
+    {
         path: "/:slug/thong-tin",
         name: "Thong tin",
         
