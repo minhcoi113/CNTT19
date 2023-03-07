@@ -33,7 +33,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="/du-an" class="side-nav-link">
+                                        <a href="/Label" class="side-nav-link">
                                             <i class="bx ti-agenda"></i>
                                             <span>Nhãn</span>
                                         </a>

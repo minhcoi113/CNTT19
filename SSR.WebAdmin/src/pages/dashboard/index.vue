@@ -146,16 +146,6 @@ export default {
           path: "/nhan-vien",
           className: "card-hopthu",
           icon: "mdi mdi-chart-bar text-warning"
-        },
-        {
-          title: "Nhân viên",
-          image: require("@/assets/images/services-icon/02.png"),
-          value: "0",
-          subText: "HT",
-          color: "red",
-          path: "/nhan-vien",
-          className: "card-thongbao",
-          icon: "mdi mdi-account text-warning"
         }
       ],
       modelSoLieu: dashboardModel.baseJson(),
@@ -187,9 +177,10 @@ export default {
             this.modelSoLieu = resp.data;
             if (this.modelSoLieu) {
               this.statData[0].value = this.modelSoLieu.soProject.toString();
-              this.statData[1].value = this.modelSoLieu.soTuyenDung.toString();
+              this.statData[1].value = this.modelSoLieu.soDuAnThamGia.toString();
               this.statData[2].value = this.modelSoLieu.soNhanVien.toString();
               this.statData[3].value = this.modelSoLieu.soPhongMay.toString();
+              this.statData[4].value = this.modelSoLieu.soProject.toString();
             }
             return;
           } else {
@@ -302,17 +293,6 @@ export default {
           <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item active text-dark"> Chào mừng đến với hệ thống Hỗ trợ người dùng</li>
           </ol>
-        </div>
-      </div>
-      <div class="col-sm-6">
-        <div class="float-end d-none d-md-block">
-          <b-dropdown right variant="primary" menu-class="dropdown-menu-end">
-            <template v-slot:button-content>
-              <i class="mdi mdi-cog me-2"></i> Truy cập nhanh
-            </template>
-            <b-dropdown-item href="https://cybercoredongthap.com" target="_blank"> Trang chủ</b-dropdown-item>
-            <b-dropdown-item> Thông tin bản quyền</b-dropdown-item>
-          </b-dropdown>
         </div>
       </div>
         
