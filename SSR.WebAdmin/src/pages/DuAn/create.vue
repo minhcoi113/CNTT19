@@ -18,7 +18,6 @@ export default {
     Layout,
     Multiselect,
     VueUploadMultipleImage,
-    // 'ckeditor-nuxt': () => { return import('@blowstack/ckeditor-nuxt') },
   },
   data() {
     return {
@@ -309,7 +308,6 @@ export default {
       <div class="col-12">
         <div class="card">
           <div class="card-body">
-
             <form @submit.prevent="handleSubmit" ref="formContainer">
               <div class="row">
                 <div class="col-md-8">
@@ -344,7 +342,6 @@ export default {
                         </div>
                       </div>
                     </div>
-
                     <div class="col-lg-12 col-md-12 col-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Đường dẫn </label>
@@ -356,10 +353,8 @@ export default {
                         </div> -->
                       </div>
                     </div>
-
                   </div>
                 </div>
-
                 <div class="col-md-4">
                   <div class="row">
                     <div class="col-md-12 mb-2">
@@ -372,16 +367,13 @@ export default {
                       </div>
                     </div>
                   </div>
-                
-                
-                    <div class="col-md-">
+                  <div class="col-md-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Nhóm </label>
                         <multiselect v-model="model.group" :options="optionsGroup" :multiple="true" track-by="id"
                           label="name" placeholder="Chọn nhóm" deselect-label="Nhấn để xoá"
                           selectLabel="Nhấn enter để chọn" selectedLabel="Đã chọn"
                           :class="{ 'is-invalid': submitted && $v.model.group.$error, }"></multiselect>
-
                       </div>
                     </div>
                   
@@ -407,10 +399,7 @@ export default {
                 </b-button>
               </div>
             </form>
-
           </div>
-
-
           <b-modal v-model="showDeleteModal" centered title="Xóa dữ liệu" title-class="font-18" no-close-on-backdrop>
             <p>
               Dữ liệu xóa sẽ không được phục hồi!

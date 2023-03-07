@@ -144,6 +144,21 @@ export default {
     fnGetList() {
       this.$refs.tblList?.refresh()
     },
+    handleShowDeleteModal(id) {
+      this.model.id = id;
+      this.showDeleteModal = true;
+    },
+    async handleDelete() {
+      if (this.model.id != 0 && this.model.id != null && this.model.id) {
+        await this.$store.dispatch("projectStore/delete", this.model.id).then((res) => {
+          if (res.resultCode==='SUCCESS') {
+            this.fnGetList();
+            this.showDeleteModal = false;
+          }
+          this.$store.dispatch("snackBarStore/addNotify", notifyModel.addMessage(res));
+        });
+      }
+    },
     handleShowNotify(res) {
       this.isShow = true;
       this.responseData.resultCode = res.resultCode;
@@ -189,15 +204,7 @@ export default {
               }
               this.$store.dispatch("snackBarStore/addNotify", notifyModel.addMessage(res))
             });
-          } else {
-            // Create model
-            await this.$store.dispatch("projectStore/create", this.model).then((res) => {
-              if (res.resultCode === 'SUCCESS') {
-                this.fnGetList()
-              }
-              this.$store.dispatch("snackBarStore/addNotify", notifyModel.addMessage(res))
-            });
-          }
+          } 
         }
         loader.hide();
       }
@@ -263,20 +270,7 @@ export default {
         this.optionsLabel = [];
       });
     },
-    handleShowDeleteModal() {
-      this.showDeleteModal = true;
-    },
-    async handleDelete() {
-      if (this.model.id != 0 && this.model.id != null && this.model.id) {
-        await this.$store.dispatch("projectStore/delete", this.model.id).then((res) => {
-          if (res.resultCode === 'SUCCESS') {
-            this.$router.go(-1)
-          }
-          this.$store.dispatch("snackBarStore/addNotify", notifyModel.addMessage(res));
-          // });
-        });
-      }
-    },
+    
   }
 };
 </script>
@@ -355,7 +349,6 @@ export default {
 
                   </div>
                 </div>
-
                 <div class="col-md-4">
                   <div class="row">
                     <div class="col-md-12 mb-2">
@@ -396,35 +389,43 @@ export default {
                 
               </div>
               <div class="text-end pt-2">
-                <b-button variant="light" class="w-md " style="width: 200px;" @click="showModal = false">
-                  Đóng
+                <b-button class="btn-delete ms-1 w-md"
+                  v-on:click="handleShowDeleteModal(model.id)">Xóa
                 </b-button>
                 <b-button type="submit" variant="primary" class="ms-1 w-md " style="width: 200px;">Lưu
                 </b-button>
+                
               </div>
             </form>
-
+            
           </div>
-
-
-          <b-modal v-model="showDeleteModal" centered title="Xóa dữ liệu" title-class="font-18" no-close-on-backdrop>
-            <p>
-              Dữ liệu xóa sẽ không được phục hồi!
-            </p>
-            <template #modal-footer>
-              <b-button v-b-modal.modal-close_visit size="sm" class="btn btn-outline-info w-md"
-                v-on:click="showDeleteModal = false">
-                Đóng
-              </b-button>
-              <b-button v-b-modal.modal-close_visit size="sm" variant="danger" type="button" class="w-md"
-                v-on:click="handleDelete">
-                Xóa
-              </b-button>
-            </template>
-          </b-modal>
+          <b-modal
+                v-model="showDeleteModal"
+                centered
+                title="Xóa dữ liệu"
+                title-class="font-18"
+                no-close-on-backdrop
+            >
+              <p>
+                Dữ liệu xóa sẽ không được phục hồi!
+              </p>
+              <template #modal-footer>
+                <button v-b-modal.modal-close_visit
+                        class="btn btn-outline-info m-1"
+                        v-on:click="showDeleteModal = false">
+                  Đóng
+                </button>
+                <button v-b-modal.modal-close_visit
+                        class="btn btn-danger btn m-1"
+                        v-on:click="handleDelete">
+                  Xóa
+                </button>
+              </template>
+            </b-modal>
         </div>
       </div>
     </div>
+    
   </Layout>
 </template>
 <style scoped>

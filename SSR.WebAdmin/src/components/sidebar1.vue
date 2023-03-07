@@ -56,13 +56,13 @@
                                         </a>
                                     </li>
                                     </router-link>
-                                    <!-- <li>
+                                    <li>
                                         <router-link :to='`/${slug}/thong-tin`' :class="side-nav-link">
                                         
                                             <i class="bx ti-agenda"></i>
                                             <span>Cài đặt dự án</span>
                                         </router-link>
-                                    </li> -->
+                                    </li> 
                                 </ul>
                             </div>
                         </div>
