@@ -18,7 +18,7 @@ export default {
     Layout,
     Multiselect,
     VueUploadMultipleImage,
-    'ckeditor-nuxt': () => { return import('@blowstack/ckeditor-nuxt') },
+    //'ckeditor-nuxt': () => { return import('@blowstack/ckeditor-nuxt') },
   },
   data() {
     return {
@@ -293,7 +293,7 @@ export default {
           <div class="card-body">
             <div class="row">
               <div class="col-md-4 col-12 d-flex align-items-center">
-                <h4 class="font-size-18 fw-bold cs-title-page">Soạn bài viết</h4>
+                <h4 class="font-size-18 fw-bold cs-title-page">Tạo dự án</h4>
               </div>
               <div class="col-md-8 col-12 text-end">
                 <b-button variant="primary" type="button" class="btn w-md btn-primary" @click="$router.go(-1)" size="sm">
@@ -309,12 +309,11 @@ export default {
       <div class="col-12">
         <div class="card">
           <div class="card-body">
-
             <form @submit.prevent="handleSubmit" ref="formContainer">
               <div class="row">
-                <div class="col-md-9">
+                <div class="col-md-8">
                   <div class="row">
-                    <div class="col-lg-10 col-md-12 col-12">
+                    <div class="col-lg-12 col-md-12 col-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Tên dự án </label>
                         <span class="text-danger">*</span>
@@ -325,37 +324,34 @@ export default {
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-12 col-lg-10">
+                    <div class="col-md-12 col-lg-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Mô tả</label>
                         <span class="text-danger">*</span>
-                        <ckeditor-nuxt v-model="model.description" :config="editorConfig" />
+                        <textarea v-model="model.description" :config="editorConfig"></textarea>
                         <div v-if="submitted && !$v.model.description.required" class="invalid-feedback">
                           Mô tả không được để trống.
                         </div>
                       </div>
                     </div>
-
-                    <div class="col-lg-10 col-md-12 col-12">
+                    <div class="col-lg-12 col-md-12 col-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Đường dẫn </label>
                         <span class="text-danger">*</span>
                         <input id="validationCustom01" v-model="model.slug" type="text" class="form-control"
                           placeholder="" :class="{ 'is-invalid': submitted && $v.model.slug.$error, }" />
                         <div v-if="submitted && !$v.model.slug.required" class="invalid-feedback">
-                          Slug không được để trống.
+                          Đường dẫn không được để trống.
                         </div>
                       </div>
                     </div>
-
                   </div>
                 </div>
-
-                <div class="col-md-3">
+                <div class="col-md-4">
                   <div class="row">
                     <div class="col-md-12 mb-2">
                       <label class="form-label cs-title-form" for="validationCustom01"> Hình ảnh</label>
-                      <div class="col-md-6 d-flex justify-content-center"  
+                      <div class="col-md-12 d-flex justify-content-center"  
                         id="my-strictly-unique-vue-upload-multiple-image">
                         <vue-upload-multiple-image @upload-success="uploadImageSuccess" @before-remove="beforeRemove"
                           :data-images="images" idUpload="myIdUpload" editUpload="myIdEdit" :showEdit="false"
@@ -363,21 +359,16 @@ export default {
                       </div>
                     </div>
                   </div>
-                </div>
-                
-                    <div class="col-md-3">
+                  <div class="col-md-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Nhóm </label>
                         <multiselect v-model="model.group" :options="optionsGroup" :multiple="true" track-by="id"
                           label="name" placeholder="Chọn nhóm" deselect-label="Nhấn để xoá"
                           selectLabel="Nhấn enter để chọn" selectedLabel="Đã chọn"
                           :class="{ 'is-invalid': submitted && $v.model.group.$error, }"></multiselect>
-
                       </div>
-                    </div>
-                  
-                  
-                    <div class="col-md-3">
+                    </div>  
+                    <div class="col-md-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Thành viên</label>
                         <multiselect v-model="model.member" :options="optionsUser" :multiple="true" track-by="id"
@@ -386,9 +377,7 @@ export default {
                           :class="{ 'is-invalid': submitted && $v.model.member.$error, }"></multiselect>
                       </div>
                     </div>
-
-                  
-                
+                </div>
               </div>
               <div class="text-end pt-2">
                 <b-button variant="light" class="w-md" @click="showModal = false">
@@ -398,10 +387,7 @@ export default {
                 </b-button>
               </div>
             </form>
-
           </div>
-
-
           <b-modal v-model="showDeleteModal" centered title="Xóa dữ liệu" title-class="font-18" no-close-on-backdrop>
             <p>
               Dữ liệu xóa sẽ không được phục hồi!

@@ -63,19 +63,19 @@ export default {
         },
         {
           key: "name",
-          label: "Tên dự án",
+          label: "Dự án",
           sortable: true,
           thClass: 'hidden-sortable',
           // thStyle: {width: '400px', minWidth: '0px'},
-          thStyle: {width: '500px'},
+          thStyle: {width: '300px'},
         },
         // {
         //   key: "description",
         //   label: "Mô tả",
-        //   // class: 'td-xuly',
+        //   class: 'td-xuly',
         //   thClass: 'hidden-sortable',
         //   sortable: true,
-        //   // thStyle: {width: '100px', minWidth: '100px'},
+        //   thStyle: {width: '100px', minWidth: '100px'},
         // },
         // {
         //   key: "label",
@@ -250,9 +250,6 @@ export default {
     handleDetail(id){
       this.$router.push("/du-an/chi-tiet/" + id)
     },
-    Project(slug){
-      this.$router.push(slug + "/danh-sach-yeu-cau-loi")
-    },
     FormatJSon(FilterData, JsonData){
       return JsonData.map((v)=>FilterData.map((j=>{
         return v[j];
@@ -392,14 +389,23 @@ export default {
                       tbody-tr-class="b-table-chucvu"
                   >                 
                     <template v-slot:cell(STT)="data">
-                      {{ data.index + ((currentPage-1)*perPage) + 1  }}
+                      <div class="fw-normal font-size-18">
+                      {{ data.index + ((currentPage-1)*perPage) + 1  }}</div>
                     </template>
                     
-                    <template v-slot:cell(name)="data">&nbsp;&nbsp;
+                    <template v-slot:cell(name)="data">
                       <a class="link-dark" v-on:click="handleDetailProject(data.item.slug)">
-                        {{data.item.name}}  
+                        <div class="fw-normal font-size-18" style="color: red;">{{data.item.name}}
+                        </div>
+                        <div class="ellips">{{data.item.description}}</div> 
                       </a>
                     </template>
+                    <!-- <template v-slot:cell(description)="data">
+                      <div class="ellips">
+                        
+                      </div>
+
+                    </template> -->
                     <template v-slot:cell(process)="data">
                        <router-link :to='`/du-an/chi-tiet/${data.item.slug}`'>
                      <button
@@ -509,7 +515,18 @@ export default {
   text-align: center;
   width: 100px;
 }
-
+.ellips {
+  display: block;
+  display: -webkit-box;
+  max-width: 100%;
+  margin: 0 auto;
+  font-size: 14px;
+  line-height: 30px;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 </style>
 <style lang="scss">
 #my-strictly-unique-vue-upload-multiple-image {
