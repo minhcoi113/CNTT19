@@ -209,7 +209,7 @@ export default [{
         path: "/:slug/thong-tin",
         name: "Thong tin",
         
-        component: () => import("../pages/thongtinduan"),
+        component: () => import("../pages/DuAn/detail"),
     },
     {
         path: "/thong-ke",

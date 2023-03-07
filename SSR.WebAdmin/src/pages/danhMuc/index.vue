@@ -9,7 +9,7 @@ import { knowledgeModel } from "@/models/knowledgeModel";
 
 export default {
   page: {
-    title: "Danh mục",
+    title: "Hướng dẫn xử lý lỗi",
     meta: [{ name: "description", content: appConfig.description }],
   },
   components: { Layout, 'ckeditor-nuxt': () => { return import('@blowstack/ckeditor-nuxt')  },},
@@ -42,7 +42,7 @@ export default {
         },
       },
 
-      title: "Danh mục",
+      title: "Hướng dẫn xử lý lỗi",
       data: [],
       showModal: false,
       showPhanloai: false,
@@ -268,7 +268,7 @@ export default {
               </div>
               <div class="col-sm-8">
                 <div class="text-sm-end">
-                  <b-modal v-model="showModal" title="Thông tin danh mục" title-class="text-black font-18"
+                  <b-modal v-model="showModal" title="Thông tin hướng dẫn" title-class="text-black font-18"
                     body-class="p-3" hide-footer centered no-close-on-backdrop size="lg">
                     <form @submit.prevent="handleSubmit" ref="formContainer">
                       <div class="row">
@@ -283,7 +283,7 @@ export default {
                                   submitted && $v.model.name.$error,
                               }" />
                             <div v-if="submitted && !$v.model.name.required" class="invalid-feedback">
-                              Tên danh mục không được để trống.
+                              Tên hướng dẫn không được để trống.
                             </div>
                           </div>
                         </div>

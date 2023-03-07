@@ -260,12 +260,12 @@ export default {
     },
     handleDetailProject(slug){
 
-let currentProject = JSON.stringify(slug)
+      let currentProject = JSON.stringify(slug)
 
-localStorage.setItem("currentProject", currentProject);
+      localStorage.setItem("currentProject", currentProject);
 
-this.$router.push(`/${slug}/danh-sach-yeu-cau-loi`)
-}
+      this.$router.push(`/${slug}/danh-sach-yeu-cau-loi`)
+    }
   },
 };
 </script>
