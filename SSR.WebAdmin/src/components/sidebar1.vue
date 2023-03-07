@@ -32,31 +32,37 @@
                                             <span>Phân quyền</span>
                                         </a>
                                     </li>
+                                    <router-link :to='`/${slug}/nhan-du-an`'>
                                     <li>
-                                        <a href="/du-an" class="side-nav-link">
+                                        <a  class="side-nav-link">
                                             <i class="bx ti-agenda"></i>
                                             <span>Nhãn</span>
                                         </a>
                                     </li>
+                                    </router-link>
+                                    <router-link :to='`/${slug}/thong-ke`'>
                                     <li>
-                                        <a href="/du-an" class="side-nav-link">
+                                        <a  class="side-nav-link">
                                             <i class="bx ti-agenda"></i>
                                             <span>Thống kê</span>
                                         </a>
                                     </li>
+                                    </router-link>
+                                    <router-link :to='`/${slug}/buoc-thuc-hien`'>
                                     <li>
-                                        <a href="/du-an" class="side-nav-link">
+                                        <a class="side-nav-link">
                                             <i class="bx ti-agenda"></i>
                                             <span>Bước thực hiện</span>
                                         </a>
                                     </li>
+                                    </router-link>
                                     <li>
                                         <router-link :to='`/${slug}/thong-tin`' :class="side-nav-link">
                                         
                                             <i class="bx ti-agenda"></i>
                                             <span>Cài đặt dự án</span>
                                         </router-link>
-                                    </li>
+                                    </li> 
                                 </ul>
                             </div>
                         </div>

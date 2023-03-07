@@ -1,5 +1,5 @@
 <script>
-import Layout from "../../layouts/main";
+import Layout from "../../layouts/main1";
 import PageHeader from "@/components/page-header";
 import { numeric, required } from "vuelidate/lib/validators";
 import appConfig from "@/app.config";

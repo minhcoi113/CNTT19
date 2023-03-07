@@ -138,12 +138,7 @@ export default [{
         // meta: {},
         component: () => import("../pages/auth/profile"),
     },
-    {
-        path: "/Label",
-        name: "Nhãn",
-        // meta: {},
-        component: () => import("../pages/label"),
-    },
+   
     {
         path: "/huong-dan-xu-ly",
         name: "Hướng dẫn xử lý",
@@ -222,5 +217,23 @@ export default [{
         name: "ThongKe",
         
         component: () => import("../pages/thongke"),
+    },
+    {
+        path: "/:slug/buoc-thuc-hien",
+        name: "Buoc Thuc Hien",
+        
+        component: () => import("../pages/step/index"),
+    },
+    {
+        path: "/:slug/nhan-du-an",
+        name: "Nhãn",
+        // meta: {},
+        component: () => import("../pages/label/index"),
+    },
+    {
+        path: "/:slug/thong-ke",
+        name: "Nhãn",
+        // meta: {},
+        component: () => import("../pages/thongke/index"),
     },
 ]
