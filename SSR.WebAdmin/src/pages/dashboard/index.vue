@@ -319,7 +319,7 @@ export default {
     </div>
     <!-- end page title -->
     <div class="row mb-3">
-      <div class="col-md-2 col-sm-12 mb-2" v-for="stat of statData" :key="stat.icon">
+      <div class="col-md-12 col-sm-12 mb-3 col-lg-3 center" v-for="stat of statData" :key="stat.icon">
         <Stat
             :title="stat.title"
             :image="stat.image"

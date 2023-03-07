@@ -6,7 +6,8 @@ import {notifyModel} from "@/models/notifyModel";
 import {pagingModel} from "@/models/pagingModel";
 import {CONSTANTS} from "@/helpers/constants";
 import {tagModel} from "@/models/tagModel";
-
+import {stepModel} from "@/models/stepModel";
+import {yeucauloiModel} from "@/models/yeucauloiModel";
 export default {
   page: {
     title: "Yêu cầu lỗi",
@@ -45,17 +46,21 @@ export default {
   validations: {
     model: {
       name: {required},
-      sort: {required},
-      
+      sort: {required}
     },
   },
   created() {
+    if(this.$route.params.id){
+      this.getById(this.$route.params.id);
+    }else{
+      this.model = stepModel.baseJson();
+    }
     this.fnGetList();
     console.log(this.$route);
   },
   watch: {
     showModal(status) {
-      if (status == false) this.model = tagModel.baseJson();
+      if (status == false) this.model = yeucauloiModel.baseJson();
     },
     showDeleteModal(val) {
       if (val == false) {
@@ -172,6 +177,26 @@ export default {
                     </div>
                   </div>
                 </div>
+              <div class="col-md-3">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="row">
+                      <div class=" col-md-4 col-12 btn btn-link">
+                      <a href="">Open</a>
+                      </div>
+                      <div class=" col-md-4 col-12 btn btn-link">
+                        <a href="">Closed</a>
+                      </div>
+                      <div class=" col-md-4 col-12 btn btn-link" >
+                        <a href="">All</a>
+                      </div>
+                    
+                      
+                     
+                    </div>
+                  </div>
+                </div>
+              </div>
                 <div class="table-responsive-sm">
                   <b-table
                       class="datatables custom-table"
@@ -193,8 +218,8 @@ export default {
                       {{ data.index + ((currentPage-1)*perPage) + 1  }}
                     </template>
                     <template v-slot:cell(issue)="data">
-                      <template v-if="data.item.title">
-                        {{data.item.category.title}}
+                      <template v-if="data.item.issue">
+                        {{data.item.issue.name}}
                       </template>
                     </template>
                     <template v-slot:cell(status)="data">
