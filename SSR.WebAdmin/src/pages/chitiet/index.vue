@@ -15,8 +15,8 @@ export default {
   },
   components: {
     Layout,
-    Multiselect,
-    VueUploadMultipleImage,
+    //Multiselect,
+    //VueUploadMultipleImage,
     // 'ckeditor-nuxt': () => {
     //   return import('@blowstack/ckeditor-nuxt')
     // },
@@ -95,6 +95,7 @@ export default {
     this.getUser();
     this.getGroup();
     this.getLabel();
+    this.handleCreate();
     if(this.$route.params.id){
       this.getById(this.$route.params.id);
     }else{
@@ -105,6 +106,7 @@ export default {
     } else {
       this.model = projectModel.baseJson();
     }
+    
   },
   watch: {
     model: {
@@ -143,6 +145,29 @@ export default {
   methods: {
     fnGetList() {
       this.$refs.tblList?.refresh()
+    },
+    handleCreate() {
+      let currentProjectLocal = localStorage.getItem('currentProject');
+
+      this.$store.dispatch("projectStore/get").then((res) => {
+        if (res.resultCode === 'SUCCESS') {
+
+          this.listProject = res.data; 
+          this.nameproject = JSON.parse(currentProjectLocal);  
+          
+          const project = this.listProject.find(p => p.slug ===  this.nameproject )
+          if (project){
+            this.idproject = project.id;
+          }
+          else {
+            this.idproject = null;
+          }
+          this.model.ProjectId = this.idproject;
+          return;
+        }
+        this.listProject = [];
+      });
+      
     },
     handleShowNotify(res) {
       this.isShow = true;
@@ -289,7 +314,7 @@ export default {
         <div class="page-title-box">     
               <div class="d-flex mb-4">
               <img src="@/assets/images/users/user-1.jpg" alt="Generic placeholder image" class="flex-shrink-0 me-3 rounded mx-auto d-blocks avatar-sm">
-              <div class="flex-grow-1"><h4 class="font-size-20 m-0">{{ model.name }}</h4><span class="text-muted"></span></div>
+              <div class="flex-grow-1"><h4 class="font-size-20 m-0">{{ model.name }}</h4><span>Yêu cầu lỗi: </span><span class="badge rounded-pill bg-danger">0</span></div>
             </div>
       </div>
       </div>
@@ -300,105 +325,12 @@ export default {
           <div class="card-body">
             <div class="d-flex mb-4">
               <img src="@/assets/images/users/user-1.jpg" alt="Generic placeholder image" class="flex-shrink-0 me-3 rounded-circle avatar-sm">
-              <div class="flex-grow-1"><h4 class="font-size-14 m-0">Người tạo</h4><h4 class="text-muted">hien</h4></div>
+              <div class="flex-grow-1"><h4 class="font-size-14 m-0">Người tạo</h4><h4 class="text-muted">{{model.createdBy}}</h4><h4 class="font-size-13 m-0">tạo vào {{ model.createdAt }}</h4></div>
             </div>
-            <form @submit.prevent="handleSubmit" ref="formContainer">
-              <div class="row">
-                <div class="col-md-8">
-                  <div class="row">
-                    <div class="col-lg-12 col-md-12 col-12">
-                      <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Tên dự án </label>
-                        <span class="text-danger">*</span>
-                        <input id="validationCustom01" v-model="model.name" type="text" class="form-control"
-                          placeholder="" :class="{ 'is-invalid': submitted && $v.model.name.$error, }" />
-                        <div v-if="submitted && !$v.model.name.required" class="invalid-feedback">
-                          Tiêu đề không được để trống.
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-12 col-lg-12">
-                      <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01">Mô tả</label>
-                        <span class="text-danger">*</span>
-                        <textarea 
-                        
-                        class="form-control" 
-                        v-model="model.description" 
-                        rows="8"   
-                        :class="{'is-invalid': submitted && $v.model.description.$error,}">
-                      </textarea>
-                        <div
-                            v-if="submitted && !$v.model.description.required"
-                            class="invalid-feedback"
-                        >
-                          Mô tả không được để trống.
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="col-lg-12 col-md-12 col-12">
-                      <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Đường dẫn </label>
-                        <span class="text-danger">*</span>
-                        <input id="validationCustom01" v-model="model.slug" type="text" class="form-control"
-                          placeholder="" :class="{ 'is-invalid': submitted && $v.model.slug.$error, }" />
-                        <!-- <div v-if="submitted && !$v.model.slug.required" class="invalid-feedback">
-                          Slug không được để trống.
-                        </div> -->
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-
-                <div class="col-md-4">
-                  <div class="row">
-                    <div class="col-md-12 mb-2">
-                      <label class="form-label cs-title-form" for="validationCustom01"> Hình ảnh</label>
-                      <div class="col-md-12 d-flex justify-content-center"
-                        id="my-strictly-unique-vue-upload-multiple-image">
-                        <vue-upload-multiple-image @upload-success="uploadImageSuccess" @before-remove="beforeRemove"
-                          :data-images="images" idUpload="myIdUpload" editUpload="myIdEdit" :showEdit="false"
-                          class="cs-upload-image"></vue-upload-multiple-image>
-                      </div>
-                    </div>
-                  </div>
-                
-                
-                    <div class="col-md-">
-                      <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Nhóm </label>
-                        <multiselect v-model="model.group" :options="optionsGroup" :multiple="true" track-by="id"
-                          label="name" placeholder="Chọn nhóm" deselect-label="Nhấn để xoá"
-                          selectLabel="Nhấn enter để chọn" selectedLabel="Đã chọn"
-                          :class="{ 'is-invalid': submitted && $v.model.group.$error, }"></multiselect>
-
-                      </div>
-                    </div>
-                  
-                  
-                    <div class="col-md-12">
-                      <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Thành viên</label>
-                        <multiselect v-model="model.member" :options="optionsUser" :multiple="true" track-by="id"
-                          label="fullName" placeholder="Chọn thể loại" deselect-label="Nhấn để xoá"
-                          selectLabel="Nhấn enter để chọn" selectedLabel="Đã chọn"
-                          :class="{ 'is-invalid': submitted && $v.model.member.$error, }"></multiselect>
-                      </div>
-                    </div>
-
-                  </div>
-                
-              </div>
-              <div class="text-end pt-2">
-                <b-button variant="light" class="w-md " style="width: 200px;" @click="showModal = false">
-                  Đóng
-                </b-button>
-                <b-button type="submit" variant="primary" class="ms-1 w-md " style="width: 200px;">Lưu
-                </b-button>
-              </div>
-            </form>
+            
+              <h4 class="card-title">Sơ lược về dự án:</h4>
+              <p class="card-title-desc">{{ model.description }}</p>
+            
 
           </div>
 

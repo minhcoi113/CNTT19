@@ -19,28 +19,10 @@
                                         </li>
                                         <li>                                       
                                             <a :href="`/${slug}/danh-sach-yeu-cau-loi`" class="side-nav-link router-link-active">
-                                                <i class="bx bx ti-home"></i>
-                                                <span>Danh sách Issue</span>                                        
+                                                <i class="mdi mdi-alert-outline"></i>
+                                                <span>Danh sách yêu cầu lỗi</span>                                        
                                             </a>
-                                        </li>
-                                        <router-link :to='`/${slug}/thong-tin`'>
-                                        <li>
-                                            <a class="side-nav-link">
-                                                <i class="bx ti-agenda"></i>
-                                                <span>Cài đặt dự án</span>
-                                            </a>
-                                        </li>
-                                        </router-link>
-                                    </li>
-                                    
-                                    <li>
-                                        <router-link :to='`/${slug}/thong-tin`' :class="side-nav-link">
-                                        
-                                            <i class="bx ti-agenda"></i>
-                                            <span>Thông tin dự án</span>
-                                        </router-link>
-                                    </li>
-                                    
+                                        </li> 
                                     <li>
                                         <a href="/du-an" class="side-nav-link">
                                             <i class="bx ti-agenda"></i>
@@ -50,15 +32,15 @@
                                     <router-link :to='`/${slug}/nhan-du-an`'>
                                     <li>
                                         <a href="/Label" class="side-nav-link">
-                                            <i class="bx ti-agenda"></i>
-                                            <span>Nhãn</span>
+                                            <i class="fas fa-tasks"></i>
+                                            <span>Hoạt động</span>
                                         </a>
                                     </li>
                                     </router-link>
                                     <router-link :to='`/${slug}/thong-ke`'>
                                     <li>
                                         <a  class="side-nav-link">
-                                            <i class="bx ti-agenda"></i>
+                                            <i class="mdi mdi-file-chart"></i>
                                             <span>Thống kê</span>
                                         </a>
                                     </li>
@@ -66,7 +48,7 @@
                                     <router-link :to='`/${slug}/buoc-thuc-hien`'>
                                     <li>
                                         <a class="side-nav-link">
-                                            <i class="bx ti-agenda"></i>
+                                            <i class="mdi mdi-debug-step-into"></i>
                                             <span>Bước thực hiện</span>
                                         </a>
                                     </li>
@@ -74,7 +56,7 @@
                                     <li>
                                         <router-link :to='`/${slug}/thong-tin`' :class="side-nav-link">
                                         
-                                            <i class="bx ti-agenda"></i>
+                                            <i class="mdi mdi-cog"></i>
                                             <span>Cài đặt dự án</span>
                                         </router-link>
                                     </li> 
@@ -92,6 +74,7 @@
                 <div class="simplebar-scrollbar" style="height: 0px; display: none;"></div>
             </div>
         </div>
+    </div>
     </div>
     </template>
     
