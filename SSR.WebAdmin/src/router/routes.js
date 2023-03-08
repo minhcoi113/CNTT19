@@ -231,6 +231,12 @@ export default [{
         component: () => import("../pages/thongke/index"),
     },
     {
+        path: "/:slug/chi-tiet",
+        name: "Chi tiết dự án",
+        // meta: {},
+        component: () => import("../pages/chitiet"),
+    },
+    {
         path: "/Label",
         name: "Nhãn",
         // meta: {},

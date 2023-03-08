@@ -9,6 +9,8 @@ const baseJson = () => {
         label: null,
         member: null,
         files: null,
+        createdBy:null,
+        createdAt:null,
         //uploadFiles: null,
         isDeleted: false
     }
@@ -22,7 +24,9 @@ const toJson = (item) => {
       member: item.member,
       group: item.group,
       label: item.label,
-      files: item.files
+      files: item.files,
+      createdBy: item.createdBy,
+      createdAt: item.createdAt
       //uploadFiles: item.uploadFiles
   }
 }
@@ -35,7 +39,9 @@ const fromJson = (item) => {
       member: item.member,
       group: item.group,
       label: item.label,
-      files: item.files
+      files: item.files,
+      createdBy: item.createdBy,
+      createdAt:item.createdAt
       //uploadFiles: item.uploadFiles     
   }
 }
