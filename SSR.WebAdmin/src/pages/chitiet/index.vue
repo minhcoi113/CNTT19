@@ -95,7 +95,7 @@ export default {
     this.getUser();
     this.getGroup();
     this.getLabel();
-    this.handleCreate();
+
     if(this.$route.params.id){
       this.getById(this.$route.params.id);
     }else{
@@ -146,29 +146,52 @@ export default {
     fnGetList() {
       this.$refs.tblList?.refresh()
     },
-    handleCreate() {
+    convertdate(){
+      let newsApiDate =this.model.createdAt; // got from the Api
+      let timestamp = new Date(newsApiDate).getTime();
+      let Day = new Date(timestamp).getDate();
+      let Month = new Date(timestamp).getMonth() + 1;
+      let Year = new Date(timestamp).getFullYear();
+      let OurNewDateFormat = `${Day}/${Month}/${Year}`;
+      return OurNewDateFormat;
+    },
+    handleCount() {
       let currentProjectLocal = localStorage.getItem('currentProject');
 
-      this.$store.dispatch("projectStore/get").then((res) => {
+      //lấy ds yêu cầu
+      this.$store.dispatch("yeucauloiStore/get").then((res) => {
         if (res.resultCode === 'SUCCESS') {
-
-          this.listProject = res.data; 
-          this.nameproject = JSON.parse(currentProjectLocal);  
-          
-          const project = this.listProject.find(p => p.slug ===  this.nameproject )
-          if (project){
-            this.idproject = project.id;
-          }
-          else {
-            this.idproject = null;
-          }
-          this.model.ProjectId = this.idproject;
-          return;
+          this.listIssue = res.data;
         }
-        this.listProject = [];
       });
       
+      //lấy ds dự án
+      this.$store.dispatch("projectStore/get").then((res) => {
+        if (res.resultCode === 'SUCCESS') {
+          this.listProject = res.data;
+        }
+      });
+
+      this.nameproject = JSON.parse(currentProjectLocal); //lưu tên dự án đang mở
+
+      //tìm tên dự án đang mở trong listproject để lấy id
+      const project = this.listProject.find(p => p.slug === this.nameproject)
+      if (project) {
+        this.idproject = project.id; //chứa idproject đang mở
+      }
+      else {
+        this.idproject = null;
+      }
+      
+      if (!Array.isArray(this.listIssue)){
+        return [];
+      }
+      
+      let count = this.listIssue.filter(p => p.projectId === this.idproject).length;
+            console.log(count);
+            return count;
     },
+
     handleShowNotify(res) {
       this.isShow = true;
       this.responseData.resultCode = res.resultCode;
@@ -314,7 +337,11 @@ export default {
         <div class="page-title-box">     
               <div class="d-flex mb-4">
               <img src="@/assets/images/users/user-1.jpg" alt="Generic placeholder image" class="flex-shrink-0 me-3 rounded mx-auto d-blocks avatar-sm">
-              <div class="flex-grow-1"><h4 class="font-size-20 m-0">{{ model.name }}</h4><span>Yêu cầu lỗi: </span><span class="badge rounded-pill bg-danger">0</span></div>
+              <div class="flex-grow-1"><h4 class="font-size-20 m-0">{{ model.name }}</h4>
+                <a :href="`/${slug}/danh-sach-yeu-cau-loi`" >
+                    
+                  <span class="badge rounded-pill bg-danger">{{handleCount()}} yêu cầu lỗi</span>                                        
+                </a></div>
             </div>
       </div>
       </div>
@@ -325,12 +352,12 @@ export default {
           <div class="card-body">
             <div class="d-flex mb-4">
               <img src="@/assets/images/users/user-1.jpg" alt="Generic placeholder image" class="flex-shrink-0 me-3 rounded-circle avatar-sm">
-              <div class="flex-grow-1"><h4 class="font-size-14 m-0">Người tạo</h4><h4 class="text-muted">{{model.createdBy}}</h4><h4 class="font-size-13 m-0">tạo vào {{ model.createdAt }}</h4></div>
+              <div class="flex-grow-1"><h4 class="font-size-14 m-0">Người tạo</h4><h4 class="text-muted">{{model.createdBy}}</h4><span class="badge rounded-pill bg-success">Ngày tạo: {{convertdate()}}</span></div>
             </div>
             
               <h4 class="card-title">Sơ lược về dự án:</h4>
               <p class="card-title-desc">{{ model.description }}</p>
-            
+              
 
           </div>
 
