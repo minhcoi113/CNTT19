@@ -67,7 +67,7 @@ export default {
           label: "Dự án",
           sortable: true,
           thClass: 'hidden-sortable',
-          thStyle: { width: '500px' },
+          thStyle: { width: '600px' },
         },
         {
           key: 'process',
@@ -75,7 +75,7 @@ export default {
           class: 'td-xuly btn-process',
           thClass: 'hidden-sortable',
           // sortable: false,
-          thStyle: { width: '100px', minWidth: '50px' },
+          thStyle: { width: '80px', minWidth: '50px' },
         }
       ],
 
@@ -350,30 +350,14 @@ export default {
                         <div class="ellips">{{data.item.description}}</div> 
                       </a>
                     </template>
-                    <!-- <template v-slot:cell(description)="data">
-                      <div class="ellips">
-                        
-                      </div>
-
-                    </template> -->
                     <template v-slot:cell(process)="data">
-                       <router-link :to='`/du-an/chi-tiet/${data.item.slug}`'>
-                     <button
-                     v-bind:aria-readonly="true"
-                          type="button"
-                          size="sm"
-                          class="btn btn-edit btn-sm"
-                          v-on:click="handleDetail(data.item.slug)"
-                          >
-                        <i class="fas fa-pencil-alt"></i>
-                      </button>
-                    </router-link>
                       <button
                           type="button"
                           size="sm"
-                          class="btn btn-delete btn-sm"
-                          v-on:click="handleShowDeleteModal(data.item.id)">
-                        <i class="fas fa-trash-alt"></i>
+                          class="btn btn-detail btn-sm"
+                          data-toggle="tooltip" data-placement="bottom" title="Chi tiết"
+                          v-on:click="handleDetail(data.item.id)">
+                        <i class="fas fa-eye "></i>
                       </button>
                     </template>
                   </b-table>
@@ -398,22 +382,8 @@ export default {
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
-            <b-modal v-model="showDeleteModal" centered title="Xóa dữ liệu" title-class="font-18" no-close-on-backdrop>
-              <p>
-                Dữ liệu xóa sẽ không được phục hồi!
-              </p>
-              <template #modal-footer>
-                <button v-b-modal.modal-close_visit class="btn btn-outline-info m-1" v-on:click="showDeleteModal = false">
-                  Đóng
-                </button>
-                <button v-b-modal.modal-close_visit class="btn btn-danger btn m-1" v-on:click="handleDelete">
-                  Xóa
-                </button>
-              </template>
-            </b-modal>
           </div>
         </div>
       </div>
