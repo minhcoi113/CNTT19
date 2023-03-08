@@ -97,16 +97,7 @@ export default {
         }
       ],
       statData: [
-        {
-          title: "Quản lý dự án",
-          image: require("@/assets/images/services-icon/01.png"),
-          value: "0",
-          subText: "VBD",
-          color: "white",
-          path: "/du-an",
-          className: "card-vanbanden",
-          icon: "mdi-file text-primary"
-        },
+     
         {
           title: "Số dự án đã tham gia",
           image: require("@/assets/images/services-icon/02.png"),
@@ -146,7 +137,8 @@ export default {
           path: "/nhan-vien",
           className: "card-hopthu",
           icon: "mdi mdi-chart-bar text-warning"
-        }
+        },
+       
       ],
       modelSoLieu: dashboardModel.baseJson(),
       activityUserData: [],

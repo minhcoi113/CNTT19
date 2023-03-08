@@ -69,32 +69,6 @@ export default {
           thClass: 'hidden-sortable',
           thStyle: { width: '500px' },
         },
-       /*  {
-          key: "description",
-          label: "Mô tả",
-          // class: 'td-xuly',
-          thClass: 'hidden-sortable',
-          sortable: true,
-          thStyle: {width: '300px'},
-        }, */
-
-        // {
-        //   key: "description",
-        //   label: "Mô tả",
-        //   class: 'td-xuly',
-        //   thClass: 'hidden-sortable',
-        //   sortable: true,
-        //   thStyle: {width: '100px', minWidth: '100px'},
-        // },
-
-        // {
-        //   key: "label",
-        //   label: "label",
-        //   class: 'td-xuly',
-        //   sortable: true,
-        //   thStyle: {width: '120px', minWidth: '120px'},
-        // },
-
         {
           key: 'process',
           label: 'Xử lý',
