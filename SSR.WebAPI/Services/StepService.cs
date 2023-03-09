@@ -10,7 +10,7 @@ using Step = SSR.WebAPI.Models.Step;
 
 namespace SSR.WebAPI.Services
 {
-    public class StepService : BaseService, IStepService
+    public class StepService : BaseService,IStepService
     {
         private DataContext _context;
         private BaseMongoDb<Step, string> BaseMongoDb;
@@ -177,6 +177,10 @@ namespace SSR.WebAPI.Services
                 .Limit(param.Limit)
                 .ToListAsync();
             return result;
+        }
+        public async Task<List<Step>> GetWithProjId()
+        {
+            return await _context.Step.Find(x => x.IsDeleted != true  && x.ProjectId != null).ToListAsync();
         }
     }
 }

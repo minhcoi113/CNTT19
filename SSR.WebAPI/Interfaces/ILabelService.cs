@@ -9,11 +9,9 @@ namespace SSR.WebAPI.Interfaces
         Task<Label> Update(Label model);
         Task Delete(string id);
         Task<List<Label>> Get();
-        Task<List<Label>> GetWithProjId(string id);
         Task<Label> GetById(string id); 
         Task<PagingModel<Label>> GetPaging(PagingParam param);
         Task<List<LabelTreeVM>> GetTree();
-        Task<List<LabelTreeVM>> GetTreeWithProjId(string id);
         Task<List<LabelTreeVM>> GetFind(string key);
     }
 

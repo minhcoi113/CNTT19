@@ -2,7 +2,7 @@
     return {
         id : item.id,
         name : item.name ,
-        IdProject:item.IdProject,
+        //loaiDanhMuc:item.loaiDanhMuc,
         color:item.color,
         parentId: item.parentId,
         knowledge: item.knowledge,
@@ -13,7 +13,7 @@ const fromJson = (item) => {
     return {
         id : item.id,
         name : item.name ,
-        IdProject:item.IdProject,
+        //loaiDanhMuc:item.loaiDanhMuc,
         color:item.color,
         parentId: item.parentId,
         knowledge: item.knowledge,
@@ -29,7 +29,6 @@ const baseJson = () => {
         parentId: null,
         knowledge: null,
         isglobal: true,
-        IdProject: null,
     }
 }
 

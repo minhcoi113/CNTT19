@@ -149,13 +149,13 @@ export default [{
         path: "/danh-sach-yeu-cau-loi",
         name: "Yêu cầu lỗi",
         // meta: {},
-        component: () => import("../pages/yeucauloi/index"),
+        component: () => import("../pages/yeucauloi"),
     },
     {
         path: "/yeu-cau-loi/:id?",
         name: "Yêu cầu lỗi",
         // meta: {},
-        component: () => import("../pages/yeucauloi/detail"),
+        component: () => import("../pages/yeucauloi/create.vue"),
     },
     {
         path: "/them-yeu-cau-loi",
@@ -197,9 +197,11 @@ export default [{
     {
         path: "/:slug/danh-sach-yeu-cau-loi",
         name: "Du an",
+        
         component: () => import("../pages/yeucauloi/index"),
     },
     {
+        // https://localhost:5001/api/v1/Label/get-with-projid?id=6407e6bcfa0a818e221469c3
         path: "/:slug/nhan-du-an",
         name: "Nhan du an",
         component: () => import("../pages/label/indexinproject"),

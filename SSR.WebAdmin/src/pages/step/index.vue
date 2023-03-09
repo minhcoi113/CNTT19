@@ -304,7 +304,7 @@ export default {
               </div>    
               <div class="col-sm-8">
                 <div class="text-sm-end">
-                  <b-modal v-model="showModal" title="Thông tin tài khoản" title-class="text-black font-18"
+                  <b-modal v-model="showModal" title="Tạo bước thực hiện" title-class="text-black font-18"
                     body-class="p-3" hide-footer centered no-close-on-backdrop size="lg">
                     <form @submit.prevent="handleSubmit" ref="formContainer">
                       <div class="row">

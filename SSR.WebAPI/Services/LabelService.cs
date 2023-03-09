@@ -27,6 +27,9 @@ namespace SSR.WebAPI.Services
 
         public async Task<List<LabelTreeVM>> GetTree()
         {
+
+            //var nhans = await _context.Nhan.Find(x => x.IsDeleted != true).SortBy(donVi => donVi.ParentId).ToListAsync();
+
             var nhans = await _context.Nhan.Find(x => x.IsDeleted != true && x.IsGlobal != false).SortBy(donVi => donVi.ParentId).ToListAsync();
             var data = MethodExtensions.GetTree<LabelTreeVM, Label>(nhans ?? new List<Label>());
 
@@ -35,7 +38,8 @@ namespace SSR.WebAPI.Services
 
         public async Task<List<LabelTreeVM>> GetTreeWithProjId(string id)
         {
-            var nhans = await _context.Nhan.Find(x => x.IsDeleted != true || (x.IsGlobal != true && x.IdProject == id) || (x.IsGlobal != false)).SortBy(donVi => donVi.ParentId).ToListAsync();
+            var nhans = await _context.Nhan.Find(x => (x.IsDeleted != true && x.IsGlobal != false) || (x.IdProject == id)).SortBy(donVi => donVi.ParentId).ToListAsync();
+
             var data = MethodExtensions.GetTree<LabelTreeVM, Label>(nhans ?? new List<Label>());
 
             return data;
@@ -140,11 +144,6 @@ namespace SSR.WebAPI.Services
         public async Task<List<Label>> Get()
         {
             return await _context.Nhan.Find(x => x.IsDeleted != true).ToListAsync();
-        }
-
-        public async Task<List<Label>> GetWithProjId(string id)
-        {
-            return await _context.Nhan.Find(x => (x.IsDeleted != true && x.IsGlobal !=false) || (x.IdProject == id)).ToListAsync();
         }
 
         public async Task<List<LabelTreeVM>> GetFind(string key)

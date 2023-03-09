@@ -115,7 +115,7 @@ export default {
     this.getUser();
     this.getGroup();
     this.getLabel();
-    
+
     if(this.$route.params.id){
       this.getById(this.$route.params.id);
     }else{
@@ -126,7 +126,7 @@ export default {
     } else {
       this.model = projectModel.baseJson();
     }
-    //this.handleCount();
+    this.handleCount();
   },
   watch: {
     model: {
@@ -202,9 +202,10 @@ export default {
       let OurNewDateFormat = `${Day}/${Month}/${Year}`;
       return OurNewDateFormat;
     },
-     handleCount() {
-      
-        //lấy ds yêu cầu
+    handleCount() {
+      let currentProjectLocal = localStorage.getItem('currentProject');
+
+      //lấy ds yêu cầu
       this.$store.dispatch("yeucauloiStore/get").then((res) => {
         if (res.resultCode === 'SUCCESS') {
           this.listIssue = res.data;
@@ -217,23 +218,28 @@ export default {
           this.listProject = res.data;
         }
       });
-      let currentProjectLocal = localStorage.getItem('currentProject');
+
       this.nameproject = JSON.parse(currentProjectLocal); //lưu tên dự án đang mở
       
       //tìm tên dự án đang mở trong listproject để lấy id
-      var project = (this.listProject||[]).find(p => p.slug === this.nameproject);
+      const project = (this.listProject||[]).find(p => p.slug === this.nameproject);
       if (project) {
         this.idproject = project.id; //chứa idproject đang mở
       }
       else {
         this.idproject = null;
       }
+
       if (!Array.isArray(this.listIssue)){
         return [];
       }
+      
       let count = this.listIssue.filter(p => p.projectId === this.idproject).length;
       console.log(count);
-      return count     
+      
+      return count
+      
+         
     },
 
     handleShowNotify(res) {
@@ -376,28 +382,22 @@ export default {
 <template>
   <Layout>
     <div class="container-fluid">
-      <div class="row">
-      <div class="col-12">
-        <div class="card mb-2">
-          <div class="card-body">
-            <div>
-              <div class="d-flex mb-4">     
-              <div class="col-md-4 col-12 d-flex align-items-center">
+      <div class="row align-items-center">
+      <div class="col-sm-6">
+        <div class="page-title-box">     
+              <div class="d-flex mb-4">
               <img src="@/assets/images/users/user-1.jpg" alt="Generic placeholder image" class="flex-shrink-0 me-3 rounded mx-auto d-blocks avatar-sm">
               
                 <div class="flex-grow-1"><h4 class="font-size-20 m-0">{{ model.name }}</h4>
-                               
+                <a >                   
                   <span class="badge rounded-pill bg-danger">{{handleCount()}} yêu cầu lỗi</span>     
                                                    
-                </div>
+                </a></div>
                 
                 </div>
               </div>
             </div>
-          </div>
-          
-        </div>
-        
+      </div>
       </div>
     </div>
     <div class="row">
@@ -424,44 +424,10 @@ export default {
               </div>
               <div class="flex-grow-1"><h4 class="font-size-14 m-0">Người tạo</h4><h4 class="text-muted">{{model.createdBy}}</h4><span class="badge rounded-pill bg-success">Ngày tạo: {{convertdate()}}</span></div>
             </div>
-
+            
               <h4 class="card-title">Sơ lược về dự án:</h4>
               <p class="card-title-desc">{{ model.description }}</p>
-              <h4 class="card-title">File:</h4>
-              <!-- <b-table
-                      class="datatables custom-table"
-                      :items="myProvider"
-                      :fields="fields"
-                      responsive="sm"
-                      :per-page="perPage"
-                      :current-page="currentPage"
-                      :sort-by.sync="sortBy"
-                      :sort-desc.sync="sortDesc"
-                      :filter="filter"
-                      :filter-included-fields="filterOn"
-                      ref="tblList"
-                      primary-key="id"
-                      :busy.sync="isBusy"
-                      tbody-tr-class="b-table-chucvu"
-                  >
-                    <template v-slot:cell(STT)="data">
-                      {{ data.index + ((currentPage-1)*perPage) + 1  }}
-                    </template>
-                    
-                    
-                    <template v-slot:cell(process)="data">
-                      <button
-                          type="button"
-                          size="sm"
-                          class="btn btn-detail btn-sm"
-                          data-toggle="tooltip" data-placement="bottom" title="Chi tiết"
-                          v-on:click="handleRedirectToDetail(data.item.id)">
-                        <i class="fas fa-eye "></i>
-                      </button>
-                    </template>
-              </b-table> -->
           </div>
-          
           <b-modal v-model="showDeleteModal" centered title="Xóa dữ liệu" title-class="font-18" no-close-on-backdrop>
             <p>
               Dữ liệu xóa sẽ không được phục hồi!

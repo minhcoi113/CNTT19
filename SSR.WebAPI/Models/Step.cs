@@ -14,6 +14,6 @@ namespace SSR.WebAPI.Models
         public string Description { get; set; }
         public string Color { get; set; }
         public string ProjectId { get; set; }
-        public bool Block { get; set; }
+        public bool Block { get; set; } 
     }
 }

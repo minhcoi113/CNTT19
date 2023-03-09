@@ -5165,7 +5165,7 @@ cli-width@^4.0.0:
 
 click-outside-vue3@^4.0.1:
   version "4.0.1"
-  resolved "https://registry.npmjs.org/click-outside-vue3/-/click-outside-vue3-4.0.1.tgz"
+  resolved "https://registry.yarnpkg.com/click-outside-vue3/-/click-outside-vue3-4.0.1.tgz#81a6ac01696b301764b42db6fdbdf28e7cd8ef95"
   integrity sha512-sbplNecrup5oGqA3o4bo8XmvHRT6q9fvw21Z67aDbTqB9M6LF7CuYLTlLvNtOgKU6W3zst5H5zJuEh4auqA34g==
 
 clipboardy@^2.3.0:
@@ -14812,7 +14812,7 @@ vue2-google-maps@^0.10.7:
 
 vue3-tags-input@^1.0.6:
   version "1.0.6"
-  resolved "https://registry.npmjs.org/vue3-tags-input/-/vue3-tags-input-1.0.6.tgz"
+  resolved "https://registry.yarnpkg.com/vue3-tags-input/-/vue3-tags-input-1.0.6.tgz#3e7f9768d71a6d232b4820f3501de098596090e2"
   integrity sha512-3xtTJ20qtclD5n9NdsVak9VIuSRJPth4ZMGf04gG6r4kEkKusFLkvOcwyNmjqDvlDo+MoQdkBYGeT13V5PNk1A==
   dependencies:
     click-outside-vue3 "^4.0.1"

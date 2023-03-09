@@ -5,6 +5,7 @@ using SSR.WebAPI.Models;
 using SSR.WebAPI.Params;
 using Microsoft.AspNetCore.Mvc;
 using EResultResponse = SSR.WebAPI.Helpers.EResultResponse;
+using SSR.WebAPI.Services;
 
 namespace SSR.WebAPI.APIs
 {
@@ -158,6 +159,29 @@ namespace SSR.WebAPI.APIs
                 return Ok(
                     new ResultMessageResponse().WithCode(ex.ResultCode)
                         .WithMessage(ex.ResultString)
+                );
+            }
+        }
+        [HttpGet]
+        [Route("get-with-projid")]
+        public async Task<IActionResult> getWithProjId(string key)
+        {
+            try
+            {
+                var response = await _stepService.GetWithProjId();
+
+                return Ok(
+                    new ResultResponse<dynamic>()
+                        .WithData(response)
+                        .WithCode(Exceptions.EResultResponse.SUCCESS.ToString())
+                        .WithMessage(DefaultMessage.GET_DATA_SUCCESS)
+                );
+            }
+            catch (ResponseMessageException ex)
+            {
+                return Ok(
+                    new ResultMessageResponse().IsError().WithCode(ex.ResultCode)
+                          .WithMessage(ex.ResultString)
                 );
             }
         }
