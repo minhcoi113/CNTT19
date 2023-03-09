@@ -21,7 +21,7 @@
                                             <a :href="`/${slug}/danh-sach-yeu-cau-loi`" class="side-nav-link router-link-active">
                                                 <i class="mdi mdi-alert-outline"></i>
                                                 <span>Danh sách yêu cầu lỗi</span>     
-                                                <span class="badge rounded-pill bg-danger float-end">{{ handleCount() }}</span>                                   
+                                                                                   
                                             </a>
                                         </li> 
                                     <li>
@@ -143,7 +143,12 @@
       
       let count = this.listIssue.filter(p => p.projectId === this.idproject).length;
       console.log(count);
-      return count;
+      if(count===[]){
+        return count="0";
+      }
+      else{
+        return count; 
+      }
 
             
     },

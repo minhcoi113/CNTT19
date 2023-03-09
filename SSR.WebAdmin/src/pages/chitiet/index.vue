@@ -187,7 +187,9 @@ export default {
       }
       let count = this.listIssue.filter(p => p.projectId === this.idproject).length;
       console.log(count);
-      return count; 
+      
+      return count
+      
          
     },
 
