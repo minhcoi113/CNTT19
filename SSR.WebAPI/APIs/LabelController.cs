@@ -161,6 +161,30 @@ namespace SSR.WebAPI.APIs
             }
         }
 
+        [HttpGet]
+        [Route("get-with-projid")]
+        public async Task<IActionResult> GetWithProjId(string id)
+        {
+            try
+            {
+                var response = await _labelService.GetWithProjId(id);
+
+                return Ok(
+                    new ResultResponse<dynamic>()
+                        .WithData(response)
+                        .WithCode(EResultResponse.SUCCESS.ToString())
+                        .WithMessage(DefaultMessage.GET_DATA_SUCCESS)
+                );
+            }
+            catch (ResponseMessageException ex)
+            {
+                return Ok(
+                    new ResultMessageResponse().WithCode(ex.ResultCode)
+                        .WithMessage(ex.ResultString)
+                );
+            }
+        }
+
         [HttpPost]
         [Route("get-paging-params")]
         public async Task<IActionResult> GetPagingParam([FromBody] PostParams param)
@@ -192,6 +216,30 @@ namespace SSR.WebAPI.APIs
             try
             {
                 var response = await _labelService.GetTree();
+
+                return Ok(
+                    new ResultResponse<dynamic>()
+                        .WithData(response)
+                        .WithCode(Exceptions.EResultResponse.SUCCESS.ToString())
+                        .WithMessage(DefaultMessage.GET_DATA_SUCCESS)
+                );
+            }
+            catch (ResponseMessageException ex)
+            {
+                return Ok(
+                    new ResultMessageResponse().IsError().WithCode(ex.ResultCode)
+                          .WithMessage(ex.ResultString)
+                );
+            }
+        }
+
+        [HttpGet]
+        [Route("get-tree-with-projid")]
+        public async Task<IActionResult> GetTreeWithProjId(string id)
+        {
+            try
+            {
+                var response = await _labelService.GetTreeWithProjId(id);
 
                 return Ok(
                     new ResultResponse<dynamic>()
