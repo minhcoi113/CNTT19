@@ -14,13 +14,14 @@
                                         <li>                                       
                                             <a :href="`/${slug}/chi-tiet`" class="side-nav-link router-link-active">
                                                 <img style="height: 30px;width: 30px;" src="@/assets/images/users/user-4.jpg" class="flex-shrink-0 me-3 rounded mx-auto d-blocks avatar-sm">
-                                                <span>{{ model.name }}</span>                                        
+                                                <span>{{ model.name }} </span>                                        
                                             </a>
                                         </li>
                                         <li>                                       
                                             <a :href="`/${slug}/danh-sach-yeu-cau-loi`" class="side-nav-link router-link-active">
                                                 <i class="mdi mdi-alert-outline"></i>
-                                                <span>Danh sách yêu cầu lỗi</span>                                        
+                                                <span>Danh sách yêu cầu lỗi</span>     
+                                                <span class="badge rounded-pill bg-danger float-end">{{ handleCount() }}</span>                                   
                                             </a>
                                         </li> 
                                     <li>
@@ -106,7 +107,46 @@
               this.model = res.data
             }
           });
+          
         },
+        handleCount() {
+      let currentProjectLocal = localStorage.getItem('currentProject');
+      //lấy ds yêu cầu
+      this.$store.dispatch("yeucauloiStore/get").then((res) => {
+        if (res.resultCode === 'SUCCESS') {
+          this.listIssue = res.data;
+        }
+      });
+      
+      //lấy ds dự án
+      this.$store.dispatch("projectStore/get").then((res) => {
+        if (res.resultCode === 'SUCCESS') {
+          this.listProject = res.data;
+        }
+      });
+
+      this.nameproject = JSON.parse(currentProjectLocal); //lưu tên dự án đang mở
+
+      //tìm tên dự án đang mở trong listproject để lấy id
+      const project = (this.listProject||[]).find(p => p.slug === this.nameproject)
+      if (project) {
+        this.idproject = project.id; //chứa idproject đang mở
+        console.log(project)
+      }
+      else {
+        this.idproject = null;
+      }
+      
+      if (!Array.isArray(this.listIssue)){
+        return [];
+      }
+      
+      let count = this.listIssue.filter(p => p.projectId === this.idproject).length;
+      console.log(count);
+      return count;
+
+            
+    },
         }
     }
     
