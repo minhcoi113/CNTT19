@@ -11,5 +11,7 @@ namespace SSR.WebAPI.Interfaces
         Task<Step> GetById(string id);
         Task<List<Step>> Get();
         Task<PagingModel<Step>> GetPaging(PagingParam param);
+        Task<List<Step>> GetWithProjId();
+
     }
 }

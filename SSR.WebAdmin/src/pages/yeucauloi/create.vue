@@ -158,7 +158,7 @@ export default {
           this.listProject = res.data; //lấy hết cái list
           this.nameproject = JSON.parse(currentProjectLocal);  //test6
           
-          const project = this.listProject.find(p => p.name ===  this.nameproject )
+          const project = this.listProject.find(p => p.slug ===  this.nameproject )
           if (project){
             this.idproject = project.id;
           }
@@ -512,7 +512,7 @@ export default {
                         <div class="text-end">
                           <b-button type="submit" variant="primary" class="ms-1" style="width: 100%" size="md"
                             @click="handleSubmit">
-                            Lưu bài viết
+                            Thêm yêu cầu lỗi
                           </b-button>
                         </div>
                       </div>
@@ -523,7 +523,7 @@ export default {
                         <div class="text-end">
                           <b-button type="button" variant="danger" class="ms-1" style="width: 100%" size="md"
                             @click="handleShowDeleteModal">
-                            Xóa bài viết
+                            Xóa yêu cầu
                           </b-button>
                         </div>
                       </div>

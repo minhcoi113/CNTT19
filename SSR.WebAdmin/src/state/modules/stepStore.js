@@ -18,5 +18,8 @@ export const actions = {
     },
     async getById({commit}, id) {
         return apiClient.get(controller + "/get-by-id/" + id);
-    }
+    },
+    async getwithprojid({commit}, id) {
+        return apiClient.get(controller +"/get-with-projid", id);
+    },
 };

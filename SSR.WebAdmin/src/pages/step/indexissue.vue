@@ -6,8 +6,9 @@ import {notifyModel} from "@/models/notifyModel";
 import {pagingModel} from "@/models/pagingModel";
 import {CONSTANTS} from "@/helpers/constants";
 import {tagModel} from "@/models/tagModel";
+import {stepModel} from "@/models/stepModel";
 import {yeucauloiModel} from "@/models/yeucauloiModel";
-
+import _ from 'lodash';
 export default {
   page: {
     title: "Yêu cầu lỗi",
@@ -35,21 +36,10 @@ export default {
       sortBy: "age",
       sortDesc: false,
       fields: [
-      {
-          key: 'STT',
-          label: 'STT',
+        { key: 'issue',
           class: 'cs-text-left',
           sortable: false,
-          // thClass: 'hidden-sortable',
-          // thStyle: { width: '40px', minWidth: '40px' }
-        },
-        {
-          key: 'issue',
-          label: 'STT',
-         // class: 'cs-text-center',
-          sortable: false,
           thClass: 'hidden-sortable',
-          //thStyle: { width: '40px', minWidth: '40px' }
         },
       ],
     };
@@ -57,16 +47,21 @@ export default {
   validations: {
     model: {
       name: {required},
-      sort: {required},
-      
+      sort: {required}
     },
   },
   created() {
+    if(this.$route.params.id){
+      this.getById(this.$route.params.id);
+    }else{
+      this.model = stepModel.baseJson();
+    }
     this.fnGetList();
+    console.log(this.$route);
   },
   watch: {
     showModal(status) {
-      if (status == false) this.model = tagModel.baseJson();
+      if (status == false) this.model = yeucauloiModel.baseJson();
     },
     showDeleteModal(val) {
       if (val == false) {
@@ -111,12 +106,9 @@ export default {
     clearSearch(){
       this.filter = null;
     },
-    handleCreate(){
-      let currentProjectLocal = localStorage.getItem('currentProject');
-      this.slug = JSON.parse(currentProjectLocal);
-      this.$router.push(`/${this.slug}/yeu-cau-loi`);
+    handleNewPost(){
+      this.$router.push("/yeu-cau-loi")
     },
-    
     handleRedirectToDetail(id){
       this.$router.push("/yeu-cau-loi/" + id)
     }
@@ -138,7 +130,7 @@ export default {
                     variant="primary"
                     type="button"
                     class="btn w-md btn-primary"
-                    @click="handleCreate()"
+                    @click="handleNewPost"
                     size="sm"
                 >
                   <i class="mdi mdi-plus me-1"></i> Tạo Yêu cầu lỗi
@@ -186,6 +178,62 @@ export default {
                     </div>
                   </div>
                 </div>
+              <!-- <div class="col-md-3">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="row">
+                      <div class=" col-md-4 col-12 btn btn-link">
+                      <a href="">Open</a>
+                      </div>
+                      <div class=" col-md-4 col-12 btn btn-link">
+                        <a href="">Closed</a>
+                      </div>
+                      <div class=" col-md-4 col-12 btn btn-link" >
+                        <a href="">All</a>
+                      </div>
+                    
+                      
+                     
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+              <div class="">
+                <ul role="tablist" class="nav nav-tabs nav-justified nav-tabs-custom" id="__BVID__947__BV_tab_controls_"><!---->
+                  <li role="presentation" class="nav-item">
+                    <a role="tab" aria-selected="false" aria-setsize="4" aria-posinset="1" href="#" target="_self" class="nav-link" id="__BVID__948___BV_tab_button__" aria-controls="__BVID__948" tabindex="-1">
+                      <span class="d-inline-block d-sm-none">
+                        <i class="fas fa-home"></i>
+                      </span>
+                      <span class="d-none d-sm-inline-block">Home</span>
+                    </a>
+                  </li>
+                  <li role="presentation" class="nav-item">
+                        <a role="tab" aria-selected="true" aria-setsize="4" aria-posinset="2" href="#" target="_self" class="nav-link active" id="__BVID__950___BV_tab_button__" aria-controls="__BVID__950">
+                          <span class="d-inline-block d-sm-none">
+                            <i class="far fa-user"></i>
+                          </span>
+                          <span class="d-none d-sm-inline-block">Profile</span>
+                        </a>
+                      </li>
+                      <li role="presentation" class="nav-item">
+                            <a role="tab" tabindex="-1" aria-selected="false" aria-setsize="4" aria-posinset="3" href="#" target="_self" class="nav-link" id="__BVID__952___BV_tab_button__" aria-controls="__BVID__952">
+                              <span class="d-inline-block d-sm-none">
+                                <i class="far fa-envelope"></i>
+                              </span>
+                              <span class="d-none d-sm-inline-block">Messages</span>
+                            </a>
+                          </li>
+                          <li role="presentation" class="nav-item">
+                                <a role="tab" tabindex="-1" aria-selected="false" aria-setsize="4" aria-posinset="4" href="#" target="_self" class="nav-link" id="__BVID__954___BV_tab_button__" aria-controls="__BVID__954">
+                                  <span class="d-inline-block d-sm-none">
+                                    <i class="fas fa-cog"></i>
+                                  </span>
+                                  <span class="d-none d-sm-inline-block">Settings</span>
+                                </a>
+                              </li><!---->
+                            </ul>
+                          </div>
                 <div class="table-responsive-sm">
                   <b-table
                       class="datatables custom-table"
@@ -207,8 +255,8 @@ export default {
                       {{ data.index + ((currentPage-1)*perPage) + 1  }}
                     </template>
                     <template v-slot:cell(issue)="data">
-                      <template v-if="data.item.title">
-                        {{data.item.title}}
+                      <template v-if="data.item.issue">
+                        {{data.item.issue.name}}
                       </template>
                     </template>
                     <template v-slot:cell(status)="data">
