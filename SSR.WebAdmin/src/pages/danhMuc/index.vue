@@ -119,6 +119,9 @@ export default {
       }
     },
   },
+  mounted() {
+    this.plainText = this.$refs.myText.innerText;
+  },
   methods: {
     stripHtml() {
       const value = this.model.summary;
@@ -306,30 +309,29 @@ export default {
                       <div class="row">
                         <div class="col-12">
                           <div class="mb-3">
-                            <label class="text-left">Tên hướng dẫn</label>
+                            <label class="text-left" style="color:red">Tên hướng dẫn</label>
                             <input type="hidden" v-model="model.id" />
-                            <input id="name" v-model.trim="model.name" type="text" class="form-control"
+                            <p ref="myText" v-html="model.name"></p>
+                            <!-- <input id="name" v-model.trim="model.name" type="text" class="form-control"
                               :class="{ 'is-invalid': submitted && $v.model.name.$error }" style="border: none"
-                              disabled />
-                            <div v-if="submitted && !$v.model.name.required" class="invalid-feedback">
-                              Tên hướng dẫn không được để trống.
-                            </div>
+                              disabled /> -->
                           </div>
                         </div>
                         <div class="col-md-12">
                           <div class="mb-2">
-                            <label class="form-label cs-title-form" for="validationCustom01">Mô tả ngắn</label>
-                            <textarea class="form-control" v-model="model.summary" rows="4"
-                              :class="{ 'is-invalid': submitted && $v.model.summary.$error, }" style="border: none"
-                              disabled></textarea>
+                            <label class="text-left" style="color:red">Mô tả ngắn</label>
+                            <p ref="myText" v-html="model.summary"></p>
+                            <p>{{ plainText }}</p>
                           </div>
                         </div>
                         <div class="col-md-12">
                           <div class="mb-2">
-                            <label class="form-label cs-title-form" for="validationCustom01">Nội dung </label>
-                            <textarea class="form-control" v-model="model.content" rows="10"
-                              :class="{ 'is-invalid': submitted && $v.model.content.$error, }" style="border: none"
-                              disabled></textarea>
+                            <label class="text-left" style="color:red">Nội dung </label>
+                            <p ref="myText" v-html="model.content"></p>
+                            <p>{{ plainText }}</p>
+                            <!-- <textarea class="form-control" v-model="model.content" rows="10" ref="myText" v-html="model.content"
+                                :class="{ 'is-invalid': submitted && $v.model.content.$error, }" style="border: none"
+                                disabled></textarea> -->
                           </div>
                         </div>
                       </div>
@@ -491,7 +493,7 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 30px;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   display: -webkit-box;
   -webkit-box-orient: vertical;
 }

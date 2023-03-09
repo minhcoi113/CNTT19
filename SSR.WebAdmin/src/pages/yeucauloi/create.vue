@@ -147,6 +147,7 @@ export default {
     }
   },
   mounted() {
+
   },
   methods: {
     handleCreate() {
@@ -155,9 +156,10 @@ export default {
       this.$store.dispatch("projectStore/get").then((res) => {
         if (res.resultCode === 'SUCCESS') {
           this.listProject = res.data; //lấy hết cái list
-          this.slugproject = JSON.parse(currentProjectLocal);  //test6
-          const project = this.listProject.find(p => p.slug ===  this.slugproject )
-          if (project){
+          this.nameproject = JSON.parse(currentProjectLocal);  //test6
+
+          const project = this.listProject.find(p => p.slug === this.nameproject)
+          if (project) {
             this.idproject = project.id;
           }
           else {
@@ -186,6 +188,7 @@ export default {
         isglobal: false,
       }
       this.optionsLabel.push(tag)
+      this.$set(this.model, "Tags", [...this.model.Tags, tag])
       this.model.Labels.push(tag)
     },
     normalizer(node) {
@@ -357,7 +360,7 @@ export default {
             <div class="row">
               <div class="col-md-4 col-12 d-flex align-items-center">
                 <h4 class="font-size-18 fw-bold cs-title-page">Yêu cầu lỗi</h4>
-                <!-- <button @click="handleCreate()">Xem</button> -->
+                <button @click="handleCount()">Xem</button>
               </div>
               <div class="col-md-8 col-12 text-end">
                 <b-button variant="primary" type="button" class="btn w-md btn-primary" @click="$router.go(-1)" size="sm">
@@ -460,7 +463,7 @@ export default {
                       </div>
 
                       <!-- <input id="validationCustom01"  v-model="model.ProjectId" type="text" class="form-control" placeholder=""
-                            :class="{ 'is-invalid': submitted && $v.model.StepId.$error, }" @input="handleCreate()" value="nameproject" /> -->
+                                :class="{ 'is-invalid': submitted && $v.model.StepId.$error, }" @input="handleCreate()" value="nameproject" /> -->
                       <input type="text" v-model="model.ProjectId" @input="handleCreate" hidden>
                     </div>
 

@@ -197,8 +197,12 @@ export default [{
     {
         path: "/:slug/danh-sach-yeu-cau-loi",
         name: "Du an",
-        
         component: () => import("../pages/yeucauloi/index"),
+    },
+    {
+        path: "/:slug/nhan-du-an",
+        name: "Nhan du an",
+        component: () => import("../pages/label/indexinproject"),
     },
     {
         path: "/:slug/yeu-cau-loi",

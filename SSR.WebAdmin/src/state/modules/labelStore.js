@@ -4,6 +4,9 @@ export const actions = {
     async get({commit}) {
         return apiClient.get(controller +"/get-all-data");
     },
+    async getwithprojid({commit}, id) {
+        return apiClient.get(controller +"/get-with-projid", id);
+    },
     async getfind({commit}, key) {
         return apiClient.get(controller +"/get-find", key);
     },
@@ -12,6 +15,9 @@ export const actions = {
     },
     async getTree({commit}) {
         return apiClient.get(controller +"/get-tree");
+    },
+    async getTreewithprojid({commit}, id) {
+        return apiClient.get(controller +"/get-tree-with-projid", id);
     },
     async getPagingParams({commit}, params) {
         return apiClient.post(controller + "/get-paging-params", params);
