@@ -200,6 +200,7 @@ export default [{
         component: () => import("../pages/yeucauloi/index"),
     },
     {
+        // https://localhost:5001/api/v1/Label/get-with-projid?id=6407e6bcfa0a818e221469c3
         path: "/:slug/nhan-du-an",
         name: "Nhan du an",
         component: () => import("../pages/label/indexinproject"),
