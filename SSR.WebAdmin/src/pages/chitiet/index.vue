@@ -6,8 +6,9 @@ import { projectModel } from "@/models/projectModel";
 import VueUploadMultipleImage from 'vue-upload-multiple-image'
 import { required } from "vuelidate/lib/validators";
 import urlSlug from 'url-slug'
+import {CONSTANTS} from "@/helpers/constants";
 import { notifyModel } from "@/models/notifyModel";
-
+import {userModel} from "@/models/userModel";
 export default {
   page: {
     title: "Thông tin chi tiết",
@@ -25,6 +26,7 @@ export default {
     return {
       title: "Thông tin chi tiết",
       model: projectModel.baseJson(),
+      modelUser: userModel.baseJson(),
       submitted: false,
       editorConfig: {
         toolbar: {
@@ -44,6 +46,24 @@ export default {
           ],
           shouldNotGroupWhenFull: false
         },
+        fields:[
+          {
+            key: 'STT',
+            label: 'Tên',
+            class: 'cs-text-center',
+            sortable: false,
+            thClass: 'hidden-sortable',
+            thStyle: { width: '40px', minWidth: '40px' }
+          },
+          {
+          key: 'process',
+          label: 'Xử lý',
+          class: 'td-xuly btn-process',
+          thClass: 'hidden-sortable',
+          // sortable: false,
+          thStyle: { width: '80px', minWidth: '80px' },
+          }
+        ],
         removePlugins: ['Title', 'ImageCaption'],
         simpleUpload: {
           uploadUrl: process.env.VUE_APP_API_URL + "files/upload-ckeditor",
@@ -106,7 +126,7 @@ export default {
     } else {
       this.model = projectModel.baseJson();
     }
-    this.handleCount();
+    //this.handleCount();
   },
   watch: {
     model: {
@@ -146,6 +166,33 @@ export default {
     fnGetList() {
       this.$refs.tblList?.refresh()
     },
+    myProvider (ctx) {
+      const params = {
+        start: ctx.currentPage,
+        limit: ctx.perPage,
+        content: this.filter,
+        sortBy: ctx.sortBy,
+        sortDesc: ctx.sortDesc,
+      }
+      this.loading = true
+      try {
+        let promise =  this.$store.dispatch("yeucauloiStore/getPagingParams", params)
+        return promise.then(resp => {
+          if(resp.resultCode == CONSTANTS.SUCCESS){
+            let data = resp.data;
+            this.totalRows = data.totalRows
+            let items = data.data
+            this.numberOfElement = items.length
+            this.loading = false
+            return items || []
+          }else{
+            return [];
+          }
+        })
+      } finally {
+        this.loading = false
+      }
+    },
     convertdate(){
       let newsApiDate =this.model.createdAt; // got from the Api
       let timestamp = new Date(newsApiDate).getTime();
@@ -172,25 +219,21 @@ export default {
       });
       let currentProjectLocal = localStorage.getItem('currentProject');
       this.nameproject = JSON.parse(currentProjectLocal); //lưu tên dự án đang mở
-
+      
       //tìm tên dự án đang mở trong listproject để lấy id
-      const project = (this.listProject||[]).find(p => p.slug === this.nameproject);
+      var project = (this.listProject||[]).find(p => p.slug === this.nameproject);
       if (project) {
         this.idproject = project.id; //chứa idproject đang mở
       }
       else {
         this.idproject = null;
       }
-
       if (!Array.isArray(this.listIssue)){
         return [];
       }
       let count = this.listIssue.filter(p => p.projectId === this.idproject).length;
       console.log(count);
-      
-      return count
-      
-         
+      return count     
     },
 
     handleShowNotify(res) {
@@ -343,10 +386,10 @@ export default {
               <img src="@/assets/images/users/user-1.jpg" alt="Generic placeholder image" class="flex-shrink-0 me-3 rounded mx-auto d-blocks avatar-sm">
               
                 <div class="flex-grow-1"><h4 class="font-size-20 m-0">{{ model.name }}</h4>
-                <a >                   
+                               
                   <span class="badge rounded-pill bg-danger">{{handleCount()}} yêu cầu lỗi</span>     
                                                    
-                </a></div>
+                </div>
                 
                 </div>
               </div>
@@ -362,13 +405,63 @@ export default {
         <div class="card">
           <div class="card-body">
             <div class="d-flex mb-4">
-              <img src="@/assets/images/users/user-1.jpg" alt="Generic placeholder image" class="flex-shrink-0 me-3 rounded-circle avatar-sm">
+              <!-- <img src="@/assets/images/users/user-1.jpg" alt="Generic placeholder image" class="flex-shrink-0 me-3 rounded-circle avatar-sm"> -->
+              <div>
+              <span v-if="modelUser.avatar">
+                <img
+                    :src="url + `${modelUser.avatar.fileId}`"
+                    alt="Avatar"
+                    class="d-flex me-3 rounded-circle avatar-sm"
+                />
+              </span>
+              <span v-else>
+                <img
+                    class="d-flex me-3 rounded-circle avatar-sm"
+                    src="@/assets/images/logo_new_2@4x.png"
+                    alt="Avatar"
+                />
+              </span>
+              </div>
               <div class="flex-grow-1"><h4 class="font-size-14 m-0">Người tạo</h4><h4 class="text-muted">{{model.createdBy}}</h4><span class="badge rounded-pill bg-success">Ngày tạo: {{convertdate()}}</span></div>
             </div>
 
               <h4 class="card-title">Sơ lược về dự án:</h4>
               <p class="card-title-desc">{{ model.description }}</p>
+              <h4 class="card-title">File:</h4>
+              <!-- <b-table
+                      class="datatables custom-table"
+                      :items="myProvider"
+                      :fields="fields"
+                      responsive="sm"
+                      :per-page="perPage"
+                      :current-page="currentPage"
+                      :sort-by.sync="sortBy"
+                      :sort-desc.sync="sortDesc"
+                      :filter="filter"
+                      :filter-included-fields="filterOn"
+                      ref="tblList"
+                      primary-key="id"
+                      :busy.sync="isBusy"
+                      tbody-tr-class="b-table-chucvu"
+                  >
+                    <template v-slot:cell(STT)="data">
+                      {{ data.index + ((currentPage-1)*perPage) + 1  }}
+                    </template>
+                    
+                    
+                    <template v-slot:cell(process)="data">
+                      <button
+                          type="button"
+                          size="sm"
+                          class="btn btn-detail btn-sm"
+                          data-toggle="tooltip" data-placement="bottom" title="Chi tiết"
+                          v-on:click="handleRedirectToDetail(data.item.id)">
+                        <i class="fas fa-eye "></i>
+                      </button>
+                    </template>
+              </b-table> -->
           </div>
+          
           <b-modal v-model="showDeleteModal" centered title="Xóa dữ liệu" title-class="font-18" no-close-on-backdrop>
             <p>
               Dữ liệu xóa sẽ không được phục hồi!

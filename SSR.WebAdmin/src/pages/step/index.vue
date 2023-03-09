@@ -212,6 +212,34 @@ export default {
   created() {
     this.fnGetList;
   },
+  computed:{
+    // filteredData(){
+    //   this.$store.dispatch("yeucauloiStore/get").then((res) => {
+    //     if (res.resultCode === 'SUCCESS') {
+    //       this.listIssue = res.data;
+    //     }
+    //   });
+      
+    //   //lấy ds dự án
+    //   this.$store.dispatch("projectStore/get").then((res) => {
+    //     if (res.resultCode === 'SUCCESS') {
+    //       this.listProject = res.data;
+    //     }
+    //   });
+    //   let currentProjectLocal = localStorage.getItem('currentProject');
+    //   this.nameproject = JSON.parse(currentProjectLocal); //lưu tên dự án đang mở
+
+    //   //tìm tên dự án đang mở trong listproject để lấy id
+    //   const project = (this.listProject||[]).find(p => p.slug === this.nameproject);
+    //   if (project) {
+    //     this.idproject = project.id; //chứa idproject đang mở
+    //   }
+    //   else {
+    //     this.idproject = null;
+    //   }
+    //   return this.data.filter(p=>p.id===idproject);
+    // }
+  },
   mounted() {
 
   },
@@ -375,6 +403,7 @@ export default {
                       </button>
                     </template> -->
                   </b-table>
+
                 </div>
                 <div class="row">
                   <b-col>
