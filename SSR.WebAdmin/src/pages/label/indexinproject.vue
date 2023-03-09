@@ -236,7 +236,6 @@ export default {
             <div class="row">
               <div class="col-md-4 col-12 d-flex align-items-center">
                 <h4 class="font-size-18 fw-bold text-dark">Quản lý nhãn</h4>
-                <button @click="GetTreeList()">Xem</button>
               </div>
             </div>
           </div>
