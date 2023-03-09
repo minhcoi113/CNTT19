@@ -17,7 +17,8 @@ export default {
     return {
       title: "Yêu cầu lỗi",
       data: [],
-      dateString:  "null",
+      listDonvi: [],
+      tendonvi: null,
       showModal: false,
       showDetail: false,
       showDeleteModal: false,
@@ -51,35 +52,6 @@ export default {
           thStyle: { width: '600px' },
         },
         {
-          key: "description",
-          label: "Mô tả",
-          sortable: true,
-          thClass: 'hidden-sortable',
-          thStyle: { width: '600px' },
-        },
-        
-        {
-          key: "label",
-          label: "Nhãn",
-          sortable: true,
-          thClass: 'hidden-sortable',
-          thStyle: { width: '600px' },
-        },
-        {
-          key: "assignee",
-          label: "Phân công",
-          sortable: true,
-          thClass: 'hidden-sortable',
-          thStyle: { width: '600px' },
-        },
-        {
-          key: "dueDate",
-          label: "Thời hạn",
-          sortable: true,
-          thClass: 'hidden-sortable',
-          thStyle: { width: '600px' },
-        },
-        {
           key: 'process',
           label: 'Xử lý',
           class: 'td-xuly btn-process',
@@ -100,34 +72,35 @@ export default {
   created() {
     if (this.$route.params.id) {
       this.getById(this.$route.params.id);
-      
     } else {
       this.model = yeucauloiModel.baseJson();
-      
     }
+    
   },
   watch: {
-    showModal(status) {
-      if (status == false) this.model = yeucauloiModel.baseJson();
-      
-    },
-    showDeleteModal(val) {
-      if (val == false) {
-        this.model.id = null;
-      }
-    },
+ 
   },
-  mounted() {
-
+ mounted() {
+  this.$store.dispatch("donViStore/get").then((res) => {
+          if (res.resultCode === 'SUCCESS') {
+            this.listDonvi = res.data;
+            let iddonvi = this.model.donVi;
+            const dv = this.listDonvi.find(x => x.id === iddonvi)
+            if (dv) {
+              this.tendonvi = dv.name; 
+            }else{
+              this.tendonvi = "Chưa lấy được à nha";
+            }
+          }
+          });
   },
   methods: {
-    handleSearch() {
+    /* handleSearch() {
       this.fnGetList()
     },
     fnGetList() {
       this.$refs.tblList?.refresh()
-      
-    },
+    }, */
     myProvider (ctx) {
       const params = {
         start: ctx.currentPage,
@@ -146,6 +119,7 @@ export default {
             let items = data.data
             this.numberOfElement = items.length
             this.loading = false
+            
             return items || []
           }else{
             return [];
@@ -154,9 +128,6 @@ export default {
       } finally {
         this.loading = false
       }
-    },
-    clearSearch(){
-      this.filter = null;
     },
     handleCreate(){
       let currentProjectLocal = localStorage.getItem('currentProject');
@@ -252,13 +223,14 @@ export default {
                     <template v-slot:cell(STT)="data">
                       {{ data.index + ((currentPage-1)*perPage) + 1  }}
                     </template>
-                    <template v-slot:cell(label)="data">
-                      <div v-for="(value , index) in data.item.label" :key="index">
-                        <span class="badge bg-success ms-1"> {{value.name}}</span>
+                    <template v-slot:cell(title)="data">
+                      <div>{{tendonvi}} - {{data.item.title}}</div>
+                      <div>
+                        {{data.item.dueDate}} - 
+                        <i v-for="(value , index) in data.item.label" :key="index">
+                          <span class="colorstyle" v-bind:style="{ background: value.color }">{{ value.name }}</span>
+                        </i>
                       </div>
-                    </template>
-                    <template v-slot:cell(dueDate)>
-                      {{dateString}}
                     </template>
                     <template v-slot:cell(process)="data">
                       <button
@@ -268,6 +240,13 @@ export default {
                           data-toggle="tooltip" data-placement="bottom" title="Chi tiết"
                           v-on:click="handleRedirectToDetail(data.item.id)">
                         <i class="fas fa-eye "></i>
+                      </button>
+                      <button
+                          type="button"
+                          size="sm"
+                          class="btn btn-edit btn-sm"
+                          v-on:click="handleUpdate(data.item.id)">
+                        <i class="fas fa-pencil-alt"></i>
                       </button>
                     </template>
                   </b-table>
@@ -305,6 +284,12 @@ export default {
   </Layout>
 </template>
 <style>
+.colorstyle {
+  padding: 5px;
+  border-radius: 5px;
+
+  color: white
+}
 .td-stt {
   text-align: center;
 }

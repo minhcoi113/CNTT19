@@ -162,7 +162,7 @@ namespace SSR.WebAPI.APIs
         }
 
         [HttpGet]
-        [Route("get-with-projid")]
+        [Route("get-with-projid/{id}")]
         public async Task<IActionResult> GetWithProjId(string id)
         {
             try
@@ -234,7 +234,7 @@ namespace SSR.WebAPI.APIs
         }
 
         [HttpGet]
-        [Route("get-tree-with-projid")]
+        [Route("get-tree-with-projid/{id}")]
         public async Task<IActionResult> GetTreeWithProjId(string id)
         {
             try

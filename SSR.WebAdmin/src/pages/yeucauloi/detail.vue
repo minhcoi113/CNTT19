@@ -14,6 +14,7 @@ export default {
   data() {
     return {
       title: "Thông tin chi tiết",
+      tendonvi: null,
       model: yeucauloiModel.baseJson(),
       submitted: false,
       dateString: 'null',
@@ -34,10 +35,12 @@ export default {
       this.getById(this.$route.params.id);
     } else {
       this.model = yeucauloiModel.baseJson();
+
     }
+    
   },
   mounted() {
-    
+      
   },
   methods: {
     fnGetList() {
@@ -52,9 +55,24 @@ export default {
       await this.$store.dispatch("yeucauloiStore/getById", id).then((res) => {
         if (res.resultCode === 'SUCCESS') {
           this.model = res.data;
-          this.dateString = this.model.dueDate.substring(0, 10);
+          this.dateString = this.model.dueDate.substring(0, 10); 
+          this.$store.dispatch("donViStore/get").then((res) => {
+          if (res.resultCode === 'SUCCESS') {
+            this.listDonvi = res.data;
+            let iddonvi = this.model.donVi;
+            const dv = this.listDonvi.find(x => x.id === iddonvi)
+            if (dv) {
+              this.tendonvi = dv.name; 
+            }else{
+              this.tendonvi = "min";
+            }
+          }
+          });
+          
         }
       });
+      
+          
     },
   }
 };
@@ -89,35 +107,28 @@ export default {
                 <div class="col-md-7">
                   <div class="col-lg-12 col-md-12 col-12">
                     <div class="mb-2">
-                      <label class="form-label cs-title-form" for="validationCustom01"> Tiêu đề: {{ model.title }}</label>                                           
+                      <label class="form-label cs-title-form" for="validationCustom01"> Tiêu đề:</label><br>
+                      &nbsp;&nbsp;{{ model.title }}                                         
                     </div>
                     <div class="col-md-12 col-lg-12">
                       <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01">Mô tả:</label>
-                        {{model.description}}
+                        <label class="form-label cs-title-form" for="validationCustom01">Mô tả:</label><br>
+                        &nbsp;{{model.description}}
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="col-md-5">
                   <div class="row">
-                    <!-- <div class="col-md-12">
-                      <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Đơn vị </label>
-                        <treeselect :options="treeView" :value="modeldonvi.ParentId" :searchable="true" :show-count="true"
-                          :default-expand-level="1" placeholder="Chọn đơn vị" v-model="model.Donvi">
-                          <label slot="option-label"
-                            slot-scope="{ node, shouldShowCount, count, labelClassName, countClassName }"
-                            :class="labelClassName">
-                            {{ node.label }}
-                            <span v-if="shouldShowCount" :class="countClassName">({{ count }})</span>
-                          </label>
-                        </treeselect>
-                      </div>
-                    </div> -->
                     <div class="col-md-12">
                       <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Phân công theo nhóm </label>
+                        <label class="form-label cs-title-form" for="validationCustom01"> Thuộc đơn vị: </label><br>
+                        &nbsp;{{ tendonvi }}
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="mb-2">
+                        <label class="form-label cs-title-form" for="validationCustom01"> Phân công theo nhóm: </label><br>
                         <div v-for="(value , index) in model.assignee" :key="index">
                         <input id="validationCustom01" v-model="model.name" type="text" class="form-control" />
                       </div>
@@ -125,19 +136,19 @@ export default {
                     </div>
                     <div class="col-md-12">
                       <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Nhãn yêu cầu lỗi </label>
-                        <div v-for="(value , index) in model.label" :key="index">
-                          <div class="mb-2">
+                        <label class="form-label cs-title-form" for="validationCustom01"> Nhãn yêu cầu lỗi:</label> <br>
+                        <i v-for="(value , index) in model.label" :key="index">&nbsp;
+                          
                           <span class="colorstyle" v-bind:style="{ background: value.color }">{{ value.name }}</span>
-                        </div>
-                        </div>
+                          
+                        </i>
                       </div>
                     </div>
 
                     <div class="col-md-12">
                       <div class="mb-2">
-                        <label class="form-label cs-title-form" for="validationCustom01"> Ngày đáo hạn: </label>
-                        {{dateString}}
+                        <label class="form-label cs-title-form" for="validationCustom01"> Ngày đáo hạn: </label><br>
+                        &nbsp;{{dateString}}
                       </div>
                     </div>
                   </div>

@@ -93,39 +93,40 @@ export default {
     },
     async GetTreeList() {
       let currentProjectLocal = localStorage.getItem('currentProject');
-
+      this.slug = JSON.parse(currentProjectLocal);
       //lấy ds nhãn
       await this.$store.dispatch("labelStore/get").then((res) => {
-        this.listlabel = res.data || [];
+        this.listlabel = res.data;
       })
 
       //lấy ds dự án
-      this.$store.dispatch("projectStore/get").then((res) => {
+      this.$store.dispatch("projectStore/getBySlug", this.slug).then((res) => {
         if (res.resultCode === 'SUCCESS') {
           this.listProject = res.data;
-        }
-      });
-
-      this.nameproject = JSON.parse(currentProjectLocal); //lưu tên dự án đang mở
+          this.nameproject = JSON.parse(currentProjectLocal); //lưu tên dự án đang mở
 
       //tìm tên dự án đang mở trong listproject để lấy id
-      const project = this.listProject.find(p => p.slug === this.nameproject)
-      if (project) {
-        this.idproject = project.id; //chứa idproject đang mở
-      }
-      else {
-        this.idproject = null;
+
+      if (this.listProject) {
+        this.idproject = this.listProject.id;
+        
+         //chứa idproject đang mở
       }
 
       //tìm label có idproject giống
-      const label = this.listlabel.find(p => p.idProject === this.idproject);
-
+      
+      const label = this.listlabel.find(p => p.idProject == this.idproject);
+      
       if (label) {
-        await this.$store.dispatch("labelStore/getwithprojid", this.idproject).then((res) => {
-        //this.treeView = res.data;
-        this.listdata = res.data || [];
-        console.log(this.listdata)
+        
+        this.$store.dispatch("labelStore/getTreewithprojid", this.idproject).then((res) => {
+        this.treeView = res.data;
+        //console.log(this.labeldata)
       })}
+        }
+      });
+
+      
 
     },
     async getListKnowledge() {
