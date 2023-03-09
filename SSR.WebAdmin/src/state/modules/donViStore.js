@@ -2,7 +2,7 @@ import {apiClient} from "@/state/modules/apiClient";
 const  controller = "DonVi";
 export const actions = {
     async get({commit}) {
-        return apiClient.get(controller +"/get");
+        return apiClient.get(controller +"/get-all-data");
     },
     async getDonViCha({commit}) {
         return apiClient.get(controller +"/getTree");

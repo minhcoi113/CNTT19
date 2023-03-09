@@ -33,8 +33,8 @@
                                     <router-link :to='`/${slug}/nhan-du-an`'>
                                     <li>
                                         <a href="/Label" class="side-nav-link">
-                                            <i class="fas fa-tasks"></i>
-                                            <span>Hoạt động</span>
+                                            <i class="fas fa-tags"></i>
+                                            <span>Nhãn dự án</span>
                                         </a>
                                     </li>
                                     </router-link>

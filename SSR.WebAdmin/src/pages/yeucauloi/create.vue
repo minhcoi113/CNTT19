@@ -424,7 +424,8 @@ export default {
                         <multiselect v-model="model.Assignee" :options="optionsGroup" track-by="id" label="name"
                           placeholder="Chọn phân công" deselect-label="Nhấn để xoá" selectLabel="Nhấn enter để chọn"
                           :multiple="true" selectedLabel="Đã chọn"
-                          :class="{ 'is-invalid': submitted && $v.model.Assignee.$error, }"></multiselect>
+                          :class="{ 'is-invalid': submitted && $v.model.Assignee.$error, }">
+                        </multiselect>
                         <div v-if="submitted && !$v.model.Assignee.required" class="invalid-feedback">
                           Phân công không được để trống.
                         </div>
@@ -438,7 +439,7 @@ export default {
                           deselect-label="Nhấn để xoá" selectLabel="Nhấn enter để chọn" selectedLabel="Đã chọn"
                           :multiple="true" :taggable="true" @tag="addTag" tag-placeholder="Thêm mới nhãn này"
                           placeholder="Chọn nhãn hoặc thêm"
-                          :class="{ 'is-invalid': submitted && $v.model.Labels.$error, }">
+                          :class="{ 'is-invalid': submitted && $v.model.Label.$error, }">
                         </multiselect>
                       </div>
                     </div>
