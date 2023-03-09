@@ -5,8 +5,8 @@ import appConfig from "@/app.config";
 import {notifyModel} from "@/models/notifyModel";
 import {pagingModel} from "@/models/pagingModel";
 import {CONSTANTS} from "@/helpers/constants";
-import {tagModel} from "@/models/tagModel";
-
+import {yeucauloiModel} from "@/models/yeucauloiModel";
+//this.dateString = this.model.dueDate.substring(0, 10);
 export default {
   page: {
     title: "Yêu cầu lỗi",
@@ -17,6 +17,7 @@ export default {
     return {
       title: "Yêu cầu lỗi",
       data: [],
+      dateString:  "null",
       showModal: false,
       showDetail: false,
       showDeleteModal: false,
@@ -34,11 +35,58 @@ export default {
       sortBy: "age",
       sortDesc: false,
       fields: [
-        { key: 'issue',
-          class: 'cs-text-left',
+      {
+          key: 'STT',
+          label: 'STT',
+          class: 'cs-text-center',
           sortable: false,
           thClass: 'hidden-sortable',
+          thStyle: { width: '40px', minWidth: '40px' }
         },
+        {
+          key: "title",
+          label: "Yêu cầu",
+          sortable: true,
+          thClass: 'hidden-sortable',
+          thStyle: { width: '600px' },
+        },
+        {
+          key: "description",
+          label: "Mô tả",
+          sortable: true,
+          thClass: 'hidden-sortable',
+          thStyle: { width: '600px' },
+        },
+        
+        {
+          key: "label",
+          label: "Nhãn",
+          sortable: true,
+          thClass: 'hidden-sortable',
+          thStyle: { width: '600px' },
+        },
+        {
+          key: "assignee",
+          label: "Phân công",
+          sortable: true,
+          thClass: 'hidden-sortable',
+          thStyle: { width: '600px' },
+        },
+        {
+          key: "dueDate",
+          label: "Thời hạn",
+          sortable: true,
+          thClass: 'hidden-sortable',
+          thStyle: { width: '600px' },
+        },
+        {
+          key: 'process',
+          label: 'Xử lý',
+          class: 'td-xuly btn-process',
+          thClass: 'hidden-sortable',
+          // sortable: false,
+          thStyle: { width: '80px', minWidth: '80px' },
+        }
       ],
     };
   },
@@ -50,11 +98,18 @@ export default {
     },
   },
   created() {
-    this.fnGetList();
+    if (this.$route.params.id) {
+      this.getById(this.$route.params.id);
+      
+    } else {
+      this.model = yeucauloiModel.baseJson();
+      
+    }
   },
   watch: {
     showModal(status) {
-      if (status == false) this.model = tagModel.baseJson();
+      if (status == false) this.model = yeucauloiModel.baseJson();
+      
     },
     showDeleteModal(val) {
       if (val == false) {
@@ -62,12 +117,16 @@ export default {
       }
     },
   },
+  mounted() {
+
+  },
   methods: {
     handleSearch() {
       this.fnGetList()
     },
     fnGetList() {
       this.$refs.tblList?.refresh()
+      
     },
     myProvider (ctx) {
       const params = {
@@ -104,7 +163,6 @@ export default {
       this.slug = JSON.parse(currentProjectLocal);
       this.$router.push(`/${this.slug}/yeu-cau-loi`);
     },
-    
     handleRedirectToDetail(id){
       this.$router.push("/yeu-cau-loi/" + id)
     }
@@ -194,24 +252,22 @@ export default {
                     <template v-slot:cell(STT)="data">
                       {{ data.index + ((currentPage-1)*perPage) + 1  }}
                     </template>
-                    <template v-slot:cell(issue)="data">
-                      <template v-if="data.item.title">
-                        {{data.item.category.title}}
-                      </template>
+                    <template v-slot:cell(label)="data">
+                      <div v-for="(value , index) in data.item.label" :key="index">
+                        <span class="badge bg-success ms-1"> {{value.name}}</span>
+                      </div>
                     </template>
-                    <template v-slot:cell(status)="data">
-                      <template v-if="data.item.status">
-                        {{data.item.status.name}}
-                      </template>
+                    <template v-slot:cell(dueDate)>
+                      {{dateString}}
                     </template>
                     <template v-slot:cell(process)="data">
                       <button
                           type="button"
                           size="sm"
-                          class="btn btn-edit btn-sm"
-                          data-toggle="tooltip" data-placement="bottom" title="Xem chi tiết"
+                          class="btn btn-detail btn-sm"
+                          data-toggle="tooltip" data-placement="bottom" title="Chi tiết"
                           v-on:click="handleRedirectToDetail(data.item.id)">
-                        <i class="fas fas fa-eye"></i>
+                        <i class="fas fa-eye "></i>
                       </button>
                     </template>
                   </b-table>

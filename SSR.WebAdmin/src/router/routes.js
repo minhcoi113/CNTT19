@@ -149,13 +149,13 @@ export default [{
         path: "/danh-sach-yeu-cau-loi",
         name: "Yêu cầu lỗi",
         // meta: {},
-        component: () => import("../pages/yeucauloi"),
+        component: () => import("../pages/yeucauloi/index"),
     },
     {
         path: "/yeu-cau-loi/:id?",
         name: "Yêu cầu lỗi",
         // meta: {},
-        component: () => import("../pages/yeucauloi/create.vue"),
+        component: () => import("../pages/yeucauloi/detail"),
     },
     {
         path: "/them-yeu-cau-loi",
@@ -233,6 +233,12 @@ export default [{
         name: "Nhãn",
         // meta: {},
         component: () => import("../pages/thongke/index"),
+    },
+    {
+        path: "/:slug/chi-tiet",
+        name: "Chi tiết dự án",
+        // meta: {},
+        component: () => import("../pages/chitiet"),
     },
     {
         path: "/Label",

@@ -109,7 +109,7 @@ export default {
     this.handleCreate();
 
     if (this.$route.params.id) {
-      this.getPostById(this.$route.params.id);
+      this.getById(this.$route.params.id);
     } else {
       this.model = yeucauloiModel.baseJson();
     }
@@ -155,7 +155,6 @@ export default {
 
       this.$store.dispatch("projectStore/get").then((res) => {
         if (res.resultCode === 'SUCCESS') {
-
           this.listProject = res.data; //lấy hết cái list
           this.nameproject = JSON.parse(currentProjectLocal);  //test6
 
@@ -166,17 +165,11 @@ export default {
           else {
             this.idproject = null;
           }
-
           this.model.ProjectId = this.idproject;
-          // if (this.listProject.name === this.nameproject) { 
-          //    this.idproject = this.listProject.id;
-          //    this.model.ProjectId = this.idproject;
-          // } 
           return;
         }
         this.listProject = [];
       });
-
     },
 
     handleSelectionChange(selected) {
@@ -407,44 +400,10 @@ export default {
                       </div>
                     </div>
                   </div>
-                  <!-- <div class="col-lg-12 col-md-12 col-12">
-                                                              <div class="mb-2">
-                                                                <label class="form-label cs-title-form" for="validationCustom01"> Slug</label>
-                                                                <span
-                                                                    class="text-danger">*</span>
-                                                                <input
-                                                                    id="validationCustom01"
-                                                                    v-model="model.slug"
-                                                                    type="text"
-                                                                    class="form-control"
-                                                                    placeholder=""
-                                                                    :class="{'is-invalid': submitted && $v.model.slug.$error,}"
-                                                                />
-                                                                <div
-                                                                    v-if="submitted && !$v.model.slug.required"
-                                                                    class="invalid-feedback"
-                                                                >
-                                                                  Slug không được để trống.
-                                                                </div>
-                                                              </div>
-                                                            </div> -->
+
                 </div>
                 <div class="col-md-5">
                   <div class="row">
-                    <!-- <div class="col-md-12 mb-2">
-                                                              <label class="form-label cs-title-form" for="validationCustom01"> Hình ảnh</label>
-                                                              <div class="col-md-12 d-flex justify-content-center" id="my-strictly-unique-vue-upload-multiple-image">
-                                                                <vue-upload-multiple-image
-                                                                    @upload-success="uploadImageSuccess"
-                                                                    @before-remove="beforeRemove"
-                                                                    :data-images="images"
-                                                                    idUpload="myIdUpload"
-                                                                    editUpload="myIdEdit"
-                                                                    :showEdit="false"
-                                                                    class="cs-upload-image"
-                                                                ></vue-upload-multiple-image>
-                                                              </div>
-                                                            </div> -->
                     <div class="col-md-12">
                       <div class="mb-2">
                         <label class="form-label cs-title-form" for="validationCustom01"> Đơn vị </label>

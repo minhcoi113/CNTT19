@@ -17,6 +17,6 @@ public class Project : Audit, TEntity<string>
     public List<User> Member { get; set; }
     public string Slug { get; set; }
     public List<FileShort> Files { get; set; }
-
+    
 
 }

@@ -57,7 +57,8 @@ export default {
       ],
       
       fields: [
-      { key: 'STT',
+        { 
+        key: 'STT',
           label: 'STT',
           class: 'cs-text-center',
           sortable: false,
@@ -69,44 +70,19 @@ export default {
           label: "Tên dự án",
           sortable: false,
           thClass: 'hidden-sortable',
-          thStyle: {width: '400px', minWidth: '100px'},
+          thStyle: {width: '600px', minWidth: '100px'},
         },
-        {
-          key: "description",
-          label: "Mô tả",
-          // class: 'td-xuly',
-          thClass: 'hidden-sortable',
-          sortable: true,
-          // thStyle: {width: '100px', minWidth: '100px'},
-        },
-        // {
-        //   key: "label",
-        //   label: "label",
-        //   class: 'td-xuly',
-        //   sortable: true,
-        //   thStyle: {width: '120px', minWidth: '120px'},
-        // },
-       
         {
           key: 'process',
           label: 'Xử lý',
-          class: 'td-xuly btn-process',
+          class: 'cs-text-center td-xuly btn-process',
           thClass: 'hidden-sortable',
           sortable: false,
-          thStyle: {width: '130px', minWidth: '130px'},
+          thStyle: {width: '80px', minWidth: '80px'},
         }
       ],
       statData: [
-        {
-          title: "Quản lý dự án",
-          image: require("@/assets/images/services-icon/01.png"),
-          value: "0",
-          subText: "VBD",
-          color: "white",
-          path: "/du-an",
-          className: "card-vanbanden",
-          icon: "mdi-file text-primary"
-        },
+     
         {
           title: "Số dự án đã tham gia",
           image: require("@/assets/images/services-icon/02.png"),
@@ -146,7 +122,8 @@ export default {
           path: "/nhan-vien",
           className: "card-hopthu",
           icon: "mdi mdi-chart-bar text-warning"
-        }
+        },
+       
       ],
       modelSoLieu: dashboardModel.baseJson(),
       activityUserData: [],
@@ -279,6 +256,14 @@ export default {
       }
       return bytes;
     },
+    handleDetailProject(slug) {
+
+let currentProject = JSON.stringify(slug)
+
+localStorage.setItem("currentProject", currentProject);
+
+this.$router.push(`/${slug}/danh-sach-yeu-cau-loi`)
+}
   }
 };
 </script>
@@ -355,37 +340,25 @@ export default {
                       :busy.sync="isBusy"
                       tbody-tr-class="b-table-chucvu"
                   >
-                    <template v-slot:cell(STT)="data">
+                  <template v-slot:cell(STT)="data">
+                      
                       {{ data.index + ((currentPage-1)*perPage) + 1  }}
                     </template>
-                    
-                    <!-- <template v-slot:cell(label)="data">
-                      <div v-for="(value , index) in data.item.label" :key="index">
-                        <span  class="badge bg-success ms-1"> {{value.name}}</span>
-                      </div>
-                    </template> -->
-                    <template v-slot:cell(name)="data">&nbsp;&nbsp;
-                      <router-link :to='`/${data.item.slug}/danh-sach-yeu-cau-loi`'>
-                        {{data.item.name}}
-                      </router-link>
+                    <template v-slot:cell(name)="data">
+                      <a class="link-dark" v-on:click="handleDetailProject(data.item.slug)">
+                        <div class="fw-normal font-size-18" style="color: red;">{{data.item.name}}
+                        </div>
+                        <div class="ellips">{{data.item.description}}</div> 
+                      </a>
                     </template>
                     <template v-slot:cell(process)="data">
-                       <router-link :to='`/du-an/chi-tiet/${data.item.slug}`'>
                       <button
                           type="button"
                           size="sm"
-                          class="btn btn-edit btn-sm"
-                          v-on:click="handleDetail(data.item.slug)"
-                          >
-                        <i class="fas fa-pencil-alt"></i>
-                      </button>
-                    </router-link>
-                      <button
-                          type="button"
-                          size="sm"
-                          class="btn btn-delete btn-sm"
-                          v-on:click="handleShowDeleteModal(data.item.id)">
-                        <i class="fas fa-trash-alt"></i>
+                          class="btn btn-detail btn-sm"
+                          data-toggle="tooltip" data-placement="bottom" title="Chi tiết"
+                          v-on:click="handleDetail(data.item.id)">
+                        <i class="fas fa-eye "></i>
                       </button>
                     </template>
                   </b-table>

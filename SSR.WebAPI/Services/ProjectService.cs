@@ -60,6 +60,8 @@ public class ProjectService : BaseService, IProjectService
             Member = model.Member,
             Slug = model.Slug,
             Files = model.Files,
+            CreatedBy = CurrentUserName,
+            ModifiedBy = CurrentUserName,
         };
 
         var result = await BaseMongoDb.CreateAsync(entity);
